@@ -1,0 +1,77 @@
+[
+    {
+        "id": 1,
+        "name": "Dr. Juan Pérez",
+        "email": "jperez@utp.edu",
+        "available_timeslots": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Dra. María González",
+        "email": "mgonzalez@utp.edu",
+        "available_timeslots": [
+            2,
+            3,
+            4,
+            5,
+            9,
+            10,
+            11,
+            12
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Dr. Carlos Rodríguez",
+        "email": "crodriguez@utp.edu",
+        "available_timeslots": [
+            1,
+            2,
+            6,
+            7,
+            8,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Dra. Ana Martínez",
+        "email": "amartinez@utp.edu",
+        "available_timeslots": [
+            3,
+            4,
+            5,
+            9,
+            10,
+            11,
+            16,
+            17
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Dr. Luis Fernández",
+        "email": "lfernandez@utp.edu",
+        "available_timeslots": [
+            1,
+            5,
+            6,
+            7,
+            12,
+            13,
+            14,
+            18
+        ]
+    }
+]

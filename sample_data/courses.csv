@@ -1,0 +1,11 @@
+id,name,code,credits,enrollment,prerequisites
+1,Estructuras de Datos,CS201,4,35,
+2,Algoritmos Avanzados,CS301,4,30,1
+3,Bases de Datos,CS202,4,40,
+4,Programación Web,CS203,3,45,
+5,Inteligencia Artificial,CS401,4,25,"1,2"
+6,Redes de Computadoras,CS204,3,30,
+7,Sistemas Operativos,CS302,4,35,1
+8,Ingeniería de Software,CS303,4,30,"1,3"
+9,Compiladores,CS402,4,20,"1,2"
+10,Computación Gráfica,CS304,3,25,1

@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Cython
+*.c
+*.cpp.bak
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+# Build artifacts
+cpp_core/build/
+cpp_core/cmake-build-*/
+
+# Data files (optional, uncomment if you don't want to track uploaded data)
+# *.csv
+# *.json
+# *.xlsx
+# *.xls

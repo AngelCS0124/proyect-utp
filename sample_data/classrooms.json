@@ -1,0 +1,83 @@
+[
+    {
+        "id": 1,
+        "name": "Aula 101",
+        "building": "Edificio A",
+        "capacity": 40,
+        "equipment": [
+            "Proyector",
+            "Pizarra Digital"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Aula 102",
+        "building": "Edificio A",
+        "capacity": 35,
+        "equipment": [
+            "Proyector"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Aula 201",
+        "building": "Edificio B",
+        "capacity": 50,
+        "equipment": [
+            "Proyector",
+            "Pizarra Digital",
+            "Sistema de Audio"
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Aula 202",
+        "building": "Edificio B",
+        "capacity": 30,
+        "equipment": [
+            "Proyector"
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Lab 301",
+        "building": "Edificio C",
+        "capacity": 25,
+        "equipment": [
+            "Computadoras",
+            "Proyector"
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Lab 302",
+        "building": "Edificio C",
+        "capacity": 30,
+        "equipment": [
+            "Computadoras",
+            "Proyector",
+            "Pizarra Digital"
+        ]
+    },
+    {
+        "id": 7,
+        "name": "Auditorio",
+        "building": "Edificio Principal",
+        "capacity": 100,
+        "equipment": [
+            "Proyector",
+            "Sistema de Audio",
+            "Micrófonos"
+        ]
+    },
+    {
+        "id": 8,
+        "name": "Aula 103",
+        "building": "Edificio A",
+        "capacity": 45,
+        "equipment": [
+            "Proyector",
+            "Pizarra Digital"
+        ]
+    }
+]

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTP - Sistema de Horarios Universitarios</title>
+    <meta name="description"
+        content="Sistema inteligente de generación de horarios universitarios con algoritmos de backtracking">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <rect x="4" y="4" width="24" height="24" rx="4" fill="url(#gradient1)" />
+                            <path d="M10 12h12M10 16h12M10 20h8" stroke="white" stroke-width="2"
+                                stroke-linecap="round" />
+                            <defs>
+                                <linearGradient id="gradient1" x1="4" y1="4" x2="28" y2="28">
+                                    <stop offset="0%" stop-color="#667eea" />
+                                    <stop offset="100%" stop-color="#764ba2" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h1>UTP Scheduler</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <span class="icon">↻</span>
+                        Reiniciar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Status Cards -->
+            <div class="status-grid">
+                <div class="status-card" id="coursesCard">
+                    <div class="status-icon courses">📚</div>
+                    <div class="status-info">
+                        <div class="status-label">Cursos</div>
+                        <div class="status-value" id="coursesCount">0</div>
+                    </div>
+                </div>
+                <div class="status-card" id="professorsCard">
+                    <div class="status-icon professors">👨‍🏫</div>
+                    <div class="status-info">
+                        <div class="status-label">Profesores</div>
+                        <div class="status-value" id="professorsCount">0</div>
+                    </div>
+                </div>
+                <div class="status-card" id="timeslotsCard">
+                    <div class="status-icon timeslots">⏰</div>
+                    <div class="status-info">
+                        <div class="status-label">Horarios</div>
+                        <div class="status-value" id="timeslotsCount">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Section -->
+            <section class="section">
+                <h2 class="section-title">Cargar Datos</h2>
+                <p class="section-description">Sube archivos CSV, JSON o Excel con la información de cursos, profesores
+                    y horarios</p>
+
+                <div class="upload-grid">
+                    <div class="upload-card">
+                        <h3>Cursos</h3>
+                        <div class="dropzone" data-type="courses">
+                            <div class="dropzone-content">
+                                <div class="dropzone-icon">📄</div>
+                                <p>Arrastra o haz clic para subir</p>
+                                <span class="dropzone-formats">CSV, JSON, Excel</span>
+                            </div>
+                            <input type="file" class="file-input" accept=".csv,.json,.xlsx,.xls">
+                        </div>
+                    </div>
+
+                    <div class="upload-card">
+                        <h3>Profesores</h3>
+                        <div class="dropzone" data-type="professors">
+                            <div class="dropzone-content">
+                                <div class="dropzone-icon">📄</div>
+                                <p>Arrastra o haz clic para subir</p>
+                                <span class="dropzone-formats">CSV, JSON, Excel</span>
+                            </div>
+                            <input type="file" class="file-input" accept=".csv,.json,.xlsx,.xls">
+                        </div>
+                    </div>
+
+                    <div class="upload-card">
+                        <h3>Horarios</h3>
+                        <div class="dropzone" data-type="timeslots">
+                            <div class="dropzone-content">
+                                <div class="dropzone-icon">📄</div>
+                                <p>Arrastra o haz clic para subir</p>
+                                <span class="dropzone-formats">CSV, JSON, Excel</span>
+                            </div>
+                            <input type="file" class="file-input" accept=".csv,.json,.xlsx,.xls">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Generate Section -->
+            <section class="section">
+                <div class="generate-section">
+                    <div class="generate-info">
+                        <h2>Generar Horario</h2>
+                        <p>Utiliza algoritmos de backtracking y grafos para generar un horario óptimo sin conflictos</p>
+                        <div class="validation-status" id="validationStatus"></div>
+                    </div>
+                    <button class="btn btn-primary btn-large" id="generateBtn" disabled>
+                        <span class="icon">⚡</span>
+                        Generar Horario
+                    </button>
+                </div>
+            </section>
+
+            <!-- Schedule Display -->
+            <section class="section" id="scheduleSection" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Horario Generado</h2>
+                    <div class="schedule-stats" id="scheduleStats"></div>
+                </div>
+
+                <div class="schedule-container">
+                    <div class="schedule-grid" id="scheduleGrid"></div>
+                </div>
+
+                <div class="schedule-list" id="scheduleList"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Generando horario...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
