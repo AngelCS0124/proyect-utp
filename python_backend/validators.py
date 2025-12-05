@@ -82,7 +82,8 @@ class Validator:
             errors.append("Duplicate timeslot IDs found")
         
         # Check for valid times
-        valid_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        valid_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
+                      'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
         for timeslot in timeslots:
             if timeslot.day not in valid_days:
                 errors.append(f"Invalid day: {timeslot.day}")
@@ -114,7 +115,7 @@ class Validator:
         
         for course in courses:
             if course.professor_id is None:
-                errors.append(f"Course '{course.name}' has no professor assigned")
+                warnings.append(f"Course '{course.name}' has no professor assigned")
             elif course.professor_id not in professor_ids:
                 errors.append(f"Course '{course.name}' assigned to non-existent professor ID: {course.professor_id}")
         

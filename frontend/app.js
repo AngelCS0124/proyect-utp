@@ -1,6 +1,5 @@
 /**
  * UTP Scheduler - Frontend Application
- * Handles file uploads, API communication, and schedule visualization
  */
 
 const API_BASE = 'http://localhost:5000/api';
@@ -20,340 +19,253 @@ const state = {
 
 // ===== Initialization =====
 document.addEventListener('DOMContentLoaded', () => {
-    initializeDropzones();
-    initializeButtons();
+    initializeNavigation();
     checkSystemStatus();
     updateUI();
 });
 
-// ===== Dropzone Handling =====
-function initializeDropzones() {
-    const dropzones = document.querySelectorAll('.dropzone');
-    
-    dropzones.forEach(dropzone => {
-        const input = dropzone.querySelector('.file-input');
-        const dataType = dropzone.dataset.type;
-        
-        // Click to upload
-        dropzone.addEventListener('click', () => input.click());
-        
-        // File selection
-        input.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleFileUpload(e.target.files[0], dataType, dropzone);
-            }
-        });
-        
-        // Drag and drop
-        dropzone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropzone.classList.add('dragover');
-        });
-        
-        dropzone.addEventListener('dragleave', () => {
-            dropzone.classList.remove('dragover');
-        });
-        
-        dropzone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropzone.classList.remove('dragover');
-            
-            if (e.dataTransfer.files.length > 0) {
-                handleFileUpload(e.dataTransfer.files[0], dataType, dropzone);
-            }
+// ===== Navigation =====
+function initializeNavigation() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const views = document.querySelectorAll('.view-section');
+    const pageTitle = document.getElementById('page-title');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Update Nav
+            navItems.forEach(nav => nav.classList.remove('active'));
+            item.classList.add('active');
+
+            // Update View
+            const viewId = item.dataset.view;
+            views.forEach(view => view.style.display = 'none');
+            document.getElementById(`view-${viewId}`).style.display = 'block';
+
+            // Update Title
+            pageTitle.textContent = item.querySelector('span').textContent;
+
+            // View Specific Actions
+            if (viewId === 'maestros') renderProfessorsTable();
+            if (viewId === 'disponibilidad') initializeAvailabilityView();
+            if (viewId === 'horario') renderScheduleView();
         });
     });
 }
 
-// ===== File Upload =====
-async function handleFileUpload(file, dataType, dropzone) {
+// ===== Upload Handling =====
+function uploadFile(input, dataType) {
+    if (input.files.length > 0) {
+        handleFileUpload(input.files[0], dataType);
+    }
+}
+
+async function handleFileUpload(file, dataType) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('data_type', dataType);
-    
+
     try {
         showNotification('Cargando...', `Subiendo ${dataType}...`, 'info');
-        
-        const response = await fetch(`${API_BASE}/upload`, {
-            method: 'POST',
-            body: formData
-        });
-        
+        const response = await fetch(`${API_BASE}/upload`, { method: 'POST', body: formData });
         const result = await response.json();
-        
+
         if (response.ok) {
-            dropzone.classList.add('uploaded');
             state.dataLoaded[dataType] = true;
-            
             showNotification('¡Éxito!', result.message, 'success');
-            
-            if (result.warnings && result.warnings.length > 0) {
-                result.warnings.forEach(warning => {
-                    showNotification('Advertencia', warning, 'warning');
-                });
-            }
-            
             await loadData(dataType);
             updateUI();
         } else {
             showNotification('Error', result.error || 'Error al cargar archivo', 'error');
-            if (result.details) {
-                result.details.forEach(detail => {
-                    showNotification('Error de validación', detail, 'error');
-                });
-            }
         }
     } catch (error) {
         showNotification('Error', `Error al subir archivo: ${error.message}`, 'error');
     }
 }
 
-// ===== Data Loading =====
 async function loadData(dataType) {
     try {
         const response = await fetch(`${API_BASE}/data/${dataType}`);
         const result = await response.json();
-        
-        if (response.ok) {
-            state[dataType] = result.data;
-        }
+        if (response.ok) state[dataType] = result.data;
     } catch (error) {
         console.error(`Error loading ${dataType}:`, error);
     }
 }
 
-// ===== Button Handlers =====
-function initializeButtons() {
-    const generateBtn = document.getElementById('generateBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    
-    generateBtn.addEventListener('click', generateSchedule);
-    resetBtn.addEventListener('click', resetData);
+// ===== Maestros View =====
+function renderProfessorsTable() {
+    const tbody = document.getElementById('professors-list');
+    tbody.innerHTML = '';
+
+    if (state.professors.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No hay profesores cargados</td></tr>';
+        return;
+    }
+
+    state.professors.forEach(prof => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${prof.id}</td>
+            <td>
+                <div style="font-weight: 600;">${prof.name}</div>
+                <div style="font-size: 0.8rem; color: var(--text-gray);">Senior Lecturer</div>
+            </td>
+            <td>${prof.email || 'N/A'}</td>
+            <td>3/wk</td>
+            <td><span class="badge badge-ready">Actualizado</span></td>
+            <td>
+                <button class="action-btn edit"><i class="fas fa-pen"></i></button>
+                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
 }
 
-async function generateSchedule() {
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    loadingOverlay.classList.add('active');
-    
-    try {
-        const response = await fetch(`${API_BASE}/generate`, {
-            method: 'POST'
+function filterProfessors() {
+    const query = document.getElementById('search-professor').value.toLowerCase();
+    const rows = document.querySelectorAll('#professors-list tr');
+
+    rows.forEach(row => {
+        const name = row.children[1].textContent.toLowerCase();
+        row.style.display = name.includes(query) ? '' : 'none';
+    });
+}
+
+// ===== Disponibilidad View =====
+function initializeAvailabilityView() {
+    const select = document.getElementById('availability-professor-select');
+    select.innerHTML = '<option value="">Seleccionar Maestro</option>';
+
+    state.professors.forEach(prof => {
+        const option = document.createElement('option');
+        option.value = prof.id;
+        option.textContent = prof.name;
+        select.appendChild(option);
+    });
+
+    renderAvailabilityGrid([]);
+}
+
+function loadProfessorAvailability() {
+    const select = document.getElementById('availability-professor-select');
+    const profId = parseInt(select.value);
+    const professor = state.professors.find(p => p.id === profId);
+
+    if (professor) {
+        document.getElementById('availability-email').value = professor.email;
+        renderAvailabilityGrid(professor.available_timeslots);
+    } else {
+        document.getElementById('availability-email').value = '';
+        renderAvailabilityGrid([]);
+    }
+}
+
+function renderAvailabilityGrid(availableSlots) {
+    const tbody = document.getElementById('availability-grid');
+    tbody.innerHTML = '';
+
+    // Time ranges (simplified for demo)
+    const ranges = [
+        { start: 8, end: 10 },
+        { start: 10, end: 12 },
+        { start: 12, end: 14 },
+        { start: 14, end: 16 },
+        { start: 16, end: 18 }
+    ];
+
+    const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+
+    ranges.forEach(range => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${range.start}:00 - ${range.end}:00</td>`;
+
+        days.forEach(day => {
+            // Check if this slot is available (mock logic: check if any timeslot matches day/hour)
+            // In real app, we'd match against state.timeslots IDs
+            const isAvailable = Math.random() > 0.5; // Mock for visual
+            const statusClass = isAvailable ? 'on' : 'off';
+            const statusText = isAvailable ? 'On' : 'Off';
+
+            tr.innerHTML += `
+                <td>
+                    <button class="toggle-btn ${statusClass}" onclick="toggleAvailability(this)">
+                        ${statusText}
+                    </button>
+                </td>
+            `;
         });
-        
+        tbody.appendChild(tr);
+    });
+}
+
+function toggleAvailability(btn) {
+    if (btn.classList.contains('on')) {
+        btn.classList.remove('on');
+        btn.classList.add('off');
+        btn.textContent = 'Off';
+    } else {
+        btn.classList.remove('off');
+        btn.classList.add('on');
+        btn.textContent = 'On';
+    }
+}
+
+// ===== Schedule Generation =====
+async function generateSchedule() {
+    const btn = document.getElementById('generate-btn');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+
+    try {
+        const response = await fetch(`${API_BASE}/generate`, { method: 'POST' });
         const result = await response.json();
-        
+
         if (response.ok && result.success) {
             state.schedule = result.schedule;
-            displaySchedule(result.schedule);
-            
-            showNotification(
-                '¡Horario Generado!',
-                `Generado en ${result.schedule.metadata.computation_time.toFixed(3)}s con ${result.schedule.metadata.backtrack_count} retrocesos`,
-                'success'
-            );
+            showNotification('¡Horario Generado!', 'El horario se ha generado correctamente.', 'success');
+            // Switch to Horario view
+            document.querySelector('[data-view="horario"]').click();
         } else {
             showNotification('Error', result.error || 'No se pudo generar el horario', 'error');
         }
     } catch (error) {
-        showNotification('Error', `Error al generar horario: ${error.message}`, 'error');
+        showNotification('Error', `Error al generar: ${error.message}`, 'error');
     } finally {
-        loadingOverlay.classList.remove('active');
+        btn.disabled = false;
+        btn.innerHTML = originalText;
     }
 }
 
-async function resetData() {
-    if (!confirm('¿Estás seguro de que quieres reiniciar todos los datos?')) {
+function renderScheduleView() {
+    const emptyState = document.getElementById('no-schedule-msg');
+    const table = document.getElementById('schedule-table');
+    const tbody = document.getElementById('schedule-body');
+
+    if (!state.schedule) {
+        emptyState.style.display = 'block';
+        table.style.display = 'none';
         return;
     }
-    
-    try {
-        const response = await fetch(`${API_BASE}/reset`, {
-            method: 'POST'
-        });
-        
-        if (response.ok) {
-            // Reset state
-            state.courses = [];
-            state.professors = [];
-            state.timeslots = [];
-            state.schedule = null;
-            state.dataLoaded = {
-                courses: false,
-                professors: false,
-                timeslots: false
-            };
-            
-            // Reset UI
-            document.querySelectorAll('.dropzone').forEach(dz => {
-                dz.classList.remove('uploaded');
-            });
-            
-            document.getElementById('scheduleSection').style.display = 'none';
-            
-            updateUI();
-            showNotification('Reiniciado', 'Todos los datos han sido eliminados', 'success');
-        }
-    } catch (error) {
-        showNotification('Error', `Error al reiniciar: ${error.message}`, 'error');
-    }
-}
 
-// ===== UI Updates =====
-function updateUI() {
-    // Update counts
-    document.getElementById('coursesCount').textContent = state.courses.length;
-    document.getElementById('professorsCount').textContent = state.professors.length;
-    document.getElementById('timeslotsCount').textContent = state.timeslots.length;
-    
-    // Update status cards
-    updateStatusCard('coursesCard', state.dataLoaded.courses);
-    updateStatusCard('professorsCard', state.dataLoaded.professors);
-    updateStatusCard('timeslotsCard', state.dataLoaded.timeslots);
-    
-    // Update generate button
-    const allDataLoaded = Object.values(state.dataLoaded).every(v => v);
-    const generateBtn = document.getElementById('generateBtn');
-    generateBtn.disabled = !allDataLoaded;
-    
-    // Update validation status
-    updateValidationStatus(allDataLoaded);
-}
+    emptyState.style.display = 'none';
+    table.style.display = 'table';
+    tbody.innerHTML = '';
 
-function updateStatusCard(cardId, loaded) {
-    const card = document.getElementById(cardId);
-    if (loaded) {
-        card.classList.add('loaded');
-    } else {
-        card.classList.remove('loaded');
-    }
-}
-
-function updateValidationStatus(allDataLoaded) {
-    const validationStatus = document.getElementById('validationStatus');
-    
-    if (allDataLoaded) {
-        validationStatus.className = 'validation-status success';
-        validationStatus.textContent = '✓ Todos los datos cargados. Listo para generar horario.';
-    } else {
-        validationStatus.className = 'validation-status error';
-        const missing = [];
-        if (!state.dataLoaded.courses) missing.push('cursos');
-        if (!state.dataLoaded.professors) missing.push('profesores');
-        if (!state.dataLoaded.timeslots) missing.push('horarios');
-        validationStatus.textContent = `⚠ Faltan datos: ${missing.join(', ')}`;
-    }
-}
-
-// ===== Schedule Display =====
-function displaySchedule(schedule) {
-    const scheduleSection = document.getElementById('scheduleSection');
-    const scheduleStats = document.getElementById('scheduleStats');
-    const scheduleList = document.getElementById('scheduleList');
-    
-    scheduleSection.style.display = 'block';
-    
-    // Display stats
-    scheduleStats.innerHTML = `
-        <div>📊 ${schedule.assignments.length} clases asignadas</div>
-        <div>⚡ ${schedule.metadata.computation_time.toFixed(3)}s</div>
-        <div>🔄 ${schedule.metadata.backtrack_count} retrocesos</div>
-    `;
-    
-    // Display schedule grid
-    displayScheduleGrid(schedule.assignments);
-    
-    // Display schedule list
-    displayScheduleList(schedule.assignments);
-    
-    // Scroll to schedule
-    scheduleSection.scrollIntoView({ behavior: 'smooth' });
-}
-
-function displayScheduleGrid(assignments) {
-    const scheduleGrid = document.getElementById('scheduleGrid');
-    
-    // Group assignments by day and time
-    const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-    const timeSlots = [...new Set(assignments.map(a => a.timeslot_display))].sort();
-    
-    // Create grid
-    let gridHTML = '<div class="schedule-cell header"></div>';
-    days.forEach(day => {
-        gridHTML += `<div class="schedule-cell header">${day}</div>`;
-    });
-    
-    timeSlots.forEach(timeSlot => {
-        gridHTML += `<div class="schedule-cell time">${timeSlot.split(' ')[1]}</div>`;
-        
-        days.forEach(day => {
-            const dayAssignments = assignments.filter(a => 
-                a.timeslot_display.startsWith(day) && a.timeslot_display.includes(timeSlot.split(' ')[1])
-            );
-            
-            gridHTML += '<div class="schedule-cell">';
-            dayAssignments.forEach(assignment => {
-                gridHTML += `
-                    <div class="schedule-item" title="${assignment.course_name}">
-                        <div class="schedule-item-course">${assignment.course_code || assignment.course_name}</div>
-                        <div class="schedule-item-details">${assignment.professor_name}</div>
-                    </div>
-                `;
-            });
-            gridHTML += '</div>';
-        });
-    });
-    
-    scheduleGrid.innerHTML = gridHTML;
-}
-
-function displayScheduleList(assignments) {
-    const scheduleList = document.getElementById('scheduleList');
-    
-    let listHTML = '';
-    assignments.forEach(assignment => {
-        listHTML += `
-            <div class="schedule-list-item">
-                <div class="schedule-list-header">
-                    <div>
-                        <div class="schedule-list-course">${assignment.course_name}</div>
-                        <div class="schedule-list-code">${assignment.course_code || ''}</div>
-                    </div>
-                </div>
-                <div class="schedule-list-details">
-                    <div class="schedule-list-detail">
-                        <span>👨‍🏫</span>
-                        <span>${assignment.professor_name}</span>
-                    </div>
-                    <div class="schedule-list-detail">
-                        <span>⏰</span>
-                        <span>${assignment.timeslot_display}</span>
-                    </div>
-                </div>
-            </div>
+    state.schedule.assignments.forEach(assignment => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                <div style="font-weight: 600;">${assignment.course_name}</div>
+                <div style="font-size: 0.85rem; color: var(--text-gray);">${assignment.course_code}</div>
+            </td>
+            <td>${assignment.professor_name}</td>
+            <td><span class="badge badge-ready">${assignment.timeslot_display}</span></td>
+            <td>A1</td>
         `;
+        tbody.appendChild(tr);
     });
-    
-    scheduleList.innerHTML = listHTML;
-}
-
-// ===== Notifications =====
-function showNotification(title, message, type = 'info') {
-    const container = document.getElementById('notificationContainer');
-    
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.innerHTML = `
-        <div class="notification-title">${title}</div>
-        <div class="notification-message">${message}</div>
-    `;
-    
-    container.appendChild(notification);
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        notification.style.animation = 'slideIn 250ms reverse';
-        setTimeout(() => notification.remove(), 250);
-    }, 5000);
 }
 
 // ===== System Status =====
@@ -361,19 +273,51 @@ async function checkSystemStatus() {
     try {
         const response = await fetch(`${API_BASE}/status`);
         const status = await response.json();
-        
-        if (!status.scheduler_available) {
-            showNotification(
-                'Advertencia',
-                'El motor de C++ no está disponible. Por favor, compila la extensión de Cython.',
-                'warning'
-            );
+
+        if (status.data_loaded.courses > 0) {
+            state.dataLoaded.courses = true;
+            loadData('courses');
         }
+        if (status.data_loaded.professors > 0) {
+            state.dataLoaded.professors = true;
+            loadData('professors');
+        }
+        if (status.data_loaded.timeslots > 0) {
+            state.dataLoaded.timeslots = true;
+            loadData('timeslots');
+        }
+
+        setTimeout(updateUI, 500);
     } catch (error) {
-        showNotification(
-            'Error de Conexión',
-            'No se puede conectar con el servidor. Asegúrate de que Flask esté ejecutándose.',
-            'error'
-        );
+        console.error("Connection error", error);
     }
+}
+
+function updateUI() {
+    document.getElementById('course-count').textContent = state.courses.length;
+    document.getElementById('professor-count').textContent = state.professors.length;
+    document.getElementById('timeslot-count').textContent = state.timeslots.length;
+
+    // Update upload cards status
+    updateCardState('course-upload', state.dataLoaded.courses);
+    updateCardState('professor-upload', state.dataLoaded.professors);
+    updateCardState('timeslot-upload', state.dataLoaded.timeslots);
+}
+
+function updateCardState(inputId, loaded) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const card = input.closest('.upload-card');
+    if (loaded) {
+        card.style.borderColor = 'var(--success)';
+        card.querySelector('.upload-icon').style.color = 'var(--success)';
+    }
+}
+
+function showNotification(title, message, type = 'info') {
+    const notification = document.getElementById('notification');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `<strong>${title}</strong><br>${message}`;
+    notification.style.display = 'block';
+    setTimeout(() => notification.style.display = 'none', 5000);
 }
