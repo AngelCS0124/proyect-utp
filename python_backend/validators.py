@@ -69,6 +69,8 @@ class Validator:
     @staticmethod
     def validate_timeslots(timeslots: List[TimeSlot]) -> Dict[str, Any]:
         """Validate timeslot data"""
+        from config import VALID_DAYS, validate_timeslot_constraints
+        
         errors = []
         warnings = []
         
@@ -81,23 +83,39 @@ class Validator:
         if len(ids) != len(set(ids)):
             errors.append("Duplicate timeslot IDs found")
         
-        # Check for valid times
-        valid_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
-                      'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+        # Get all valid days (Spanish and English)
+        valid_days = VALID_DAYS['es'] + VALID_DAYS['en']
+        
+        # Check each timeslot
         for timeslot in timeslots:
+            # Validate day (weekdays only)
             if timeslot.day not in valid_days:
-                errors.append(f"Invalid day: {timeslot.day}")
+                errors.append(f"Día inválido: {timeslot.day}. Solo se permiten días entre semana (Lunes-Viernes)")
             
+            # Validate hours
             if not (0 <= timeslot.start_hour < 24 and 0 <= timeslot.end_hour < 24):
                 errors.append(f"Invalid hours for timeslot {timeslot.id}")
             
+            # Validate minutes
             if not (0 <= timeslot.start_minute < 60 and 0 <= timeslot.end_minute < 60):
                 errors.append(f"Invalid minutes for timeslot {timeslot.id}")
             
+            # Validate time range
             start_time = timeslot.start_hour * 60 + timeslot.start_minute
             end_time = timeslot.end_hour * 60 + timeslot.end_minute
             if start_time >= end_time:
                 errors.append(f"Timeslot {timeslot.id} has invalid time range")
+            
+            # Validate against UTP time block constraints
+            is_valid, error_msg = validate_timeslot_constraints(
+                timeslot.start_hour,
+                timeslot.start_minute,
+                timeslot.end_hour,
+                timeslot.end_minute
+            )
+            
+            if not is_valid:
+                errors.append(f"Timeslot {timeslot.id}: {error_msg}")
         
         return {
             'valid': len(errors) == 0,

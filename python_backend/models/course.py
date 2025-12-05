@@ -6,7 +6,8 @@ from typing import List
 
 class Course:
     def __init__(self, id: int, name: str, code: str, credits: int, enrollment: int, 
-                 prerequisites: List[int], professor_id: int = None, cuatrimestre: int = None):
+                 prerequisites: List[int], professor_id: int = None, cuatrimestre: int = None,
+                 sessions_per_week: int = 1):
         self.id = id
         self.name = name
         self.code = code
@@ -15,6 +16,7 @@ class Course:
         self.prerequisites = prerequisites
         self.professor_id = professor_id
         self.cuatrimestre = cuatrimestre  # Cuatrimestre number (1-10) for cycle-based filtering
+        self.sessions_per_week = sessions_per_week  # Number of sessions needed per week (1-10)
     
     def to_dict(self):
         return {
@@ -25,5 +27,6 @@ class Course:
             'enrollment': self.enrollment,
             'prerequisites': self.prerequisites,
             'professor_id': self.professor_id,
-            'cuatrimestre': self.cuatrimestre
+            'cuatrimestre': self.cuatrimestre,
+            'sessions_per_week': self.sessions_per_week
         }
