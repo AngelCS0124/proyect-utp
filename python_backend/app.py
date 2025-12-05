@@ -1,5 +1,6 @@
 """
 Flask REST API for UTP Scheduling System
+Modular architecture with separated concerns
 """
 
 from flask import Flask, request, jsonify, send_from_directory
@@ -8,8 +9,9 @@ import os
 import tempfile
 from werkzeug.utils import secure_filename
 
-# Import our modules
+# Import from modular structure
 from models import Course, Professor, TimeSlot, Schedule
+from data import get_all_courses, get_courses_for_cycle, get_available_cycles
 from data_loader import DataLoader
 from validators import Validator
 
@@ -32,10 +34,11 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 # Global data storage
 data_store = {
-    'courses': [],
+    'courses': [],  # Will be populated based on selected cycle
     'professors': [],
     'timeslots': [],
-    'schedule': None
+    'schedule': None,
+    'current_cycle': None  # Track currently selected cycle
 }
 
 
@@ -59,21 +62,23 @@ def get_status():
             'professors': len(data_store['professors']),
             'timeslots': len(data_store['timeslots'])
         },
-        'schedule_generated': data_store['schedule'] is not None
+        'schedule_generated': data_store['schedule'] is not None,
+        'current_cycle': data_store['current_cycle']
     })
 
 
 @app.route('/api/upload', methods=['POST'])
 def upload_file():
-    """Upload and process data files"""
+    """Upload and process data files (professors and timeslots only)"""
     if 'file' not in request.files:
         return jsonify({'error': 'No file provided'}), 400
     
     file = request.files['file']
     data_type = request.form.get('data_type')
     
-    if not data_type or data_type not in ['courses', 'professors', 'timeslots']:
-        return jsonify({'error': 'Invalid data_type. Must be: courses, professors, or timeslots'}), 400
+    # Courses are now predefined, only allow professors and timeslots
+    if not data_type or data_type not in ['professors', 'timeslots']:
+        return jsonify({'error': 'Invalid data_type. Must be: professors or timeslots (courses are predefined)'}), 400
     
     if file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
@@ -91,9 +96,7 @@ def upload_file():
         loaded_data = DataLoader.load_data(filepath, data_type)
         
         # Validate data
-        if data_type == 'courses':
-            validation = Validator.validate_courses(loaded_data)
-        elif data_type == 'professors':
+        if data_type == 'professors':
             validation = Validator.validate_professors(loaded_data)
         elif data_type == 'timeslots':
             validation = Validator.validate_timeslots(loaded_data)
@@ -119,6 +122,30 @@ def upload_file():
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/cycles', methods=['GET'])
+def get_cycles():
+    """Get available cycles"""
+    return jsonify({
+        'cycles': get_available_cycles()
+    })
+
+
+@app.route('/api/courses/<cycle>', methods=['GET'])
+def get_courses_by_cycle(cycle):
+    """Get courses for a specific cycle"""
+    try:
+        courses = get_courses_for_cycle(cycle)
+        data_store['courses'] = courses
+        data_store['current_cycle'] = cycle
+        return jsonify({
+            'data': [course.to_dict() for course in courses],
+            'count': len(courses),
+            'cycle': cycle
+        })
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
 
 
 @app.route('/api/data/<data_type>', methods=['GET'])
@@ -167,7 +194,6 @@ def validate_data():
     validation = Validator.validate_all_data(
         data_store['courses'],
         data_store['professors'],
-        data_store['classrooms'],
         data_store['timeslots']
     )
     
@@ -179,6 +205,10 @@ def generate_schedule():
     """Generate schedule using C++ backtracking algorithm"""
     if not SCHEDULER_AVAILABLE:
         return jsonify({'error': 'Scheduler not available. Please build the C++ extension.'}), 503
+    
+    # Check if a cycle is selected
+    if not data_store['current_cycle']:
+        return jsonify({'error': 'Please select a cycle first'}), 400
     
     # Validate data first
     validation = Validator.validate_all_data(
@@ -337,6 +367,7 @@ def reset_data():
     data_store['professors'] = []
     data_store['timeslots'] = []
     data_store['schedule'] = None
+    data_store['current_cycle'] = None
     
     return jsonify({'success': True, 'message': 'All data cleared'})
 

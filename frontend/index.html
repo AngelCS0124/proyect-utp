@@ -51,6 +51,13 @@
             <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="stat-info">
+                        <h3>Ciclo Actual</h3>
+                        <p id="cycle-name">No seleccionado</p>
+                    </div>
+                </div>
+                <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-book"></i></div>
                     <div class="stat-info">
                         <h3>Cursos</h3>
@@ -73,19 +80,35 @@
                 </div>
             </div>
 
+            <!-- Cycle Selection -->
+            <section class="cycle-section">
+                <h2>Seleccionar Ciclo Académico</h2>
+                <p class="section-desc">Elige el periodo cuatrimestral para generar el horario</p>
+                <div class="cycle-selector-container">
+                    <div class="form-group">
+                        <label for="cycle-select">Ciclo Cuatrimestral</label>
+                        <select id="cycle-select" onchange="loadCycleData()">
+                            <option value="">Seleccionar ciclo...</option>
+                        </select>
+                    </div>
+                    <div id="cycle-info" class="cycle-info" style="display: none;">
+                        <div class="info-item">
+                            <i class="fas fa-calendar"></i>
+                            <span id="cycle-months"></span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span id="cycle-semesters"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Upload -->
             <section class="upload-section">
                 <h2>Cargar Datos</h2>
                 <p class="section-desc">Sube archivos CSV, JSON o Excel</p>
                 <div class="upload-grid">
-                    <div class="upload-card" id="card-courses"
-                        onclick="document.getElementById('course-upload').click()">
-                        <div class="upload-status-icon"><i class="fas fa-check-circle"></i></div>
-                        <i class="fas fa-file-alt upload-icon"></i>
-                        <h3>Cursos</h3>
-                        <p>CSV, JSON, Excel</p>
-                        <input type="file" id="course-upload" hidden onchange="uploadFile(this, 'courses')">
-                    </div>
                     <div class="upload-card" id="card-professors"
                         onclick="document.getElementById('professor-upload').click()">
                         <div class="upload-status-icon"><i class="fas fa-check-circle"></i></div>

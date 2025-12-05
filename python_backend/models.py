@@ -5,7 +5,7 @@ Data models for the UTP Scheduling System
 from typing import List
 
 class Course:
-    def __init__(self, id: int, name: str, code: str, credits: int, enrollment: int, prerequisites: List[int], professor_id: int = None):
+    def __init__(self, id: int, name: str, code: str, credits: int, enrollment: int, prerequisites: List[int], professor_id: int = None, semester: int = None):
         self.id = id
         self.name = name
         self.code = code
@@ -13,6 +13,7 @@ class Course:
         self.enrollment = enrollment
         self.prerequisites = prerequisites
         self.professor_id = professor_id
+        self.semester = semester  # Semester number (1-10) for cycle-based filtering
     
     def to_dict(self):
         return {
@@ -22,7 +23,8 @@ class Course:
             'credits': self.credits,
             'enrollment': self.enrollment,
             'prerequisites': self.prerequisites,
-            'professor_id': self.professor_id
+            'professor_id': self.professor_id,
+            'semester': self.semester
         }
 
 

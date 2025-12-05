@@ -10,6 +10,8 @@ const state = {
     professors: [],
     timeslots: [],
     schedule: null,
+    currentCycle: null,
+    availableCycles: [],
     dataLoaded: {
         courses: false,
         professors: false,
@@ -20,6 +22,7 @@ const state = {
 // ===== Initialization =====
 document.addEventListener('DOMContentLoaded', () => {
     initializeNavigation();
+    loadAvailableCycles();
     checkSystemStatus();
     updateUI();
 });
@@ -86,9 +89,78 @@ async function loadData(dataType) {
     try {
         const response = await fetch(`${API_BASE}/data/${dataType}`);
         const result = await response.json();
-        if (response.ok) state[dataType] = result.data;
+        if (response.ok) {
+            state[dataType] = result.data;
+            if (dataType === 'courses') {
+                state.dataLoaded.courses = true;
+            }
+        }
     } catch (error) {
         console.error(`Error loading ${dataType}:`, error);
+    }
+}
+
+// ===== Cycle Management =====
+async function loadAvailableCycles() {
+    try {
+        const response = await fetch(`${API_BASE}/cycles`);
+        const result = await response.json();
+        if (response.ok) {
+            state.availableCycles = result.cycles;
+            renderCycleSelector();
+        }
+    } catch (error) {
+        console.error('Error loading cycles:', error);
+    }
+}
+
+function renderCycleSelector() {
+    const select = document.getElementById('cycle-select');
+    select.innerHTML = '<option value="">Seleccionar ciclo...</option>';
+    
+    state.availableCycles.forEach(cycle => {
+        const option = document.createElement('option');
+        option.value = cycle.id;
+        option.textContent = cycle.name;
+        select.appendChild(option);
+    });
+}
+
+async function loadCycleData() {
+    const select = document.getElementById('cycle-select');
+    const cycleId = select.value;
+    
+    if (!cycleId) {
+        state.currentCycle = null;
+        state.courses = [];
+        state.dataLoaded.courses = false;
+        updateUI();
+        return;
+    }
+    
+    try {
+        showNotification('Cargando...', `Cargando cursos para ${select.options[select.selectedIndex].text}...`, 'info');
+        const response = await fetch(`${API_BASE}/courses/${cycleId}`);
+        const result = await response.json();
+        
+        if (response.ok) {
+            state.courses = result.data;
+            state.currentCycle = state.availableCycles.find(c => c.id === cycleId);
+            state.dataLoaded.courses = true;
+            
+            // Update cycle info display
+            document.getElementById('cycle-info').style.display = 'flex';
+            document.getElementById('cycle-months').textContent = state.currentCycle.months;
+            const cuatrimestreText = state.currentCycle.cuatrimestres.map(s => `${s}°`).join(', ');
+            document.getElementById('cycle-semesters').textContent = `Cuatrimestres: ${cuatrimestreText}`;
+            
+            showNotification('¡Éxito!', `Cargados ${result.count} cursos`, 'success');
+            updateUI();
+        } else {
+            showNotification('Error', result.error || 'Error al cargar cursos', 'error');
+        }
+    } catch (error) {
+        showNotification('Error', `Error al cargar ciclo: ${error.message}`, 'error');
     }
 }
 
@@ -521,6 +593,18 @@ async function checkSystemStatus() {
             state.dataLoaded.timeslots = true;
             loadData('timeslots');
         }
+        
+        // Update current cycle if set
+        if (status.current_cycle) {
+            state.currentCycle = state.availableCycles.find(c => c.id === status.current_cycle);
+            if (state.currentCycle) {
+                document.getElementById('cycle-select').value = status.current_cycle;
+                document.getElementById('cycle-info').style.display = 'flex';
+                document.getElementById('cycle-months').textContent = state.currentCycle.months;
+                const cuatrimestreText = state.currentCycle.cuatrimestres.map(s => `${s}°`).join(', ');
+                document.getElementById('cycle-semesters').textContent = `Cuatrimestres: ${cuatrimestreText}`;
+            }
+        }
 
         setTimeout(updateUI, 500);
     } catch (error) {
@@ -529,12 +613,21 @@ async function checkSystemStatus() {
 }
 
 function updateUI() {
+    // Update cycle name
+    const cycleName = document.getElementById('cycle-name');
+    if (state.currentCycle) {
+        cycleName.textContent = state.currentCycle.name;
+        cycleName.style.fontSize = '0.9rem';
+    } else {
+        cycleName.textContent = 'No seleccionado';
+        cycleName.style.fontSize = '';
+    }
+    
     document.getElementById('course-count').textContent = state.courses.length;
     document.getElementById('professor-count').textContent = state.professors.length;
     document.getElementById('timeslot-count').textContent = state.timeslots.length;
 
-    // Update upload cards status
-    updateCardState('card-courses', state.dataLoaded.courses);
+    // Update upload cards status (no course card anymore)
     updateCardState('card-professors', state.dataLoaded.professors);
     updateCardState('card-timeslots', state.dataLoaded.timeslots);
 }
@@ -572,3 +665,4 @@ window.toggleAvailability = toggleAvailability;
 window.loadProfessorAvailability = loadProfessorAvailability;
 window.filterProfessors = filterProfessors;
 window.filterProfessorsBySubject = filterProfessorsBySubject;
+window.loadCycleData = loadCycleData;
