@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Vis.js para visualización de grafos -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"></script>
 </head>
 
 <body>
@@ -88,7 +92,7 @@
                         <p class="section-desc">Elige el periodo cuatrimestral para generar el horario</p>
                     </div>
                 </div>
-                
+
                 <div class="cycle-selector-wrapper">
                     <div class="cycle-select-container">
                         <label for="cycle-select">
@@ -101,7 +105,7 @@
                             <i class="fas fa-chevron-down select-arrow"></i>
                         </div>
                     </div>
-                    
+
                     <div id="cycle-info" class="cycle-info-card" style="display: none;">
                         <div class="cycle-info-header">
                             <i class="fas fa-info-circle"></i>
@@ -258,6 +262,19 @@
                     <i class="fas fa-calendar-times"></i>
                     <p>No hay horario generado aún. Ve al Dashboard para generar uno.</p>
                 </div>
+
+                <!-- Controles de visualización -->
+                <div class="visualization-controls" id="viz-controls" style="display: none;">
+                    <button onclick="mostrarVisualizacion()" class="btn-secondary">
+                        <i class="fas fa-project-diagram"></i>
+                        Ver Estructura del Algoritmo
+                    </button>
+                    <button onclick="exportarHorario()" class="btn-secondary">
+                        <i class="fas fa-download"></i>
+                        Exportar Horario
+                    </button>
+                </div>
+
                 <table class="schedule-table" id="schedule-table" style="display: none;">
                     <thead>
                         <tr>
@@ -300,6 +317,77 @@
         </div>
     </div>
 
+    <!-- Visualization Modal -->
+    <div id="visualization-modal" class="modal">
+        <div class="modal-content visualization-modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-project-diagram"></i> Visualización del Algoritmo de Scheduling</h3>
+                <span class="close-modal" onclick="cerrarVisualizacion()">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <!-- Tabs para cambiar entre vistas -->
+                <div class="viz-tabs">
+                    <button class="viz-tab active" onclick="cambiarVistaViz('conflictos')" data-viz="conflictos">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Grafo de Conflictos
+                    </button>
+                    <button class="viz-tab" onclick="cambiarVistaViz('restricciones')" data-viz="restricciones">
+                        <i class="fas fa-network-wired"></i>
+                        Red de Restricciones
+                    </button>
+                    <button class="viz-tab" onclick="cambiarVistaViz('backtracking')" data-viz="backtracking">
+                        <i class="fas fa-sitemap"></i>
+                        Árbol de Backtracking
+                    </button>
+                </div>
+
+                <!-- Contenedor del grafo -->
+                <div id="network-container" class="network-container"></div>
+
+                <!-- Información y controles -->
+                <div class="viz-info-panel">
+                    <!-- Leyenda -->
+                    <div class="viz-legend">
+                        <h4><i class="fas fa-info-circle"></i> Leyenda</h4>
+                        <div id="legend-content"></div>
+                    </div>
+
+                    <!-- Estadísticas -->
+                    <div class="viz-stats">
+                        <h4><i class="fas fa-chart-bar"></i> Estadísticas</h4>
+                        <div class="stats-grid-viz">
+                            <div class="stat-item-viz">
+                                <span class="stat-label">Total Cursos</span>
+                                <span class="stat-value" id="stat-cursos">0</span>
+                            </div>
+                            <div class="stat-item-viz">
+                                <span class="stat-label">Total Profesores</span>
+                                <span class="stat-value" id="stat-profesores">0</span>
+                            </div>
+                            <div class="stat-item-viz">
+                                <span class="stat-label">Conflictos Detectados</span>
+                                <span class="stat-value" id="stat-conflictos">0</span>
+                            </div>
+                            <div class="stat-item-viz">
+                                <span class="stat-label">Asignaciones Exitosas</span>
+                                <span class="stat-value" id="stat-asignaciones">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="cerrarVisualizacion()">Cerrar</button>
+                <button class="btn-primary" onclick="exportarVisualizacion()">
+                    <i class="fas fa-camera"></i> Capturar Imagen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="visualization.js"></script>
     <script src="app.js"></script>
 </body>
 

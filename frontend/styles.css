@@ -824,3 +824,572 @@ body {
         grid-template-columns: 1fr;
     }
 }
+/* ===== Visualización del Algoritmo ===== */
+
+/* Controles de visualización */
+.visualization-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+/* Modal de visualización */
+.visualization-modal-content {
+    max-width: 1400px;
+    width: 95vw;
+    height: 90vh;
+    max-height: 900px;
+}
+
+.visualization-modal-content .modal-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: hidden;
+}
+
+/* Tabs de visualización */
+.viz-tabs {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 0;
+}
+
+.viz-tab {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6b7280;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.viz-tab:hover {
+    color: var(--primary-color);
+    background: #f3f4f6;
+}
+
+.viz-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: #f9fafb;
+}
+
+.viz-tab i {
+    font-size: 1.1rem;
+}
+
+/* Contenedor del grafo */
+.network-container {
+    width: 100%;
+    height: 500px;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+/* Panel de información */
+.viz-info-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Leyenda */
+.viz-legend {
+    padding: 1rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.viz-legend h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.viz-legend h4 i {
+    color: var(--primary-color);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-gray);
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-node {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.legend-node.circle {
+    border-radius: 50%;
+}
+
+.legend-node.diamond {
+    transform: rotate(45deg);
+    border-radius: 3px;
+}
+
+.legend-node.box {
+    border-radius: 4px;
+}
+
+.legend-line {
+    width: 30px;
+    height: 3px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+/* Estadísticas de visualización */
+.viz-stats {
+    padding: 1rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.viz-stats h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.viz-stats h4 i {
+    color: var(--primary-color);
+}
+
+.stats-grid-viz {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.stat-item-viz {
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border-radius: 0.5rem;
+    text-align: center;
+    border: 1px solid #e0e7ff;
+}
+
+.stat-item-viz .stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-item-viz .stat-value {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .visualization-modal-content {
+        width: 98vw;
+        height: 95vh;
+    }
+
+    .viz-info-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .viz-tabs {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .viz-tab {
+        border-bottom: 1px solid #e5e7eb;
+        border-left: 3px solid transparent;
+    }
+
+    .viz-tab.active {
+        border-bottom-color: #e5e7eb;
+        border-left-color: var(--primary-color);
+    }
+
+    .network-container {
+        height: 400px;
+    }
+
+    .stats-grid-viz {
+        grid-template-columns: 1fr;
+    }
+
+    .visualization-controls {
+        flex-direction: column;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeInViz {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.visualization-modal-content {
+    animation: fadeInViz 0.3s ease;
+}
+
+/* Tooltips de Vis.js (personalización) */
+.vis-tooltip {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 0.375rem !important;
+    padding: 0.5rem 0.75rem !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.875rem !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Botones de navegación de Vis.js */
+.vis-navigation {
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.vis-navigation:hover {
+    opacity: 1;
+}
+
+
+/* ===== Visualizaci�n del Algoritmo ===== */
+/* ===== Visualización del Algoritmo ===== */
+
+/* Controles de visualización */
+.visualization-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+/* Modal de visualización */
+.visualization-modal-content {
+    max-width: 1400px;
+    width: 95vw;
+    height: 90vh;
+    max-height: 900px;
+}
+
+.visualization-modal-content .modal-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: hidden;
+}
+
+/* Tabs de visualización */
+.viz-tabs {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 0;
+}
+
+.viz-tab {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6b7280;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.viz-tab:hover {
+    color: var(--primary-color);
+    background: #f3f4f6;
+}
+
+.viz-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: #f9fafb;
+}
+
+.viz-tab i {
+    font-size: 1.1rem;
+}
+
+/* Contenedor del grafo */
+.network-container {
+    width: 100%;
+    height: 500px;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+/* Panel de información */
+.viz-info-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Leyenda */
+.viz-legend {
+    padding: 1rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.viz-legend h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.viz-legend h4 i {
+    color: var(--primary-color);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-gray);
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-node {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.legend-node.circle {
+    border-radius: 50%;
+}
+
+.legend-node.diamond {
+    transform: rotate(45deg);
+    border-radius: 3px;
+}
+
+.legend-node.box {
+    border-radius: 4px;
+}
+
+.legend-line {
+    width: 30px;
+    height: 3px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+/* Estadísticas de visualización */
+.viz-stats {
+    padding: 1rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.viz-stats h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.viz-stats h4 i {
+    color: var(--primary-color);
+}
+
+.stats-grid-viz {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.stat-item-viz {
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border-radius: 0.5rem;
+    text-align: center;
+    border: 1px solid #e0e7ff;
+}
+
+.stat-item-viz .stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-item-viz .stat-value {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .visualization-modal-content {
+        width: 98vw;
+        height: 95vh;
+    }
+
+    .viz-info-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .viz-tabs {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .viz-tab {
+        border-bottom: 1px solid #e5e7eb;
+        border-left: 3px solid transparent;
+    }
+
+    .viz-tab.active {
+        border-bottom-color: #e5e7eb;
+        border-left-color: var(--primary-color);
+    }
+
+    .network-container {
+        height: 400px;
+    }
+
+    .stats-grid-viz {
+        grid-template-columns: 1fr;
+    }
+
+    .visualization-controls {
+        flex-direction: column;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeInViz {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.visualization-modal-content {
+    animation: fadeInViz 0.3s ease;
+}
+
+/* Tooltips de Vis.js (personalización) */
+.vis-tooltip {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 0.375rem !important;
+    padding: 0.5rem 0.75rem !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.875rem !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Botones de navegación de Vis.js */
+.vis-navigation {
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.vis-navigation:hover {
+    opacity: 1;
+}

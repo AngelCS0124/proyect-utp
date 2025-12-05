@@ -557,15 +557,18 @@ function renderScheduleView() {
     const emptyState = document.getElementById('no-schedule-msg');
     const table = document.getElementById('schedule-table');
     const tbody = document.getElementById('schedule-body');
+    const vizControls = document.getElementById('viz-controls');
 
     if (!state.schedule) {
         emptyState.style.display = 'block';
         table.style.display = 'none';
+        if (vizControls) vizControls.style.display = 'none';
         return;
     }
 
     emptyState.style.display = 'none';
     table.style.display = 'table';
+    if (vizControls) vizControls.style.display = 'flex';
     tbody.innerHTML = '';
 
     state.schedule.assignments.forEach(assignment => {

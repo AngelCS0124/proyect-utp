@@ -285,6 +285,109 @@ def generate_schedule():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/visualization', methods=['GET'])
+def get_visualization_data():
+    """Get visualization data for scheduling algorithm structures"""
+    from services.visualizacion import generar_datos_visualizacion
+    
+    if not data_store['schedule']:
+        return jsonify({'error': 'No schedule generated yet'}), 404
+    
+    try:
+        datos_viz = generar_datos_visualizacion(
+            data_store['courses'],
+            data_store['professors'],
+            data_store['timeslots'],
+            data_store['schedule']['assignments']
+        )
+        
+        return jsonify(datos_viz)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+def generate_schedule():
+    """Generate schedule using C++ backtracking algorithm"""
+    if not SCHEDULER_AVAILABLE:
+        return jsonify({'error': 'Scheduler not available. Please build the C++ extension.'}), 503
+    
+    # Check if a cycle is selected
+    if not data_store['current_cycle']:
+        return jsonify({'error': 'Please select a cycle first'}), 400
+    
+    # Validate data first
+    validation = Validator.validate_all_data(
+        data_store['courses'],
+        data_store['professors'],
+        data_store['timeslots']
+    )
+    
+    if not validation['valid']:
+        return jsonify({
+            'error': 'Data validation failed',
+            'details': validation['errors']
+        }), 400
+    
+    try:
+        # Create scheduler instance
+        scheduler = PyScheduler()
+        
+        # Load data into C++ scheduler
+        for course in data_store['courses']:
+            scheduler.load_course(course.id, course.name, course.enrollment, course.prerequisites)
+        
+        for professor in data_store['professors']:
+            scheduler.load_professor(professor.id, professor.name, professor.available_timeslots)
+        
+        for timeslot in data_store['timeslots']:
+            scheduler.load_timeslot(timeslot.id, timeslot.day, 
+                                   timeslot.start_hour, timeslot.start_minute,
+                                   timeslot.end_hour, timeslot.end_minute)
+        
+        # Assign professors to courses
+        for course in data_store['courses']:
+            if course.professor_id is not None:
+                scheduler.assign_professor_to_course(course.id, course.professor_id)
+        
+        # Generate schedule
+        result = scheduler.generate_schedule()
+        
+        if result['success']:
+            # Enrich assignments with names
+            enriched_assignments = []
+            for assignment in result['assignments']:
+                course = next((c for c in data_store['courses'] if c.id == assignment['course_id']), None)
+                professor = next((p for p in data_store['professors'] if p.id == assignment['professor_id']), None)
+                timeslot = next((t for t in data_store['timeslots'] if t.id == assignment['timeslot_id']), None)
+                
+                enriched_assignments.append({
+                    **assignment,
+                    'course_name': course.name if course else 'Unknown',
+                    'course_code': course.code if course else '',
+                    'professor_name': professor.name if professor else 'Unknown',
+                    'timeslot_display': timeslot.to_dict()['display'] if timeslot else 'Unknown'
+                })
+            
+            data_store['schedule'] = {
+                'assignments': enriched_assignments,
+                'metadata': {
+                    'backtrack_count': result['backtrack_count'],
+                    'computation_time': result['computation_time']
+                }
+            }
+            
+            return jsonify({
+                'success': True,
+                'schedule': data_store['schedule']
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': result['error_message']
+            }), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/schedule', methods=['GET'])
 def get_schedule():
     """Get the generated schedule"""
