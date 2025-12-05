@@ -1,0 +1,209 @@
+/* Cycle Selection Section - Improved */
+.cycle-section {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cycle-section .section-header {
+    margin-bottom: 2rem;
+}
+
+.cycle-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+}
+
+.cycle-section h2 i {
+    color: var(--primary-color);
+}
+
+.section-desc {
+    color: var(--text-gray);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.cycle-selector-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Cycle Select Container */
+.cycle-select-container {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 2px solid #e0e7ff;
+}
+
+.cycle-select-container label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cycle-select-container label i {
+    color: var(--primary-color);
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    width: 100%;
+    padding: 0.875rem 2.5rem 0.875rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+    outline: none;
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+    appearance: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.select-wrapper select:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.select-wrapper select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+}
+
+.select-arrow {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    pointer-events: none;
+    font-size: 0.875rem;
+}
+
+/* Cycle Info Card */
+.cycle-info-card {
+    background: white;
+    border-radius: 0.75rem;
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cycle-info-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #6d28d9 100%);
+    color: white;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.cycle-info-header i {
+    font-size: 1.1rem;
+}
+
+.cycle-info-body {
+    padding: 1.25rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-gray);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.info-label i {
+    color: var(--primary-color);
+    width: 20px;
+    text-align: center;
+}
+
+.info-value {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+/* Semester Badges */
+.semester-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.semester-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    padding: 0.375rem 0.75rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #6d28d9 100%);
+    color: white;
+    border-radius: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(124, 58, 237, 0.2);
+    transition: all 0.2s ease;
+}
+
+.semester-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(124, 58, 237, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .cycle-selector-wrapper {
+        grid-template-columns: 1fr;
+    }
+}

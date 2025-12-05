@@ -82,23 +82,48 @@
 
             <!-- Cycle Selection -->
             <section class="cycle-section">
-                <h2>Seleccionar Ciclo Académico</h2>
-                <p class="section-desc">Elige el periodo cuatrimestral para generar el horario</p>
-                <div class="cycle-selector-container">
-                    <div class="form-group">
-                        <label for="cycle-select">Ciclo Cuatrimestral</label>
-                        <select id="cycle-select" onchange="loadCycleData()">
-                            <option value="">Seleccionar ciclo...</option>
-                        </select>
+                <div class="section-header">
+                    <div>
+                        <h2><i class="fas fa-calendar-alt"></i> Seleccionar Ciclo Académico</h2>
+                        <p class="section-desc">Elige el periodo cuatrimestral para generar el horario</p>
                     </div>
-                    <div id="cycle-info" class="cycle-info" style="display: none;">
-                        <div class="info-item">
-                            <i class="fas fa-calendar"></i>
-                            <span id="cycle-months"></span>
+                </div>
+                
+                <div class="cycle-selector-wrapper">
+                    <div class="cycle-select-container">
+                        <label for="cycle-select">
+                            <i class="fas fa-graduation-cap"></i> Ciclo Cuatrimestral
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="cycle-select" onchange="loadCycleData()">
+                                <option value="">-- Seleccionar ciclo académico --</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-arrow"></i>
                         </div>
-                        <div class="info-item">
-                            <i class="fas fa-graduation-cap"></i>
-                            <span id="cycle-semesters"></span>
+                    </div>
+                    
+                    <div id="cycle-info" class="cycle-info-card" style="display: none;">
+                        <div class="cycle-info-header">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Información del Ciclo</span>
+                        </div>
+                        <div class="cycle-info-body">
+                            <div class="info-row">
+                                <div class="info-label">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Periodo</span>
+                                </div>
+                                <div class="info-value" id="cycle-months">-</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">
+                                    <i class="fas fa-book-open"></i>
+                                    <span>Cuatrimestres</span>
+                                </div>
+                                <div class="info-value">
+                                    <div id="cycle-semesters-badges" class="semester-badges"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

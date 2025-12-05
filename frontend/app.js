@@ -149,10 +149,18 @@ async function loadCycleData() {
             state.dataLoaded.courses = true;
             
             // Update cycle info display
-            document.getElementById('cycle-info').style.display = 'flex';
+            document.getElementById('cycle-info').style.display = 'block';
             document.getElementById('cycle-months').textContent = state.currentCycle.months;
-            const cuatrimestreText = state.currentCycle.cuatrimestres.map(s => `${s}°`).join(', ');
-            document.getElementById('cycle-semesters').textContent = `Cuatrimestres: ${cuatrimestreText}`;
+            
+            // Render semester badges
+            const badgesContainer = document.getElementById('cycle-semesters-badges');
+            badgesContainer.innerHTML = '';
+            state.currentCycle.cuatrimestres.forEach(sem => {
+                const badge = document.createElement('span');
+                badge.className = 'semester-badge';
+                badge.textContent = `${sem}°`;
+                badgesContainer.appendChild(badge);
+            });
             
             showNotification('¡Éxito!', `Cargados ${result.count} cursos`, 'success');
             updateUI();
@@ -599,10 +607,18 @@ async function checkSystemStatus() {
             state.currentCycle = state.availableCycles.find(c => c.id === status.current_cycle);
             if (state.currentCycle) {
                 document.getElementById('cycle-select').value = status.current_cycle;
-                document.getElementById('cycle-info').style.display = 'flex';
+                document.getElementById('cycle-info').style.display = 'block';
                 document.getElementById('cycle-months').textContent = state.currentCycle.months;
-                const cuatrimestreText = state.currentCycle.cuatrimestres.map(s => `${s}°`).join(', ');
-                document.getElementById('cycle-semesters').textContent = `Cuatrimestres: ${cuatrimestreText}`;
+                
+                // Render semester badges
+                const badgesContainer = document.getElementById('cycle-semesters-badges');
+                badgesContainer.innerHTML = '';
+                state.currentCycle.cuatrimestres.forEach(sem => {
+                    const badge = document.createElement('span');
+                    badge.className = 'semester-badge';
+                    badge.textContent = `${sem}°`;
+                    badgesContainer.appendChild(badge);
+                });
             }
         }
 
