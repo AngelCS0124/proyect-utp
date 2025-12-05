@@ -1,0 +1,4 @@
+-I/usr/include/python3.12
+-I/home/gina/Documentos/EstDatos/proyect-utp/cpp_core
+-std=c++17
+-xc++

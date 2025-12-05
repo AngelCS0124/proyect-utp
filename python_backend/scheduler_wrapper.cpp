@@ -4,21 +4,22 @@
 {
     "distutils": {
         "depends": [
-            "C:\\Users\\as_co\\C\\proyect-utp\\cpp_core\\scheduler_core.hpp"
+            "/home/gina/Documentos/EstDatos/proyect-utp/cpp_core/scheduler_core.hpp"
         ],
         "extra_compile_args": [
-            "/std:c++17"
+            "-std=c++17",
+            "-O3"
         ],
         "include_dirs": [
-            "C:\\Users\\as_co\\C\\proyect-utp\\python_backend\\..\\cpp_core"
+            "/home/gina/Documentos/EstDatos/proyect-utp/python_backend/../cpp_core"
         ],
         "language": "c++",
         "name": "scheduler_wrapper",
         "sources": [
             "scheduler_wrapper.pyx",
-            "C:\\Users\\as_co\\C\\proyect-utp\\python_backend\\..\\cpp_core\\graph.cpp",
-            "C:\\Users\\as_co\\C\\proyect-utp\\python_backend\\..\\cpp_core\\constraints.cpp",
-            "C:\\Users\\as_co\\C\\proyect-utp\\python_backend\\..\\cpp_core\\scheduler_core.cpp"
+            "/home/gina/Documentos/EstDatos/proyect-utp/python_backend/../cpp_core/graph.cpp",
+            "/home/gina/Documentos/EstDatos/proyect-utp/python_backend/../cpp_core/constraints.cpp",
+            "/home/gina/Documentos/EstDatos/proyect-utp/python_backend/../cpp_core/scheduler_core.cpp"
         ]
     },
     "module_name": "scheduler_wrapper"
