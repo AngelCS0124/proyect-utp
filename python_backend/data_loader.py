@@ -29,7 +29,8 @@ class DataLoader:
                     code=row.get('code', ''),
                     credits=int(row.get('credits', 3)),
                     enrollment=int(row['enrollment']),
-                    prerequisites=prerequisites
+                    prerequisites=prerequisites,
+                    professor_id=int(row['professor_id']) if row.get('professor_id') else None
                 )
                 courses.append(course)
         return courses

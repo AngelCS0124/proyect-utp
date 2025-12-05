@@ -78,19 +78,25 @@
                 <h2>Cargar Datos</h2>
                 <p class="section-desc">Sube archivos CSV, JSON o Excel</p>
                 <div class="upload-grid">
-                    <div class="upload-card" onclick="document.getElementById('course-upload').click()">
+                    <div class="upload-card" id="card-courses"
+                        onclick="document.getElementById('course-upload').click()">
+                        <div class="upload-status-icon"><i class="fas fa-check-circle"></i></div>
                         <i class="fas fa-file-alt upload-icon"></i>
                         <h3>Cursos</h3>
                         <p>CSV, JSON, Excel</p>
                         <input type="file" id="course-upload" hidden onchange="uploadFile(this, 'courses')">
                     </div>
-                    <div class="upload-card" onclick="document.getElementById('professor-upload').click()">
+                    <div class="upload-card" id="card-professors"
+                        onclick="document.getElementById('professor-upload').click()">
+                        <div class="upload-status-icon"><i class="fas fa-check-circle"></i></div>
                         <i class="fas fa-file-alt upload-icon"></i>
                         <h3>Profesores</h3>
                         <p>CSV, JSON, Excel</p>
                         <input type="file" id="professor-upload" hidden onchange="uploadFile(this, 'professors')">
                     </div>
-                    <div class="upload-card" onclick="document.getElementById('timeslot-upload').click()">
+                    <div class="upload-card" id="card-timeslots"
+                        onclick="document.getElementById('timeslot-upload').click()">
+                        <div class="upload-status-icon"><i class="fas fa-check-circle"></i></div>
                         <i class="fas fa-file-alt upload-icon"></i>
                         <h3>Horarios</h3>
                         <p>CSV, JSON, Excel</p>
@@ -120,7 +126,7 @@
                     <i class="fas fa-search"></i>
                     <input type="text" id="search-professor" placeholder="Buscar Maestro" onkeyup="filterProfessors()">
                 </div>
-                <button class="btn-primary" onclick="showAddProfessorModal()">
+                <button class="btn-primary" onclick="openProfessorModal()">
                     <i class="fas fa-plus"></i> Añadir Maestro
                 </button>
             </div>
@@ -132,8 +138,6 @@
                             <th>ID</th>
                             <th>Maestro</th>
                             <th>Correo</th>
-                            <th>Carga</th>
-                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -146,39 +150,37 @@
 
         <!-- VIEW: DISPONIBILIDAD -->
         <div id="view-disponibilidad" class="view-section" style="display: none;">
-            <div class="availability-layout">
-                <!-- Left: Professor Selection -->
-                <div class="card selection-card">
-                    <h3>Maestro</h3>
-                    <div class="form-group">
-                        <label>Nombre</label>
-                        <select id="availability-professor-select" onchange="loadProfessorAvailability()">
-                            <option value="">Seleccionar Maestro</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Departamento</label>
-                        <input type="text" value="General" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label>Correo</label>
-                        <input type="text" id="availability-email" disabled>
-                    </div>
-
-                    <div class="actions">
-                        <button class="btn-secondary" onclick="loadProfessorAvailability()">
-                            <i class="fas fa-sync"></i> Recargar
-                        </button>
-                        <button class="btn-primary" onclick="saveAvailability()">
-                            <i class="fas fa-save"></i> Guardar Datos
-                        </button>
+            <div class="availability-layout-vertical">
+                <!-- Top: Controls -->
+                <div class="card controls-card">
+                    <div class="controls-row">
+                        <div class="form-group">
+                            <label>Maestro</label>
+                            <select id="availability-professor-select" onchange="loadProfessorAvailability()">
+                                <option value="">Seleccionar Maestro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Filtrar por Materia</label>
+                            <input type="text" id="availability-filter-subject" placeholder="Buscar materia..."
+                                onkeyup="filterProfessorsBySubject()">
+                        </div>
+                        <div class="actions">
+                            <button class="btn-primary" onclick="saveAvailability()">
+                                <i class="fas fa-save"></i> Guardar Datos
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right: Calendar Grid -->
-                <div class="card calendar-card">
+                <!-- Bottom: Calendar Grid -->
+                <div class="card calendar-card full-width">
                     <h3>Disponibilidad Semanal</h3>
                     <p class="subtitle">Los días en las columnas, los intervalos de tiempo en las filas.</p>
+
+                    <div id="calendar-overlay" class="calendar-overlay">
+                        <div class="overlay-msg">Selecciona un maestro para editar su disponibilidad</div>
+                    </div>
 
                     <div class="availability-grid-container">
                         <table class="availability-table">
@@ -223,8 +225,32 @@
                 </table>
             </div>
         </div>
-
     </main>
+
+    <!-- Professor Modal -->
+    <div id="professor-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Añadir Maestro</h3>
+                <span class="close-modal" onclick="closeProfessorModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="prof-id">
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="prof-name" placeholder="Ej. Dr. Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="prof-email" placeholder="juan@university.edu">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeProfessorModal()">Cancelar</button>
+                <button class="btn-primary" onclick="saveProfessor()">Guardar</button>
+            </div>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

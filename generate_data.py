@@ -1,41 +1,19 @@
 import csv
 import os
-import random
 
 # Ensure sample_data directory exists
 os.makedirs('sample_data', exist_ok=True)
 
-# 1. Generate Courses
-courses = [
-    {"id": 1, "name": "Estructura de Datos", "code": "ITI-301", "credits": 5, "enrollment": 30, "prerequisites": ""},
-    {"id": 2, "name": "Inglés I", "code": "ING-101", "credits": 3, "enrollment": 25, "prerequisites": ""},
-    {"id": 3, "name": "Programación Web", "code": "ITI-302", "credits": 5, "enrollment": 28, "prerequisites": "1"},
-    {"id": 4, "name": "Base de Datos", "code": "ITI-303", "credits": 5, "enrollment": 30, "prerequisites": ""},
-    {"id": 5, "name": "Redes de Computadoras", "code": "ITI-401", "credits": 5, "enrollment": 25, "prerequisites": ""},
-    {"id": 6, "name": "Sistemas Operativos", "code": "ITI-402", "credits": 5, "enrollment": 28, "prerequisites": ""},
-    {"id": 7, "name": "Ingeniería de Software", "code": "ITI-501", "credits": 5, "enrollment": 30, "prerequisites": "3,4"},
-    {"id": 8, "name": "Matemáticas Discretas", "code": "MAT-101", "credits": 4, "enrollment": 35, "prerequisites": ""},
-]
+# 1. Generate Professors (5 Professors)
+# Full availability for everyone to ensure solvability
+full_availability = ",".join([str(i) for i in range(1, 36)])
 
-with open('sample_data/courses.csv', 'w', newline='', encoding='utf-8') as f:
-    writer = csv.DictWriter(f, fieldnames=["id", "name", "code", "credits", "enrollment", "prerequisites"])
-    writer.writeheader()
-    writer.writerows(courses)
-
-print("Generated sample_data/courses.csv")
-
-# 2. Generate Professors
-# Based on screenshots/inferred
 professors = [
-    {"id": 1, "name": "Dr. Said", "email": "said@university.edu", "available_timeslots": "1,2,3,4,5,6,7,8,9,10"},
-    {"id": 2, "name": "Dr. Alicia Romero", "email": "a.romero@university.edu", "available_timeslots": "1,2,3,4,5,11,12,13,14,15"},
-    {"id": 3, "name": "Prof. Marco Silva", "email": "m.silva@university.edu", "available_timeslots": "6,7,8,9,10,16,17,18,19,20"},
-    {"id": 4, "name": "Dr. Meera Patel", "email": "m.patel@university.edu", "available_timeslots": "1,3,5,7,9,11,13,15,17,19"},
-    {"id": 5, "name": "Mtro. Luis Roberto", "email": "l.roberto@university.edu", "available_timeslots": "2,4,6,8,10,12,14,16,18,20"},
-    {"id": 6, "name": "Mtra. Gloria", "email": "gloria@university.edu", "available_timeslots": "1,2,3,4,5,6,7,8,9,10"},
-    {"id": 7, "name": "Mtro. Mario", "email": "mario@university.edu", "available_timeslots": "11,12,13,14,15,16,17,18,19,20"},
-    {"id": 8, "name": "Mtra. Vanessa", "email": "vanessa@university.edu", "available_timeslots": "1,3,5,7,9,11,13,15,17,19"},
-    {"id": 9, "name": "Mtro. Nuño", "email": "nuno@university.edu", "available_timeslots": "2,4,6,8,10,12,14,16,18,20"},
+    {"id": 1, "name": "Dr. Said", "email": "said@university.edu", "available_timeslots": full_availability},
+    {"id": 2, "name": "Dr. Alicia Romero", "email": "a.romero@university.edu", "available_timeslots": full_availability},
+    {"id": 3, "name": "Prof. Marco Silva", "email": "m.silva@university.edu", "available_timeslots": full_availability},
+    {"id": 4, "name": "Dr. Meera Patel", "email": "m.patel@university.edu", "available_timeslots": full_availability},
+    {"id": 5, "name": "Mtro. Luis Roberto", "email": "l.roberto@university.edu", "available_timeslots": full_availability}
 ]
 
 with open('sample_data/professors.csv', 'w', newline='', encoding='utf-8') as f:
@@ -45,33 +23,39 @@ with open('sample_data/professors.csv', 'w', newline='', encoding='utf-8') as f:
 
 print("Generated sample_data/professors.csv")
 
+# 2. Generate Courses (5 Courses, 1 per Professor)
+# This 1-to-1 mapping guarantees no conflicts if availability is full
+courses = [
+    [1, "Matemáticas Discretas", "MAT101", 3, 30, "", 1], # Assigned to Dr. Said
+    [2, "Estructura de Datos", "CS102", 4, 25, "1", 2],   # Assigned to Dr. Alicia
+    [3, "Inglés I", "LANG101", 2, 20, "", 3],             # Assigned to Prof. Marco
+    [4, "Programación Web", "CS201", 3, 30, "2", 4],      # Assigned to Dr. Meera
+    [5, "Base de Datos", "CS202", 3, 28, "2", 5]          # Assigned to Mtro. Luis
+]
+
+with open('sample_data/courses.csv', 'w', newline='', encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerow(['id', 'name', 'code', 'credits', 'enrollment', 'prerequisites', 'professor_id'])
+    writer.writerows(courses)
+
+print("Generated sample_data/courses.csv")
+
 # 3. Generate TimeSlots
-# Standard slots: Mon-Fri, 7am-9pm, 2 hour blocks roughly
 days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 timeslots = []
 ts_id = 1
 for day in days:
-    # 7:00 - 9:00
-    timeslots.append({"id": ts_id, "day": day, "start_hour": 7, "start_minute": 0, "end_hour": 9, "end_minute": 0})
-    ts_id += 1
-    # 9:00 - 11:00
-    timeslots.append({"id": ts_id, "day": day, "start_hour": 9, "start_minute": 0, "end_hour": 11, "end_minute": 0})
-    ts_id += 1
-    # 11:00 - 13:00
-    timeslots.append({"id": ts_id, "day": day, "start_hour": 11, "start_minute": 0, "end_hour": 13, "end_minute": 0})
-    ts_id += 1
-    # 13:00 - 15:00
-    timeslots.append({"id": ts_id, "day": day, "start_hour": 13, "start_minute": 0, "end_hour": 15, "end_minute": 0})
-    ts_id += 1
-    # 15:00 - 17:00
-    timeslots.append({"id": ts_id, "day": day, "start_hour": 15, "start_minute": 0, "end_hour": 17, "end_minute": 0})
-    ts_id += 1
-    # 17:00 - 19:00
-    timeslots.append({"id": ts_id, "day": day, "start_hour": 17, "start_minute": 0, "end_hour": 19, "end_minute": 0})
-    ts_id += 1
-    # 19:00 - 21:00
-    timeslots.append({"id": ts_id, "day": day, "start_hour": 19, "start_minute": 0, "end_hour": 21, "end_minute": 0})
-    ts_id += 1
+    # 7 blocks per day
+    for hour in range(7, 21, 2): # 7, 9, 11, 13, 15, 17, 19
+        timeslots.append({
+            "id": ts_id, 
+            "day": day, 
+            "start_hour": hour, 
+            "start_minute": 0, 
+            "end_hour": hour + 2, 
+            "end_minute": 0
+        })
+        ts_id += 1
 
 with open('sample_data/timeslots.csv', 'w', newline='', encoding='utf-8') as f:
     writer = csv.DictWriter(f, fieldnames=["id", "day", "start_hour", "start_minute", "end_hour", "end_minute"])

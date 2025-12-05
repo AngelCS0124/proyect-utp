@@ -2,15 +2,17 @@
 Data models for the UTP Scheduling System
 """
 
+from typing import List
+
 class Course:
-    def __init__(self, id, name, code, credits, enrollment, prerequisites=None):
+    def __init__(self, id: int, name: str, code: str, credits: int, enrollment: int, prerequisites: List[int], professor_id: int = None):
         self.id = id
         self.name = name
         self.code = code
         self.credits = credits
         self.enrollment = enrollment
-        self.prerequisites = prerequisites or []
-        self.professor_id = None
+        self.prerequisites = prerequisites
+        self.professor_id = professor_id
     
     def to_dict(self):
         return {

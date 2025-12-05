@@ -115,10 +115,13 @@ class Validator:
         
         for course in courses:
             if course.professor_id is None:
+                print(f"DEBUG: Warning - Course {course.name} has no professor")
                 warnings.append(f"Course '{course.name}' has no professor assigned")
             elif course.professor_id not in professor_ids:
+                print(f"DEBUG: Error - Course {course.name} has invalid professor {course.professor_id}")
                 errors.append(f"Course '{course.name}' assigned to non-existent professor ID: {course.professor_id}")
         
+        print(f"DEBUG: Validation result - Errors: {len(errors)}, Warnings: {len(warnings)}")
         return {
             'valid': len(errors) == 0,
             'errors': errors,

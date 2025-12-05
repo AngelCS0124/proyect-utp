@@ -1,9 +1,6 @@
-id,name,code,credits,enrollment,prerequisites
-1,Estructura de Datos,ITI-301,5,30,
-2,Inglés I,ING-101,3,25,
-3,Programación Web,ITI-302,5,28,1
-4,Base de Datos,ITI-303,5,30,
-5,Redes de Computadoras,ITI-401,5,25,
-6,Sistemas Operativos,ITI-402,5,28,
-7,Ingeniería de Software,ITI-501,5,30,"3,4"
-8,Matemáticas Discretas,MAT-101,4,35,
+id,name,code,credits,enrollment,prerequisites,professor_id
+1,Matemáticas Discretas,MAT101,3,30,,1
+2,Estructura de Datos,CS102,4,25,1,2
+3,Inglés I,LANG101,2,20,,3
+4,Programación Web,CS201,3,30,2,4
+5,Base de Datos,CS202,3,28,2,5

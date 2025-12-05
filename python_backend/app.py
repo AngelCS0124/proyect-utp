@@ -264,6 +264,72 @@ def get_schedule():
     return jsonify(data_store['schedule'])
 
 
+@app.route('/api/professors', methods=['POST'])
+def add_professor():
+    """Add a new professor"""
+    data = request.json
+    if not data.get('name'):
+        return jsonify({'error': 'Name is required'}), 400
+    
+    # Generate ID
+    new_id = 1
+    if data_store['professors']:
+        new_id = max(p.id for p in data_store['professors']) + 1
+    
+    professor = Professor(
+        id=new_id,
+        name=data['name'],
+        email=data.get('email', ''),
+        available_timeslots=data.get('available_timeslots', [])
+    )
+    
+    data_store['professors'].append(professor)
+    return jsonify({'success': True, 'professor': professor.to_dict()})
+
+@app.route('/api/professors/<int:id>', methods=['PUT'])
+def update_professor(id):
+    """Update a professor"""
+    data = request.json
+    professor = next((p for p in data_store['professors'] if p.id == id), None)
+    
+    if not professor:
+        return jsonify({'error': 'Professor not found'}), 404
+    
+    if 'name' in data:
+        professor.name = data['name']
+    if 'email' in data:
+        professor.email = data['email']
+    if 'available_timeslots' in data:
+        professor.available_timeslots = data['available_timeslots']
+        
+    return jsonify({'success': True, 'professor': professor.to_dict()})
+
+@app.route('/api/professors/<int:id>', methods=['DELETE'])
+def delete_professor(id):
+    """Delete a professor"""
+    professor = next((p for p in data_store['professors'] if p.id == id), None)
+    
+    if not professor:
+        return jsonify({'error': 'Professor not found'}), 404
+    
+    data_store['professors'].remove(professor)
+    return jsonify({'success': True, 'message': 'Professor deleted'})
+
+@app.route('/api/professors/<int:id>/availability', methods=['POST'])
+def update_availability(id):
+    """Update professor availability"""
+    data = request.json
+    professor = next((p for p in data_store['professors'] if p.id == id), None)
+    
+    if not professor:
+        return jsonify({'error': 'Professor not found'}), 404
+        
+    if 'available_timeslots' not in data:
+        return jsonify({'error': 'available_timeslots required'}), 400
+        
+    professor.available_timeslots = data['available_timeslots']
+    return jsonify({'success': True, 'message': 'Availability updated'})
+
 @app.route('/api/reset', methods=['POST'])
 def reset_data():
     """Reset all data"""
