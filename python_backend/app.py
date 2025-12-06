@@ -47,13 +47,13 @@ def initialize_timeslots():
     from config.time_blocks import get_all_weekly_timeslots
     timeslot_dicts = get_all_weekly_timeslots(language='es')
     data_store['timeslots'] = [
-        TimeSlot(
+        BloqueTiempo(
             id=ts['id'],
-            day=ts['day'],
-            start_hour=ts['start_hour'],
-            start_minute=ts['start_minute'],
-            end_hour=ts['end_hour'],
-            end_minute=ts['end_minute']
+            dia=ts['day'],
+            hora_inicio=ts['start_hour'],
+            minuto_inicio=ts['start_minute'],
+            hora_fin=ts['end_hour'],
+            minuto_fin=ts['end_minute']
         ) for ts in timeslot_dicts
     ]
 
