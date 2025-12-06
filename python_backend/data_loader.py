@@ -6,7 +6,7 @@ import csv
 import json
 import pandas as pd
 from typing import List, Dict, Any
-from models import Course, Professor, TimeSlot
+from modelos import Curso, Profesor, BloqueTiempo
 
 
 class DataLoader:

@@ -9,11 +9,11 @@ import os
 import tempfile
 from werkzeug.utils import secure_filename
 
-# Import from modular structure
-from models import Course, Professor, TimeSlot, Schedule
+# Importar desde estructura modular
+from modelos import Curso, Profesor, BloqueTiempo, Horario
 from data import get_all_courses, get_courses_for_cycle, get_available_cycles
 from data_loader import DataLoader
-from validators import Validator
+from validadores import Validador
 
 # Try to import the C++ scheduler (will fail if not built yet)
 try:

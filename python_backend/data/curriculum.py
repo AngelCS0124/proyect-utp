@@ -1,15 +1,3 @@
-"""
-Predefined courses for Software Engineering curriculum at UTP
-Based on the official curriculum plan with 10 cuatrimestres
-"""
-
-from models import Course
-
-# Complete curriculum data extracted from the plan de estudios
-CURRICULUM = {
-    1: [  # Primer cuatrimestre
-        {"id": 101, "name": "INGLÉS I", "code": "ING1", "credits": 75, "enrollment": 30},
-        {"id": 102, "name": "DESARROLLO HUMANO Y VALORES", "code": "DHV", "credits": 60, "enrollment": 30},
         {"id": 103, "name": "FUNDAMENTOS MATEMÁTICOS", "code": "FM", "credits": 105, "enrollment": 30},
         {"id": 104, "name": "FUNDAMENTOS DE REDES", "code": "FR", "credits": 60, "enrollment": 30},
         {"id": 105, "name": "FÍSICA", "code": "FIS", "credits": 90, "enrollment": 30},

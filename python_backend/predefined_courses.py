@@ -3,7 +3,7 @@ Predefined courses for Software Engineering curriculum at UTP
 Based on the official curriculum plan with 10 semesters
 """
 
-from models import Course
+from modelos import Curso
 
 # Complete curriculum data extracted from the plan de estudios
 CURRICULUM = {
