@@ -429,7 +429,8 @@ function renderAvailabilityGrid(availableSlots) {
         { name: 'Bloque 5', start_hour: 11, start_minute: 10, end_hour: 12, end_minute: 4 },
         { name: 'Bloque 6', start_hour: 12, start_minute: 5, end_hour: 12, end_minute: 59 },
         { name: 'Bloque 7', start_hour: 13, start_minute: 0, end_hour: 13, end_minute: 54 },
-        { name: 'Bloque 8', start_hour: 13, start_minute: 55, end_hour: 14, end_minute: 49 }
+        { name: 'Bloque 8', start_hour: 14, start_minute: 0, end_hour: 14, end_minute: 54 },
+        { name: 'Bloque 9', start_hour: 14, start_minute: 55, end_hour: 15, end_minute: 49 }
     ];
 
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];

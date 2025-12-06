@@ -58,9 +58,17 @@
     {
         "id": 8,
         "day": "Lunes",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
+        "end_minute": 54
+    },
+    {
+        "id": 9,
+        "day": "Lunes",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
         "end_minute": 49
     },
     {
@@ -122,9 +130,17 @@
     {
         "id": 108,
         "day": "Martes",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
+        "end_minute": 54
+    },
+    {
+        "id": 109,
+        "day": "Martes",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
         "end_minute": 49
     },
     {
@@ -186,9 +202,17 @@
     {
         "id": 208,
         "day": "Miércoles",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
+        "end_minute": 54
+    },
+    {
+        "id": 209,
+        "day": "Miércoles",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
         "end_minute": 49
     },
     {
@@ -250,9 +274,17 @@
     {
         "id": 308,
         "day": "Jueves",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
+        "end_minute": 54
+    },
+    {
+        "id": 309,
+        "day": "Jueves",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
         "end_minute": 49
     },
     {
@@ -314,9 +346,17 @@
     {
         "id": 408,
         "day": "Viernes",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
+        "end_minute": 54
+    },
+    {
+        "id": 409,
+        "day": "Viernes",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
         "end_minute": 49
     }
 ]
