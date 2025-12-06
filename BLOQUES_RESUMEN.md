@@ -19,7 +19,8 @@ Bloque 4: 9:45 - 10:39  (54 min)
 Bloque 5: 11:10 - 12:04 (54 min)
 Bloque 6: 12:05 - 12:59 (54 min)
 Bloque 7: 13:00 - 13:54 (54 min)
-Bloque 8: 13:55 - 14:49 (54 min)
+Bloque 8: 14:00 - 14:54 (54 min)
+Bloque 9: 14:55 - 15:49 (54 min)
 ```
 
 ### Archivos Creados
