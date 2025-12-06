@@ -93,7 +93,7 @@ class Validador:
         Returns:
             dict: {'valid': bool, 'errors': list, 'warnings': list}
         """
-        from configuracion import VALID_DAYS, validate_timeslot_constraints
+        from configuracion import DIAS_VALIDOS, validar_restricciones_bloque
         
         errores = []
         advertencias = []
@@ -108,7 +108,7 @@ class Validador:
             errores.append("Se encontraron IDs de bloque de tiempo duplicados")
         
         # Obtener todos los días válidos (español e inglés)
-        dias_validos = VALID_DAYS['es'] + VALID_DAYS['en']
+        dias_validos = DIAS_VALIDOS['es'] + DIAS_VALIDOS['en']
         
         # Verificar cada bloque de tiempo
         for bloque in bloques:
@@ -131,7 +131,7 @@ class Validador:
                 errores.append(f"Bloque {bloque.id} tiene rango de tiempo inválido")
             
             # Validar contra restricciones de bloques de tiempo UTP
-            es_valido, mensaje_error = validate_timeslot_constraints(
+            es_valido, mensaje_error = validar_restricciones_bloque(
                 bloque.hora_inicio,
                 bloque.minuto_inicio,
                 bloque.hora_fin,

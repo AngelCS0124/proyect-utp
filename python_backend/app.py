@@ -44,8 +44,8 @@ data_store = {
 # Initialize predefined timeslots
 def initialize_timeslots():
     """Initialize valid predefined timeslots for the schedule"""
-    from config.time_blocks import get_all_weekly_timeslots
-    timeslot_dicts = get_all_weekly_timeslots(language='es')
+    from configuracion.bloques_tiempo import obtener_bloques_semanales
+    timeslot_dicts = obtener_bloques_semanales(language='es')
     data_store['timeslots'] = [
         BloqueTiempo(
             id=ts['id'],
