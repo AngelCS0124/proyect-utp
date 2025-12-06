@@ -85,6 +85,64 @@ async function handleFileUpload(file, dataType) {
     }
 }
 
+async function uploadExcel(input) {
+    if (input.files.length === 0) return;
+
+    const file = input.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        showNotification('Cargando...', 'Procesando Excel...', 'info');
+        const response = await fetch(`${API_BASE}/upload_excel`, { method: 'POST', body: formData });
+        const result = await response.json();
+
+        if (response.ok) {
+            state.dataLoaded.professors = true;
+            state.dataLoaded.courses = true; // Assuming courses are loaded too
+            showNotification('¡Éxito!', result.message, 'success');
+
+            // Reload data
+            await loadData('professors');
+            await loadData('courses');
+            updateUI();
+        } else {
+            showNotification('Error', result.error || 'Error al procesar Excel', 'error');
+        }
+    } catch (error) {
+        showNotification('Error', `Error al subir Excel: ${error.message}`, 'error');
+    }
+}
+
+async function loadDefaultData() {
+    // For default data, we can either call a specific endpoint or just re-upload the sample file if it exists on server
+    // Or we can create a new endpoint /api/load_defaults
+    // Since we don't have that endpoint, let's assume the user has the file locally or we provide a way to trigger it.
+    // But the user asked for "cargar valores por defecto".
+    // I'll implement a simple alert for now or try to fetch a default file if I had one served.
+    // Actually, I can implement an endpoint /api/load_defaults in backend that does exactly what extract_excel_data does with the sample file.
+
+    try {
+        showNotification('Cargando...', 'Cargando datos por defecto...', 'info');
+        // We'll use a new endpoint for this
+        const response = await fetch(`${API_BASE}/load_defaults`, { method: 'POST' });
+        const result = await response.json();
+
+        if (response.ok) {
+            state.dataLoaded.professors = true;
+            state.dataLoaded.courses = true;
+            showNotification('¡Éxito!', result.message, 'success');
+            await loadData('professors');
+            await loadData('courses');
+            updateUI();
+        } else {
+            showNotification('Error', result.error || 'Error al cargar datos por defecto', 'error');
+        }
+    } catch (error) {
+        showNotification('Error', `Error: ${error.message}`, 'error');
+    }
+}
+
 async function loadData(dataType) {
     try {
         const response = await fetch(`${API_BASE}/data/${dataType}`);
@@ -117,7 +175,7 @@ async function loadAvailableCycles() {
 function renderCycleSelector() {
     const select = document.getElementById('cycle-select');
     select.innerHTML = '<option value="">Seleccionar ciclo...</option>';
-    
+
     state.availableCycles.forEach(cycle => {
         const option = document.createElement('option');
         option.value = cycle.id;
@@ -129,7 +187,7 @@ function renderCycleSelector() {
 async function loadCycleData() {
     const select = document.getElementById('cycle-select');
     const cycleId = select.value;
-    
+
     if (!cycleId) {
         state.currentCycle = null;
         state.courses = [];
@@ -137,21 +195,21 @@ async function loadCycleData() {
         updateUI();
         return;
     }
-    
+
     try {
         showNotification('Cargando...', `Cargando cursos para ${select.options[select.selectedIndex].text}...`, 'info');
         const response = await fetch(`${API_BASE}/courses/${cycleId}`);
         const result = await response.json();
-        
+
         if (response.ok) {
             state.courses = result.data;
             state.currentCycle = state.availableCycles.find(c => c.id === cycleId);
             state.dataLoaded.courses = true;
-            
+
             // Update cycle info display
             document.getElementById('cycle-info').style.display = 'block';
             document.getElementById('cycle-months').textContent = state.currentCycle.months;
-            
+
             // Render semester badges
             const badgesContainer = document.getElementById('cycle-semesters-badges');
             badgesContainer.innerHTML = '';
@@ -161,7 +219,7 @@ async function loadCycleData() {
                 badge.textContent = `${sem}°`;
                 badgesContainer.appendChild(badge);
             });
-            
+
             showNotification('¡Éxito!', `Cargados ${result.count} cursos`, 'success');
             updateUI();
         } else {
@@ -558,20 +616,32 @@ function renderScheduleView() {
     const table = document.getElementById('schedule-table');
     const tbody = document.getElementById('schedule-body');
     const vizControls = document.getElementById('viz-controls');
+    const filterContainer = document.getElementById('schedule-filters');
 
     if (!state.schedule) {
         emptyState.style.display = 'block';
         table.style.display = 'none';
         if (vizControls) vizControls.style.display = 'none';
+        if (filterContainer) filterContainer.style.display = 'none';
         return;
     }
 
     emptyState.style.display = 'none';
     table.style.display = 'table';
     if (vizControls) vizControls.style.display = 'flex';
+    if (filterContainer) filterContainer.style.display = 'block';
+
     tbody.innerHTML = '';
 
+    const semesterFilter = document.getElementById('semester-filter') ? document.getElementById('semester-filter').value : 'all';
+
     state.schedule.assignments.forEach(assignment => {
+        // Filter logic
+        if (semesterFilter !== 'all') {
+            const sem = assignment.semester || 0;
+            if (sem.toString() !== semesterFilter) return;
+        }
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>
@@ -580,10 +650,14 @@ function renderScheduleView() {
             </td>
             <td>${assignment.professor_name}</td>
             <td><span class="badge badge-ready">${assignment.timeslot_display}</span></td>
-            <td>A1</td>
+            <td>${assignment.group_id || 'N/A'}</td>
         `;
         tbody.appendChild(tr);
     });
+}
+
+function filterScheduleBySemester() {
+    renderScheduleView();
 }
 
 // ===== System Status =====
@@ -604,7 +678,7 @@ async function checkSystemStatus() {
             state.dataLoaded.timeslots = true;
             loadData('timeslots');
         }
-        
+
         // Update current cycle if set
         if (status.current_cycle) {
             state.currentCycle = state.availableCycles.find(c => c.id === status.current_cycle);
@@ -612,7 +686,7 @@ async function checkSystemStatus() {
                 document.getElementById('cycle-select').value = status.current_cycle;
                 document.getElementById('cycle-info').style.display = 'block';
                 document.getElementById('cycle-months').textContent = state.currentCycle.months;
-                
+
                 // Render semester badges
                 const badgesContainer = document.getElementById('cycle-semesters-badges');
                 badgesContainer.innerHTML = '';
@@ -641,7 +715,7 @@ function updateUI() {
         cycleName.textContent = 'No seleccionado';
         cycleName.style.fontSize = '';
     }
-    
+
     document.getElementById('course-count').textContent = state.courses.length;
     document.getElementById('professor-count').textContent = state.professors.length;
     document.getElementById('timeslot-count').textContent = state.timeslots.length;
@@ -685,3 +759,5 @@ window.loadProfessorAvailability = loadProfessorAvailability;
 window.filterProfessors = filterProfessors;
 window.filterProfessorsBySubject = filterProfessorsBySubject;
 window.loadCycleData = loadCycleData;
+window.loadDefaultData = loadDefaultData;
+window.filterScheduleBySemester = filterScheduleBySemester;

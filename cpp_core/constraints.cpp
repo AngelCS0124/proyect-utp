@@ -57,6 +57,10 @@ void ConstraintChecker::addCoursePrerequisite(int courseId,
   coursePrerequisites[courseId].insert(prerequisiteId);
 }
 
+void ConstraintChecker::addCourseGroup(int courseId, int groupId) {
+  courseGroups[courseId] = groupId;
+}
+
 bool ConstraintChecker::isValidAssignment(
     const Assignment &assignment,
     const std::vector<Assignment> &existingAssignments) const {
@@ -66,9 +70,15 @@ bool ConstraintChecker::isValidAssignment(
     return false;
   }
 
-  // Check time conflicts
+  // Check time conflicts (Professor)
   if (checkTimeConflict(assignment.professorId, assignment.timeslotId,
                         existingAssignments)) {
+    return false;
+  }
+
+  // Check group conflicts (Students)
+  if (checkGroupConflict(assignment.courseId, assignment.timeslotId,
+                         existingAssignments)) {
     return false;
   }
 
@@ -91,6 +101,40 @@ bool ConstraintChecker::checkTimeConflict(
       if (existingIt != timeslots.end()) {
         if (newSlot.overlaps(existingIt->second)) {
           return true; // Conflict found
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+bool ConstraintChecker::checkGroupConflict(
+    int courseId, int timeslotId,
+    const std::vector<Assignment> &assignments) const {
+
+  auto groupIt = courseGroups.find(courseId);
+  if (groupIt == courseGroups.end()) {
+    return false; // No group assigned, assume no conflict
+  }
+  int groupId = groupIt->second;
+
+  auto it = timeslots.find(timeslotId);
+  if (it == timeslots.end()) {
+    return true; // Invalid timeslot
+  }
+  const TimeSlot &newSlot = it->second;
+
+  for (const auto &assignment : assignments) {
+    // Check if the other course belongs to the same group
+    auto otherGroupIt = courseGroups.find(assignment.courseId);
+    if (otherGroupIt != courseGroups.end() && otherGroupIt->second == groupId) {
+      // Same group, check for time overlap
+      auto existingIt = timeslots.find(assignment.timeslotId);
+      if (existingIt != timeslots.end()) {
+        if (newSlot.overlaps(existingIt->second)) {
+          return true; // Conflict found: Same group has two classes at same
+                       // time
         }
       }
     }
@@ -169,6 +213,23 @@ std::string ConstraintChecker::getViolationMessage(
   }
 
   return oss.str();
+}
+
+int ConstraintChecker::getNextConsecutiveSlot(int timeslotId) const {
+  auto it = timeslots.find(timeslotId);
+  if (it == timeslots.end()) {
+    return -1;
+  }
+  const TimeSlot &current = it->second;
+
+  for (const auto &pair : timeslots) {
+    const TimeSlot &next = pair.second;
+    if (next.day == current.day && next.startHour == current.endHour &&
+        next.startMinute == current.endMinute) {
+      return next.id;
+    }
+  }
+  return -1;
 }
 
 } // namespace scheduler

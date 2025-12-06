@@ -124,6 +124,80 @@ def upload_file():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/upload_excel', methods=['POST'])
+def upload_excel():
+    """Upload and process the specific Excel format (Matriz ITI)"""
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+    
+    file = request.files['file']
+    
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    
+    if not file.filename.endswith(('.xlsx', '.xls')):
+        return jsonify({'error': 'Invalid file format. Must be Excel'}), 400
+    
+    try:
+        # Save file temporarily
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        
+        # Extract data using the service
+        from services.excel_extractor import extract_data_from_excel_to_memory
+        
+        # We need to modify the extractor to return data instead of writing to files
+        # Or we can let it write to a temp dir and load from there
+        # For now, let's assume we modify the extractor or use a temp dir
+        
+        temp_output_dir = os.path.join(app.config['UPLOAD_FOLDER'], 'extracted_data')
+        success = extract_data_from_excel_to_memory(filepath, data_store)
+        
+        # Clean up
+        os.remove(filepath)
+        
+        if success:
+            return jsonify({
+                'success': True,
+                'message': f"Loaded {len(data_store['professors'])} professors and {len(data_store['courses'])} courses",
+                'counts': {
+                    'professors': len(data_store['professors']),
+                    'courses': len(data_store['courses'])
+                }
+            })
+        else:
+            return jsonify({'error': 'Failed to extract data from Excel'}), 500
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/load_defaults', methods=['POST'])
+def load_defaults():
+    """Load default data from sample Excel file"""
+    try:
+        sample_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'sample_data', 'Horarios EneAbr18(1).xlsx')
+        
+        if not os.path.exists(sample_file):
+            return jsonify({'error': 'Default file not found'}), 404
+            
+        from services.excel_extractor import extract_data_from_excel_to_memory
+        
+        success = extract_data_from_excel_to_memory(sample_file, data_store)
+        
+        if success:
+            return jsonify({
+                'success': True,
+                'message': f"Loaded default data: {len(data_store['professors'])} professors and {len(data_store['courses'])} courses"
+            })
+        else:
+            return jsonify({'error': 'Failed to extract default data'}), 500
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/cycles', methods=['GET'])
 def get_cycles():
     """Get available cycles"""
@@ -201,88 +275,7 @@ def validate_data():
 
 
 @app.route('/api/generate', methods=['POST'])
-def generate_schedule():
-    """Generate schedule using C++ backtracking algorithm"""
-    if not SCHEDULER_AVAILABLE:
-        return jsonify({'error': 'Scheduler not available. Please build the C++ extension.'}), 503
-    
-    # Check if a cycle is selected
-    if not data_store['current_cycle']:
-        return jsonify({'error': 'Please select a cycle first'}), 400
-    
-    # Validate data first
-    validation = Validator.validate_all_data(
-        data_store['courses'],
-        data_store['professors'],
-        data_store['timeslots']
-    )
-    
-    if not validation['valid']:
-        return jsonify({
-            'error': 'Data validation failed',
-            'details': validation['errors']
-        }), 400
-    
-    try:
-        # Create scheduler instance
-        scheduler = PyScheduler()
-        
-        # Load data into C++ scheduler
-        for course in data_store['courses']:
-            scheduler.load_course(course.id, course.name, course.enrollment, course.prerequisites)
-        
-        for professor in data_store['professors']:
-            scheduler.load_professor(professor.id, professor.name, professor.available_timeslots)
-        
-        for timeslot in data_store['timeslots']:
-            scheduler.load_timeslot(timeslot.id, timeslot.day, 
-                                   timeslot.start_hour, timeslot.start_minute,
-                                   timeslot.end_hour, timeslot.end_minute)
-        
-        # Assign professors to courses
-        for course in data_store['courses']:
-            if course.professor_id is not None:
-                scheduler.assign_professor_to_course(course.id, course.professor_id)
-        
-        # Generate schedule
-        result = scheduler.generate_schedule()
-        
-        if result['success']:
-            # Enrich assignments with names
-            enriched_assignments = []
-            for assignment in result['assignments']:
-                course = next((c for c in data_store['courses'] if c.id == assignment['course_id']), None)
-                professor = next((p for p in data_store['professors'] if p.id == assignment['professor_id']), None)
-                timeslot = next((t for t in data_store['timeslots'] if t.id == assignment['timeslot_id']), None)
-                
-                enriched_assignments.append({
-                    **assignment,
-                    'course_name': course.name if course else 'Unknown',
-                    'course_code': course.code if course else '',
-                    'professor_name': professor.name if professor else 'Unknown',
-                    'timeslot_display': timeslot.to_dict()['display'] if timeslot else 'Unknown'
-                })
-            
-            data_store['schedule'] = {
-                'assignments': enriched_assignments,
-                'metadata': {
-                    'backtrack_count': result['backtrack_count'],
-                    'computation_time': result['computation_time']
-                }
-            }
-            
-            return jsonify({
-                'success': True,
-                'schedule': data_store['schedule']
-            })
-        else:
-            return jsonify({
-                'success': False,
-                'error': result['error_message']
-            }), 400
-    
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+
 
 
 @app.route('/api/visualization', methods=['GET'])
@@ -332,7 +325,9 @@ def generate_schedule():
         
         # Load data into C++ scheduler
         for course in data_store['courses']:
-            scheduler.load_course(course.id, course.name, course.enrollment, course.prerequisites)
+            group_id = getattr(course, 'group_id', 0)
+            duration = getattr(course, 'credits', 1)
+            scheduler.load_course(course.id, course.name, course.enrollment, course.prerequisites, group_id, duration)
         
         for professor in data_store['professors']:
             scheduler.load_professor(professor.id, professor.name, professor.available_timeslots)
@@ -363,7 +358,9 @@ def generate_schedule():
                     'course_name': course.name if course else 'Unknown',
                     'course_code': course.code if course else '',
                     'professor_name': professor.name if professor else 'Unknown',
-                    'timeslot_display': timeslot.to_dict()['display'] if timeslot else 'Unknown'
+                    'timeslot_display': timeslot.to_dict()['display'] if timeslot else 'Unknown',
+                    'semester': getattr(course, 'semester', None),
+                    'group_id': getattr(course, 'group_id', 0)
                 })
             
             data_store['schedule'] = {

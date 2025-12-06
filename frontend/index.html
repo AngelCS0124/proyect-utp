@@ -136,7 +136,19 @@
             <!-- Upload -->
             <section class="upload-section">
                 <h2>Cargar Datos</h2>
-                <p class="section-desc">Sube archivos CSV, JSON o Excel</p>
+                <p class="section-desc">Sube archivos CSV, JSON o Excel, o carga datos de ejemplo.</p>
+
+                <div style="margin-bottom: 20px;">
+                    <button class="btn-secondary" onclick="loadDefaultData()"
+                        style="width: 100%; padding: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fas fa-database"></i>
+                        <div>
+                            <div style="font-weight: 600;">Cargar Datos de Ejemplo (Excel)</div>
+                            <div style="font-size: 0.8em; opacity: 0.8;">Horarios EneAbr18(1).xlsx</div>
+                        </div>
+                    </button>
+                </div>
+
                 <div class="upload-grid">
                     <div class="upload-card" id="card-professors"
                         onclick="document.getElementById('professor-upload').click()">
@@ -154,6 +166,7 @@
                         <p>CSV, JSON, Excel</p>
                         <input type="file" id="timeslot-upload" hidden onchange="uploadFile(this, 'timeslots')">
                     </div>
+
                 </div>
             </section>
 
@@ -261,6 +274,23 @@
                 <div class="empty-state" id="no-schedule-msg">
                     <i class="fas fa-calendar-times"></i>
                     <p>No hay horario generado aún. Ve al Dashboard para generar uno.</p>
+                </div>
+
+                <div class="schedule-filters" id="schedule-filters" style="display: none; margin-bottom: 20px;">
+                    <label for="semester-filter"><i class="fas fa-filter"></i> Filtrar por Cuatrimestre:</label>
+                    <select id="semester-filter" onchange="filterScheduleBySemester()" class="form-select">
+                        <option value="all">Todos los Cuatrimestres</option>
+                        <option value="1">Primer Cuatrimestre</option>
+                        <option value="2">Segundo Cuatrimestre</option>
+                        <option value="3">Tercer Cuatrimestre</option>
+                        <option value="4">Cuarto Cuatrimestre</option>
+                        <option value="5">Quinto Cuatrimestre</option>
+                        <option value="6">Sexto Cuatrimestre</option>
+                        <option value="7">Séptimo Cuatrimestre</option>
+                        <option value="8">Octavo Cuatrimestre</option>
+                        <option value="9">Noveno Cuatrimestre</option>
+                        <option value="10">Décimo Cuatrimestre</option>
+                    </select>
                 </div>
 
                 <!-- Controles de visualización -->

@@ -40,7 +40,8 @@ public:
 
   // Data loading
   void loadCourse(int id, const std::string &name, int enrollment,
-                  const std::vector<int> &prerequisites);
+                  const std::vector<int> &prerequisites, int groupId,
+                  int duration);
   void loadProfessor(int id, const std::string &name,
                      const std::vector<int> &availableTimeslots);
   void loadTimeSlot(int id, const std::string &day, int startHour,

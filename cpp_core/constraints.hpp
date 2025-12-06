@@ -44,6 +44,7 @@ private:
       professorAvailability; // professor -> timeslot IDs
   std::unordered_map<int, std::unordered_set<int>>
       coursePrerequisites; // course -> prerequisite course IDs
+  std::unordered_map<int, int> courseGroups; // course -> groupId
 
 public:
   ConstraintChecker(const Graph &graph);
@@ -52,6 +53,7 @@ public:
   void addTimeSlot(const TimeSlot &slot);
   void addProfessorAvailability(int professorId, int timeslotId);
   void addCoursePrerequisite(int courseId, int prerequisiteId);
+  void addCourseGroup(int courseId, int groupId);
 
   // Constraint validation
   bool
@@ -60,6 +62,9 @@ public:
 
   bool checkTimeConflict(int professorId, int timeslotId,
                          const std::vector<Assignment> &assignments) const;
+
+  bool checkGroupConflict(int courseId, int timeslotId,
+                          const std::vector<Assignment> &assignments) const;
 
   bool checkProfessorAvailability(int professorId, int timeslotId) const;
 
@@ -70,6 +75,8 @@ public:
   std::vector<int>
   getAvailableTimeslots(int courseId, int professorId,
                         const std::vector<Assignment> &assignments) const;
+
+  int getNextConsecutiveSlot(int timeslotId) const;
 
   // Validation messages
   std::string

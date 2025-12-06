@@ -28,7 +28,7 @@ cdef extern from "scheduler_core.hpp" namespace "scheduler":
         SchedulerCore() except +
         
         void loadCourse(int id, const string& name, int enrollment,
-                       const vector[int]& prerequisites) except +
+                       const vector[int]& prerequisites, int groupId, int duration) except +
         void loadProfessor(int id, const string& name,
                           const vector[int]& availableTimeslots) except +
         void loadTimeSlot(int id, const string& day, int startHour, int startMinute,
@@ -55,14 +55,14 @@ cdef class PyScheduler:
         if self.scheduler != NULL:
             del self.scheduler
     
-    def load_course(self, int course_id, str name, int enrollment, list prerequisites=None):
+    def load_course(self, int course_id, str name, int enrollment, list prerequisites=None, int group_id=0, int duration=1):
         """Load a course into the scheduler"""
         cdef vector[int] prereq_vec
         if prerequisites:
             for p in prerequisites:
                 prereq_vec.push_back(p)
         
-        self.scheduler.loadCourse(course_id, name.encode('utf-8'), enrollment, prereq_vec)
+        self.scheduler.loadCourse(course_id, name.encode('utf-8'), enrollment, prereq_vec, group_id, duration)
     
     def load_professor(self, int prof_id, str name, list available_timeslots):
         """Load a professor with their available timeslots"""

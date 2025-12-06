@@ -17,14 +17,18 @@ SchedulerCore::SchedulerCore()
 SchedulerCore::~SchedulerCore() = default;
 
 void SchedulerCore::loadCourse(int id, const std::string &name, int enrollment,
-                               const std::vector<int> &prerequisites) {
+                               const std::vector<int> &prerequisites,
+                               int groupId, int duration) {
   int nodeId = graph.addNode(NodeType::COURSE, name);
   auto node = graph.getNode(nodeId);
   node->setAttribute("id", std::to_string(id));
+  node->setAttribute("groupId", std::to_string(groupId));
+  node->setAttribute("duration", std::to_string(duration));
 
   for (int prereqId : prerequisites) {
     constraintChecker->addCoursePrerequisite(nodeId, prereqId);
   }
+  constraintChecker->addCourseGroup(id, groupId);
 }
 
 void SchedulerCore::loadProfessor(int id, const std::string &name,
@@ -139,26 +143,76 @@ bool SchedulerCore::backtrack(std::vector<Assignment> &assignments,
 
   int professorId = professorEdges[0]; // Assuming one professor per course
 
+  // Determine needed slots
+  int duration = 1;
+  if (courseNode->hasAttribute("duration")) {
+    try {
+      duration = std::stoi(courseNode->getAttribute("duration"));
+    } catch (...) {
+      duration = 1;
+    }
+  }
+  // Assume 1 slot = 2 hours. If duration <= 2, 1 slot. If 3 or 4, 2 slots.
+  int neededSlots = (duration + 1) / 2;
+  if (neededSlots < 1)
+    neededSlots = 1;
+
   // Try all available timeslots
   auto availableTimeslots = constraintChecker->getAvailableTimeslots(
       courseId, professorId, assignments);
 
-  for (int timeslotId : availableTimeslots) {
-    Assignment assignment(courseId, timeslotId, professorId);
+  for (int startSlotId : availableTimeslots) {
+    std::vector<int> sequence;
+    sequence.push_back(startSlotId);
 
-    // Check if assignment is valid
-    if (constraintChecker->isValidAssignment(assignment, assignments)) {
-      // Make assignment
-      assignments.push_back(assignment);
+    int currentSlot = startSlotId;
+    bool possible = true;
 
-      // Recurse
-      if (backtrack(assignments, courses, courseIndex + 1)) {
-        return true;
+    // Find consecutive slots
+    for (int i = 1; i < neededSlots; ++i) {
+      int nextSlot = constraintChecker->getNextConsecutiveSlot(currentSlot);
+      if (nextSlot == -1) {
+        possible = false;
+        break;
       }
 
-      // Backtrack
-      assignments.pop_back();
-      backtrackCounter++;
+      // Verify nextSlot is valid
+      Assignment checkAssign(courseId, nextSlot, professorId);
+      if (!constraintChecker->isValidAssignment(checkAssign, assignments)) {
+        possible = false;
+        break;
+      }
+
+      currentSlot = nextSlot;
+      sequence.push_back(currentSlot);
+    }
+
+    if (possible) {
+      // Try to assign ALL slots
+      std::vector<Assignment> newAssignments;
+      bool allValid = true;
+
+      for (int slotId : sequence) {
+        Assignment a(courseId, slotId, professorId);
+        if (!constraintChecker->isValidAssignment(a, assignments)) {
+          allValid = false;
+          break;
+        }
+        newAssignments.push_back(a);
+      }
+
+      if (allValid) {
+        // Commit
+        for (const auto &a : newAssignments)
+          assignments.push_back(a);
+
+        if (backtrack(assignments, courses, courseIndex + 1))
+          return true;
+
+        // Backtrack
+        for (size_t i = 0; i < newAssignments.size(); ++i)
+          assignments.pop_back();
+      }
     }
   }
 
