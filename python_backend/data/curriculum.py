@@ -147,7 +147,7 @@ def get_courses_for_cycle(cycle):
                     enrollment=course_data["enrollment"],
                     prerequisites=[],
                     professor_id=None,
-                    cuatrimestre=cuatrimestre
+                    semester=cuatrimestre
                 )
                 courses.append(course)
     
