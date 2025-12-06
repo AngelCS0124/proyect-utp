@@ -1,52 +1,42 @@
-# UTP Scheduler - Sistema de Horarios Universitarios
+# Sistema de Horarios Universitarios (UTP Scheduler)
 
-Sistema inteligente de generación de horarios universitarios que utiliza algoritmos de **backtracking** y **grafos** implementados en C++ para resolver el problema de asignación de cursos, profesores y horarios.
+Sistema inteligente de generación de horarios universitarios que utiliza algoritmos de **backtracking** y **grafos** (implementados en C++) para resolver eficientemente la asignación de cursos, profesores y horarios.
 
 ## 🌟 Características
 
-- **Motor C++ de Alto Rendimiento**: Algoritmos de grafos y backtracking optimizados
-- **Integración Python-C++**: Usando Cython para máxima eficiencia
-- **API REST con Flask**: Backend robusto con validación de datos
-- **Interfaz Web Moderna**: Diseño premium con drag-and-drop
-- **Múltiples Formatos**: Soporte para CSV, JSON y Excel
-- **Validación Completa**: Detección de conflictos de horario de profesores
-- **Visualización Interactiva**: Vista de calendario y lista de horarios
+- **Motor C++ de Alto Rendimiento**: Algoritmos optimizados para resolución de conflictos.
+- **Integración Python-C++**: Uso de Cython para máxima eficiencia.
+- **API REST con Flask**: Backend robusto, modular y validado.
+- **Interfaz Web Moderna**: Diseño intuitivo con visualización de grafos.
+- **Múltiples Formatos**: Soporte para CSV, JSON y Excel.
+- **Validación Completa**: Detección de conflictos de horario y restricciones.
+- **Visualización Interactiva**: Grafos de dependencias y calendario.
 
-## 🏗️ Arquitectura
+## 🏗️ Arquitectura del Proyecto
+
+El proyecto ha sido traducido completamente al español en su estructura interna:
 
 ```
 proyect-utp/
-├── cpp_core/              # Motor C++ de scheduling
-│   ├── graph.hpp/cpp      # Estructura de datos de grafos
-│   ├── constraints.hpp/cpp # Validación de restricciones
-│   ├── scheduler_core.hpp/cpp # Algoritmo de backtracking
-│   └── CMakeLists.txt     # Configuración de compilación
-├── python_backend/        # Backend Python
-│   ├── scheduler_wrapper.pyx # Wrapper Cython
-│   ├── app.py            # API Flask
-│   ├── models.py         # Modelos de datos
-│   ├── data_loader.py    # Cargador multi-formato
-│   ├── validators.py     # Validadores
-│   └── setup.py          # Build Cython
-├── frontend/             # Interfaz web
-│   ├── index.html        # Estructura HTML
-│   ├── styles.css        # Diseño CSS
-│   └── app.js            # Lógica JavaScript
-└── sample_data/          # Datos de ejemplo
-    ├── courses.csv
-    ├── professors.json
-    ├── classrooms.json
-    └── timeslots.csv
+├── cpp_core/                  # Motor C++ de scheduling (Core original)
+├── python_backend/            # Backend Python
+│   ├── aplicacion.py          # API Flask (Punto de entrada)
+│   ├── cargador_datos.py      # Cargador multi-formato
+│   ├── validadores.py         # Sistema de validación
+│   ├── modelos/               # Modelos de datos (Curso, Profesor, etc.)
+│   ├── servicios/             # Lógica de negocio y algoritmos
+│   ├── configuracion/         # Configuración del sistema
+│   └── datos/                 # Datos estáticos
+├── frontend/                  # Interfaz web (HTML/JS/CSS)
+├── datos_muestra/             # Datos de ejemplo en español
+└── generar_datos.py           # Script para crear datos de prueba
 ```
 
 ## 📋 Requisitos
 
-### Windows
+### Sistema
 - **Python 3.8+**
-- **Microsoft Visual C++ Build Tools** (para compilar C++)
-  - Descarga: https://visualstudio.microsoft.com/visual-cpp-build-tools/
-  - Instala "Desktop development with C++"
-- **CMake** (opcional, para compilación manual de C++)
+- **Microsoft Visual C++ Build Tools** (para compilar motor C++)
 
 ### Dependencias Python
 ```bash
@@ -58,24 +48,22 @@ pip install -r requirements.txt
 ### 1. Instalar Dependencias
 
 ```bash
-# Instalar dependencias Python
 pip install -r requirements.txt
 ```
 
-### 2. Compilar la Extensión C++
+### 2. Compilar Extensión C++ (Opcional pero recomendado)
 
 ```bash
 cd python_backend
 python setup.py build_ext --inplace
 ```
-
-Si encuentras errores de compilación, asegúrate de tener instalado Visual C++ Build Tools.
+*Si no se compila, el sistema usará una versión Python más lenta.*
 
 ### 3. Iniciar el Servidor
 
 ```bash
-# Desde el directorio python_backend
-python app.py
+cd python_backend
+python aplicacion.py
 ```
 
 El servidor estará disponible en `http://localhost:5000`
@@ -83,111 +71,37 @@ El servidor estará disponible en `http://localhost:5000`
 ### 4. Usar la Aplicación
 
 1. Abre tu navegador en `http://localhost:5000`
-2. Carga los archivos de datos:
-   - **Cursos**: CSV/JSON/Excel con id, nombre, código, créditos, matrícula, prerrequisitos
-   - **Profesores**: CSV/JSON con id, nombre, email, horarios disponibles
-   - **Horarios**: CSV/JSON con id, día, hora inicio/fin
+2. Carga archivos de datos (o usa los valores por defecto):
+   - **Cursos**: CSV/JSON/Excel
+   - **Profesores**: CSV/JSON
 3. Haz clic en "Generar Horario"
-4. Visualiza el horario generado en formato calendario y lista
+4. Visualiza los resultados en el calendario interactivo
 
-## 📊 Formato de Datos
+## 📊 Formato de Datos (Español)
 
 ### Cursos (CSV)
 ```csv
-id,name,code,credits,enrollment,prerequisites
-1,Estructuras de Datos,CS201,4,35,
-2,Algoritmos Avanzados,CS301,4,30,1
+id,nombre,codigo,creditos,matricula,prerrequisitos,id_profesor
+1,Estructuras de Datos,CS201,4,35,,1
+2,Algoritmos Avanzados,CS301,4,30,1,2
 ```
 
 ### Profesores (JSON)
 ```json
-{
-  "id": 1,
-  "name": "Dr. Juan Pérez",
-  "email": "jperez@utp.edu",
-  "available_timeslots": [1, 2, 3, 4, 5]
-}
+[
+  {
+    "id": 1,
+    "nombre": "Dr. Juan Pérez",
+    "email": "juan@utp.edu.mx",
+    "bloques_disponibles": [1, 2, 3, 4, 5]
+  }
+]
 ```
 
-### Horarios (CSV)
-```csv
-id,day,start_hour,start_minute,end_hour,end_minute
-1,Lunes,8,0,10,0
-```
+## 🛠️ Scripts de Utilidad
 
-## 🔧 API Endpoints
-
-- `GET /api/status` - Estado del sistema
-- `POST /api/upload` - Subir archivo de datos
-- `GET /api/data/{type}` - Obtener datos cargados
-- `POST /api/assign-professor` - Asignar profesor a curso
-- `GET /api/validate` - Validar datos
-- `POST /api/generate` - Generar horario
-- `GET /api/schedule` - Obtener horario generado
-- `POST /api/reset` - Reiniciar datos
-
-## 🧪 Datos de Prueba
-
-El directorio `sample_data/` contiene archivos de ejemplo:
-- `courses.csv` - 10 cursos con prerrequisitos
-- `professors.json` - 5 profesores con disponibilidad
-- `classrooms.json` - 8 aulas con capacidades
-- `timeslots.csv` - 20 bloques horarios
-
-## 🎯 Algoritmos Implementados
-
-### Grafos
-- Representación con listas de adyacencia
-- BFS (Breadth-First Search)
-- DFS (Depth-First Search)
-- Detección de ciclos
-- Ordenamiento topológico (para prerrequisitos)
-
-### Backtracking
-- Asignación recursiva de cursos a horarios
-- Validación de restricciones en cada paso
-- Retroceso automático ante conflictos
-- Optimización de búsqueda
-
-### Restricciones Validadas
-- ✅ Conflictos de tiempo de profesores
-- ✅ Disponibilidad de profesores
-- ✅ Prerrequisitos de cursos
-
-## 🎨 Características de la Interfaz
-
-- **Diseño Dark Mode Premium**: Colores vibrantes y efectos glassmorphism
-- **Drag & Drop**: Arrastra archivos para cargar datos
-- **Animaciones Suaves**: Transiciones y micro-interacciones
-- **Responsive**: Adaptable a móviles y tablets
-- **Notificaciones en Tiempo Real**: Feedback visual de operaciones
-- **Visualización Dual**: Vista de calendario y lista detallada
-
-## 🐛 Solución de Problemas
-
-### Error al compilar C++
-- Verifica que Visual C++ Build Tools esté instalado
-- Asegúrate de tener Python 3.8 o superior
-- Intenta reinstalar Cython: `pip install --upgrade Cython`
-
-### Servidor no inicia
-- Verifica que el puerto 5000 esté disponible
-- Comprueba que todas las dependencias estén instaladas
-- Revisa los logs en la consola
-
-### No se puede generar horario
-- Asegúrate de cargar todos los tipos de datos
-- Verifica que los datos estén en el formato correcto
-- Revisa que haya suficientes aulas y horarios disponibles
-
-## 📝 Licencia
-
-Este proyecto fue desarrollado como parte del curso de Estructuras de Datos en la UTP.
-
-## 👥 Autores
-
-Proyecto de Estructuras de Datos - UTP 2024
+- `python generar_datos.py`: Crea archivos de prueba en `datos_muestra/`
+- `python verificar_integracion.py`: Ejecuta pruebas automáticas del sistema
 
 ---
-
-**¡Disfruta generando horarios óptimos! 🎓📅**
+*Proyecto traducido y optimizado - Diciembre 2025*

@@ -20,6 +20,8 @@ from .scheduling_helpers import (
 
 from .visualizacion import generar_datos_visualizacion
 
+from .extractor_excel import extraer_datos_excel_a_memoria
+
 __all__ = [
     # Español
     'obtener_bloques_consecutivos', 'puede_tener_bloques_consecutivos',
@@ -30,5 +32,7 @@ __all__ = [
     'get_double_block_timeslots', 'get_all_double_block_options',
     'calculate_sessions_needed', 'get_block_info',
     # Visualización
-    'generar_datos_visualizacion'
+    'generar_datos_visualizacion',
+    # Excel
+    'extraer_datos_excel_a_memoria'
 ]

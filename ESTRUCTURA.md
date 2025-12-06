@@ -1,71 +1,38 @@
-# Estructura del Proyecto UTP Scheduler
+# Estructura del Proyecto
 
-## Nueva Organización Modular
+Este documento describe la organización de carpetas y archivos del sistema, reflejando la traducción completa al español de los componentes del backend.
 
-```
-proyect-utp/
-├── python_backend/
-│   ├── models/                  # Modelos de datos
-│   │   ├── __init__.py
-│   │   ├── course.py           # Modelo Course (con campo cuatrimestre)
-│   │   ├── professor.py        # Modelo Professor
-│   │   ├── timeslot.py         # Modelo TimeSlot
-│   │   └── schedule.py         # Modelo Schedule
-│   │
-│   ├── data/                    # Datos predefinidos
-│   │   ├── __init__.py
-│   │   └── curriculum.py       # Currículo completo (10 cuatrimestres)
-│   │
-│   ├── services/                # Lógica de negocio (futuro)
-│   │   └── __init__.py
-│   │
-│   ├── routes/                  # Rutas API (futuro)
-│   │   └── __init__.py
-│   │
-│   ├── config/                  # Configuración
-│   │   └── __init__.py
-│   │
-│   ├── app.py                   # Aplicación Flask principal
-│   ├── data_loader.py           # Cargador de datos
-│   ├── validators.py            # Validadores
-│   └── setup.py                 # Build Cython
-│
-├── frontend/
-│   ├── index.html               # UI principal
-│   ├── app.js                   # Lógica JavaScript
-│   └── styles.css               # Estilos CSS
-│
-└── sample_data/
-    ├── professors.json
-    └── timeslots.csv
-```
+## 📂 Raíz del Proyecto
+- **`README.md`**: Documentación principal y guía de uso.
+- **`generar_datos.py`**: Script para crear datos de prueba en la carpeta `datos_muestra`.
+- **`verificar_integracion.py`**: Script para validar que todos los componentes funcionan correctamente.
+- **`datos_muestra/`**: Contiene archivos CSV y JSON con datos en formato español (`cursos.csv`, `profesores.json`, etc.).
+- **`frontend/`**: Código de la interfaz web (HTML, CSS, JS).
 
-## Cambios Principales
+## 🐍 Backend Python (`python_backend/`)
 
-### 1. Modelos Separados
-- Cada modelo en su propio archivo
-- Importación centralizada desde `models/__init__.py`
-- Campo `cuatrimestre` en lugar de `semester`
+### Módulos Principales
+- **`aplicacion.py`**: **Punto de entrada**. Servidor Flask que maneja la API y las peticiones web.
+- **`cargador_datos.py`**: Clase `CargadorDatos` para leer CSV/JSON/Excel en español.
+- **`validadores.py`**: Clase `Validador` para asegurar integridad de los datos.
 
-### 2. Datos del Currículo
-- Currículo completo en `data/curriculum.py`
-- 10 cuatrimestres predefinidos
-- Mapeo de ciclos a cuatrimestres
+### Paquetes
+- **`modelos/`**: Definición de objetos de negocio.
+  - `curso.py`: Lógica de cursos y prerrequisitos.
+  - `profesor.py`: Datos de profesores y disponibilidad.
+  - `bloque_tiempo.py`: Definición de slots de horario.
+  - `horario.py`: Estructura del horario generado.
+  
+- **`servicios/`**: Lógica de negocio y algoritmos auxiliares.
+  - `scheduling_helpers.py`: Ayudantes para restricciones de horario.
+  - `visualizacion.py`: Generación de datos para grafos.
+  - `extractor_excel.py`: Lectura específica de formatos Excel institucionales.
 
-### 3. Terminología Correcta
-- **Cuatrimestre** en lugar de semestre
-- Ciclos de 4 meses (Sept-Dec, Jan-Apr, May-Aug)
+- **`configuracion/`**: Constantes y parámetros del sistema.
+  - `bloques_tiempo.py`: Definición de horas y días válidos.
 
-## Importaciones
+- **`datos/`**: Datos estáticos del plan de estudios.
+  - `curriculum.py`: Lista maestra de materias.
 
-```python
-# Desde app.py
-from models import Course, Professor, TimeSlot, Schedule
-from data import get_all_courses, get_courses_for_cycle, get_available_cycles
-```
-
-## Próximos Pasos
-
-1. Mover lógica de validación a `services/`
-2. Separar rutas API en `routes/`
-3. Configuración centralizada en `config/`
+## ⚙️ Núcleo C++ (`cpp_core/`)
+Motor de alto rendimiento para el algoritmo de scheduling. Se compila y se integra con Python mediante `scheduler_wrapper`.

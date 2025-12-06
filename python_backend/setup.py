@@ -12,9 +12,9 @@ extensions = [
         "scheduler_wrapper",
         sources=[
             "scheduler_wrapper.pyx",
-            os.path.join(cpp_core_dir, "graph.cpp"),
-            os.path.join(cpp_core_dir, "constraints.cpp"),
-            os.path.join(cpp_core_dir, "scheduler_core.cpp"),
+            os.path.join(cpp_core_dir, "grafo.cpp"),
+            os.path.join(cpp_core_dir, "restricciones.cpp"),
+            os.path.join(cpp_core_dir, "planificador.cpp"),
         ],
         include_dirs=[cpp_core_dir],
         language="c++",

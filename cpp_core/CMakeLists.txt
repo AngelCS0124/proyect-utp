@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Source files
 set(SOURCES
-    graph.cpp
-    constraints.cpp
-    scheduler_core.cpp
+    grafo.cpp
+    restricciones.cpp
+    planificador.cpp
 )
 
 # Create static library
@@ -30,7 +30,7 @@ install(TARGETS scheduler_core
         LIBRARY DESTINATION lib)
 
 install(FILES 
-        graph.hpp
-        constraints.hpp
-        scheduler_core.hpp
+        grafo.hpp
+        restricciones.hpp
+        planificador.hpp
         DESTINATION include)
