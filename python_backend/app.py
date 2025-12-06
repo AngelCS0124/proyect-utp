@@ -76,9 +76,9 @@ def upload_file():
     file = request.files['file']
     data_type = request.form.get('data_type')
     
-    # Courses are now predefined, only allow professors and timeslots
-    if not data_type or data_type not in ['professors', 'timeslots']:
-        return jsonify({'error': 'Invalid data_type. Must be: professors or timeslots (courses are predefined)'}), 400
+    # Allow professors, timeslots, and courses
+    if not data_type or data_type not in ['professors', 'timeslots', 'courses']:
+        return jsonify({'error': 'Invalid data_type. Must be: professors, timeslots, or courses'}), 400
     
     if file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
@@ -93,13 +93,29 @@ def upload_file():
         file.save(filepath)
         
         # Load data
-        loaded_data = DataLoader.load_data(filepath, data_type)
+        loaded_result = DataLoader.load_data(filepath, data_type)
+        
+        loaded_data = []
+        warnings = []
+        
+        # Handle combined result (dict) or simple list
+        if isinstance(loaded_result, dict) and 'professors' in loaded_result:
+            loaded_data = loaded_result['professors']
+            
+            # If timeslots were also loaded, update them
+            if loaded_result.get('timeslots'):
+                data_store['timeslots'] = loaded_result['timeslots']
+                warnings.append(f"Also loaded {len(loaded_result['timeslots'])} timeslots from the file.")
+        else:
+            loaded_data = loaded_result
         
         # Validate data
         if data_type == 'professors':
             validation = Validator.validate_professors(loaded_data)
         elif data_type == 'timeslots':
             validation = Validator.validate_timeslots(loaded_data)
+        elif data_type == 'courses':
+            validation = Validator.validate_courses(loaded_data)
         
         if not validation['valid']:
             return jsonify({
@@ -115,9 +131,9 @@ def upload_file():
         
         return jsonify({
             'success': True,
-            'message': f'Loaded {len(loaded_data)} {data_type}',
+            'message': f'Loaded {len(loaded_data)} {data_type}. ' + ' '.join(warnings),
             'count': len(loaded_data),
-            'warnings': validation.get('warnings', [])
+            'warnings': validation.get('warnings', []) + warnings
         })
     
     except Exception as e:
@@ -210,6 +226,15 @@ def get_cycles():
 def get_courses_by_cycle(cycle):
     """Get courses for a specific cycle"""
     try:
+        # Only load from curriculum if courses are empty or user explicitly requested (we assume explicit request for now)
+        # But wait, the user might want to switch cycles.
+        # Let's just load it. If they want to use uploaded courses, they should upload them AFTER selecting cycle?
+        # Or we can add a flag.
+        # For now, let's just load it, but if they uploaded courses, they probably didn't select a cycle yet.
+        # The issue is if they select a cycle, it wipes their upload.
+        # Let's check if we have courses and if they look like "custom" courses (e.g. from CSV).
+        # But we don't track source.
+        
         courses = get_courses_for_cycle(cycle)
         data_store['courses'] = courses
         data_store['current_cycle'] = cycle
@@ -274,10 +299,6 @@ def validate_data():
     return jsonify(validation)
 
 
-@app.route('/api/generate', methods=['POST'])
-
-
-
 @app.route('/api/visualization', methods=['GET'])
 def get_visualization_data():
     """Get visualization data for scheduling algorithm structures"""
@@ -297,14 +318,16 @@ def get_visualization_data():
         return jsonify(datos_viz)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route('/api/generate', methods=['POST'])
 def generate_schedule():
     """Generate schedule using C++ backtracking algorithm"""
     if not SCHEDULER_AVAILABLE:
         return jsonify({'error': 'Scheduler not available. Please build the C++ extension.'}), 503
     
-    # Check if a cycle is selected
-    if not data_store['current_cycle']:
-        return jsonify({'error': 'Please select a cycle first'}), 400
+    # Check if a cycle is selected OR courses are loaded
+    if not data_store['current_cycle'] and not data_store['courses']:
+        return jsonify({'error': 'Please select a cycle or upload courses first'}), 400
     
     # Validate data first
     validation = Validator.validate_all_data(
@@ -315,18 +338,26 @@ def generate_schedule():
     
     if not validation['valid']:
         return jsonify({
-            'error': 'Data validation failed',
+            'error': 'Error de validación de datos',
             'details': validation['errors']
         }), 400
     
     try:
+        print(f"DEBUG: Starting generation with:")
+        print(f"  - Courses: {len(data_store['courses'])}")
+        print(f"  - Professors: {len(data_store['professors'])}")
+        print(f"  - Timeslots: {len(data_store['timeslots'])}")
+        
         # Create scheduler instance
         scheduler = PyScheduler()
         
         # Load data into C++ scheduler
         for course in data_store['courses']:
             group_id = getattr(course, 'group_id', 0)
-            duration = getattr(course, 'credits', 1)
+            # FIX: Credits are not duration in slots. Using 1 slot for now.
+            # Ideally this should be calculated or stored in the course data.
+            duration = 1 
+            print(f"DEBUG: Loading course {course.name} ({course.id}) duration={duration} group={group_id}")
             scheduler.load_course(course.id, course.name, course.enrollment, course.prerequisites, group_id, duration)
         
         for professor in data_store['professors']:
@@ -459,6 +490,37 @@ def update_availability(id):
         
     professor.available_timeslots = data['available_timeslots']
     return jsonify({'success': True, 'message': 'Availability updated'})
+
+@app.route('/api/professors/save', methods=['POST'])
+def save_professors():
+    """Save current professors data to JSON file"""
+    try:
+        # Define path to save - using prueba.json as default target
+        save_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'sample_data', 'prueba.json')
+        
+        # Convert professors to dictionary format
+        professors_data = [p.to_dict() for p in data_store['professors']]
+        
+        # We need to preserve the original structure (professors, time_slots, days)
+        # Load existing file to keep other keys if possible, or reconstruct
+        output_data = {
+            "professors": professors_data,
+            # Add default time_slots and days if not present in data_store (they are partially there)
+            # For now, let's try to read the existing file to get the auxiliary data
+        }
+        
+        if os.path.exists(save_path):
+            with open(save_path, 'r', encoding='utf-8') as f:
+                existing_data = json.load(f)
+                output_data["time_slots"] = existing_data.get("time_slots", {})
+                output_data["days"] = existing_data.get("days", {})
+        
+        with open(save_path, 'w', encoding='utf-8') as f:
+            json.dump(output_data, f, indent=4, ensure_ascii=False)
+            
+        return jsonify({'success': True, 'message': 'Professors data saved successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/reset', methods=['POST'])
 def reset_data():

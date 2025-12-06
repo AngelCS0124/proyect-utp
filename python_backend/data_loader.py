@@ -97,13 +97,90 @@ class DataLoader:
         return professors
     
     @staticmethod
-    def load_professors_from_json(filepath: str) -> List[Professor]:
-        """Load professors from JSON file"""
+    def load_professors_from_json(filepath: str) -> Dict[str, Any]:
+        """
+        Load professors from JSON file.
+        Supports both list of professors and combined format (professors + timeslots).
+        Returns a dictionary with 'professors' and optionally 'timeslots'.
+        """
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
+        professors_data = []
+        timeslots_data = []
+        
+        # Check if it's the combined format
+        if isinstance(data, dict) and 'professors' in data:
+            professors_data = data['professors']
+            
+            # Handle timeslots if present
+            if 'time_slots' in data and 'days' in data:
+                # Convert the compact format to TimeSlot objects
+                # "time_slots": {"1": "07:00-07:55", ...}
+                # "days": {"Lu": "Lunes", ...}
+                
+                days_map = data['days']
+                slots_map = data['time_slots']
+                
+                # Create a grid of timeslots
+                ts_id_counter = 1
+                # We need to map the "Lu-1" format to integer IDs for the professors
+                # And create the corresponding TimeSlot objects
+                
+                # But wait, the Professor model expects available_timeslots to be integers (IDs of TimeSlots).
+                # In prueba.json, they are strings like "Lu-1".
+                # We need to generate TimeSlot objects and map the strings to their new integer IDs.
+                
+                slot_string_to_id = {}
+                
+                for day_code, day_name in days_map.items():
+                    for slot_idx, time_range in slots_map.items():
+                        # Parse time range "07:00-07:55"
+                        try:
+                            start, end = time_range.split('-')
+                            start_h, start_m = map(int, start.split(':'))
+                            end_h, end_m = map(int, end.split(':'))
+                            
+                            # Create TimeSlot
+                            # We can use a deterministic ID or a counter
+                            # Let's use a deterministic ID based on day index and slot index to be safe?
+                            # Or just a counter.
+                            
+                            # Construct the key used in available_slots, e.g. "Lu-1"
+                            key = f"{day_code}-{slot_idx}"
+                            
+                            timeslot = TimeSlot(
+                                id=ts_id_counter,
+                                day=day_name,
+                                start_hour=start_h,
+                                start_minute=start_m,
+                                end_hour=end_h,
+                                end_minute=end_m
+                            )
+                            timeslots_data.append(timeslot)
+                            slot_string_to_id[key] = ts_id_counter
+                            ts_id_counter += 1
+                        except ValueError:
+                            continue
+
+                # Now update professors' available_slots from strings to integers
+                for p_data in professors_data:
+                    if 'available_slots' in p_data: # Note: prueba.json uses available_slots, model uses available_timeslots
+                        # Map strings to IDs
+                        int_slots = []
+                        for slot_str in p_data['available_slots']:
+                            if slot_str in slot_string_to_id:
+                                int_slots.append(slot_string_to_id[slot_str])
+                        p_data['available_timeslots'] = int_slots
+                    elif 'available_timeslots' in p_data:
+                        # Already in some format, leave it if it's list of ints
+                        pass
+
+        elif isinstance(data, list):
+            professors_data = data
+        
         professors = []
-        for item in data:
+        for item in professors_data:
             professor = Professor(
                 id=item['id'],
                 name=item['name'],
@@ -111,7 +188,11 @@ class DataLoader:
                 available_timeslots=item.get('available_timeslots', [])
             )
             professors.append(professor)
-        return professors
+            
+        return {
+            'professors': professors,
+            'timeslots': timeslots_data if timeslots_data else None
+        }
     
     @staticmethod
     def load_timeslots_from_csv(filepath: str) -> List[TimeSlot]:

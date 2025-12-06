@@ -154,16 +154,26 @@
                         onclick="document.getElementById('professor-upload').click()">
                         <div class="upload-status-icon"><i class="fas fa-check-circle"></i></div>
                         <i class="fas fa-file-alt upload-icon"></i>
-                        <h3>Profesores</h3>
-                        <p>CSV, JSON, Excel</p>
+                        <h3>Profesores y Disponibilidad</h3>
+                        <p>Sube el archivo JSON completo (professors.json)</p>
                         <input type="file" id="professor-upload" hidden onchange="uploadFile(this, 'professors')">
                     </div>
+
+                    <div class="upload-card" id="card-courses"
+                        onclick="document.getElementById('course-upload').click()">
+                        <div class="upload-status-icon"><i class="fas fa-check-circle"></i></div>
+                        <i class="fas fa-book upload-icon"></i>
+                        <h3>Cursos</h3>
+                        <p>Sube el archivo CSV de cursos (courses.csv)</p>
+                        <input type="file" id="course-upload" hidden onchange="uploadFile(this, 'courses')">
+                    </div>
+
                     <div class="upload-card" id="card-timeslots"
                         onclick="document.getElementById('timeslot-upload').click()">
                         <div class="upload-status-icon"><i class="fas fa-check-circle"></i></div>
-                        <i class="fas fa-file-alt upload-icon"></i>
+                        <i class="fas fa-clock upload-icon"></i>
                         <h3>Horarios</h3>
-                        <p>CSV, JSON, Excel</p>
+                        <p>Sube el archivo JSON de horarios (timeslots.json)</p>
                         <input type="file" id="timeslot-upload" hidden onchange="uploadFile(this, 'timeslots')">
                     </div>
 
@@ -191,6 +201,9 @@
                     <i class="fas fa-search"></i>
                     <input type="text" id="search-professor" placeholder="Buscar Maestro" onkeyup="filterProfessors()">
                 </div>
+                <button class="btn-secondary" onclick="saveAllProfessors()" style="margin-right: 10px;">
+                    <i class="fas fa-save"></i> Guardar en Archivo
+                </button>
                 <button class="btn-primary" onclick="openProfessorModal()">
                     <i class="fas fa-plus"></i> Añadir Maestro
                 </button>
@@ -295,6 +308,14 @@
 
                 <!-- Controles de visualización -->
                 <div class="visualization-controls" id="viz-controls" style="display: none;">
+                    <div class="view-toggles">
+                        <button class="btn-secondary active" id="btn-view-list" onclick="switchScheduleView('list')">
+                            <i class="fas fa-list"></i> Lista
+                        </button>
+                        <button class="btn-secondary" id="btn-view-calendar" onclick="switchScheduleView('calendar')">
+                            <i class="fas fa-calendar-alt"></i> Calendario
+                        </button>
+                    </div>
                     <button onclick="mostrarVisualizacion()" class="btn-secondary">
                         <i class="fas fa-project-diagram"></i>
                         Ver Estructura del Algoritmo
@@ -305,19 +326,25 @@
                     </button>
                 </div>
 
-                <table class="schedule-table" id="schedule-table" style="display: none;">
-                    <thead>
-                        <tr>
-                            <th>Curso</th>
-                            <th>Profesor</th>
-                            <th>Horario</th>
-                            <th>Grupo</th>
-                        </tr>
-                    </thead>
-                    <tbody id="schedule-body">
-                        <!-- Populated by JS -->
-                    </tbody>
-                </table>
+                <div id="schedule-list-container">
+                    <table class="schedule-table" id="schedule-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Curso</th>
+                                <th>Profesor</th>
+                                <th>Horario</th>
+                                <th>Grupo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schedule-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="schedule-calendar-container" style="display: none;">
+                    <!-- Calendar grids will be injected here -->
+                </div>
             </div>
         </div>
     </main>

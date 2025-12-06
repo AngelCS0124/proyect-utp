@@ -1,0 +1,551 @@
+{
+    "professors": [
+        {
+            "id": 1,
+            "name": "Dr. Jean-Michael Recher",
+            "email": "professor1@university.edu",
+            "available_slots": [
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-8",
+                "Ma-8",
+                "Mi-8",
+                "Ju-8",
+                "Vi-8"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Dr. Alberto García Robledo",
+            "email": "professor2@university.edu",
+            "available_slots": [
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6",
+                "Vi-6"
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Dra. Karla E. Vázquez Ortiz",
+            "email": "professor3@university.edu",
+            "available_slots": [
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6",
+                "Vi-6"
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Dr. Hector Hugo Avilés Arriaga",
+            "email": "professor4@university.edu",
+            "available_slots": [
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6",
+                "Vi-6",
+                "Lu-8",
+                "Ma-8",
+                "Mi-8",
+                "Ju-8",
+                "Vi-8"
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Dr. Said Polanco Martagón",
+            "email": "professor5@university.edu",
+            "available_slots": [
+                "Lu-1",
+                "Ma-1",
+                "Mi-1",
+                "Ju-1",
+                "Vi-1",
+                "Lu-2",
+                "Ma-2",
+                "Mi-2",
+                "Ju-2",
+                "Vi-2",
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-8",
+                "Ma-8",
+                "Mi-8",
+                "Ju-8",
+                "Vi-8"
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Dr. Marco A. Nuño Maganda",
+            "email": "professor6@university.edu",
+            "available_slots": [
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5"
+            ]
+        },
+        {
+            "id": 7,
+            "name": "M.C.A. Jorge Arturo Hernández Almazan",
+            "email": "professor7@university.edu",
+            "available_slots": [
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6",
+                "Vi-6",
+                "Lu-13",
+                "Ma-13",
+                "Mi-13",
+                "Ju-13",
+                "Vi-13"
+            ]
+        },
+        {
+            "id": 8,
+            "name": "M.S.I. Mario H. Rodriguez Chávez",
+            "email": "professor8@university.edu",
+            "available_slots": [
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-8",
+                "Ma-8",
+                "Mi-8",
+                "Ju-8",
+                "Vi-8"
+            ]
+        },
+        {
+            "id": 9,
+            "name": "M.C. Jorge O. Jasso Luna",
+            "email": "professor9@university.edu",
+            "available_slots": [
+                "Lu-1",
+                "Ma-1",
+                "Mi-1",
+                "Ju-1",
+                "Vi-1",
+                "Lu-2",
+                "Ma-2",
+                "Mi-2",
+                "Ju-2",
+                "Vi-2",
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5"
+            ]
+        },
+        {
+            "id": 10,
+            "name": "M.A.T. Hiram Herrera Rivas",
+            "email": "professor10@university.edu",
+            "available_slots": [
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-8",
+                "Ma-8",
+                "Mi-8",
+                "Ju-8",
+                "Vi-8"
+            ]
+        },
+        {
+            "id": 11,
+            "name": "M.S.I. Alma Delia Amaya Vázquez",
+            "email": "professor11@university.edu",
+            "available_slots": [
+                "Lu-1",
+                "Ma-1",
+                "Mi-1",
+                "Ju-1",
+                "Vi-1",
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6",
+                "Vi-6"
+            ]
+        },
+        {
+            "id": 12,
+            "name": "M.S.I. José Fidencio López Luna",
+            "email": "professor12@university.edu",
+            "available_slots": [
+                "Lu-2",
+                "Ma-2",
+                "Mi-2",
+                "Ju-2",
+                "Vi-2",
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5"
+            ]
+        },
+        {
+            "id": 13,
+            "name": "M.I. Manuel Ruiz Méndez",
+            "email": "professor13@university.edu",
+            "available_slots": []
+        },
+        {
+            "id": 14,
+            "name": "M.T.I. Israel Pulido Picazo",
+            "email": "professor14@university.edu",
+            "available_slots": [
+                "Lu-1",
+                "Ma-1",
+                "Mi-1",
+                "Ju-1",
+                "Vi-1",
+                "Lu-2",
+                "Ma-2",
+                "Mi-2"
+            ]
+        },
+        {
+            "id": 15,
+            "name": "M.S.I. Marina Cristal Flores Flores",
+            "email": "professor15@university.edu",
+            "available_slots": []
+        },
+        {
+            "id": 16,
+            "name": "M.I. Arturo G. Mascorro Cienfuegos",
+            "email": "professor16@university.edu",
+            "available_slots": [
+                "Lu-1",
+                "Ma-1",
+                "Mi-1",
+                "Ju-1",
+                "Vi-1",
+                "Lu-2",
+                "Ma-2",
+                "Mi-2",
+                "Ju-2",
+                "Vi-2"
+            ]
+        },
+        {
+            "id": 17,
+            "name": "M.I. Hugo O. Camargo",
+            "email": "professor17@university.edu",
+            "available_slots": []
+        },
+        {
+            "id": 18,
+            "name": "Ing. Hugo E. Treviño",
+            "email": "professor18@university.edu",
+            "available_slots": []
+        },
+        {
+            "id": 19,
+            "name": "M.I. Adriana Lizeth Trujillo",
+            "email": "professor19@university.edu",
+            "available_slots": []
+        },
+        {
+            "id": 20,
+            "name": "M.I. Luis R. De la Fuente",
+            "email": "professor20@university.edu",
+            "available_slots": [
+                "Lu-11",
+                "Ma-11",
+                "Mi-11",
+                "Ju-11",
+                "Vi-11",
+                "Lu-13",
+                "Ma-13",
+                "Mi-13",
+                "Ju-13",
+                "Vi-13"
+            ]
+        },
+        {
+            "id": 21,
+            "name": "M.I. Erendira Guitierrez Meza",
+            "email": "professor21@university.edu",
+            "available_slots": [
+                "Lu-5",
+                "Ma-5",
+                "Mi-5",
+                "Ju-5",
+                "Vi-5",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6",
+                "Vi-6",
+                "Lu-7",
+                "Ma-7",
+                "Mi-7",
+                "Ju-7",
+                "Vi-7"
+            ]
+        },
+        {
+            "id": 22,
+            "name": "M.C. Maribel Marin Castro",
+            "email": "professor22@university.edu",
+            "available_slots": [
+                "Lu-3",
+                "Ma-3",
+                "Mi-3",
+                "Ju-3",
+                "Vi-3",
+                "Lu-4",
+                "Ma-4",
+                "Mi-4",
+                "Ju-4",
+                "Vi-4",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6",
+                "Vi-6",
+                "Lu-7",
+                "Ma-7",
+                "Mi-7",
+                "Ju-7",
+                "Vi-7",
+                "Lu-8",
+                "Ma-8",
+                "Mi-8",
+                "Ju-8",
+                "Vi-8",
+                "Lu-10",
+                "Ma-10",
+                "Mi-10",
+                "Ju-10",
+                "Vi-10"
+            ]
+        },
+        {
+            "id": 23,
+            "name": "M.C. Carlos Orozco Garcia",
+            "email": "professor23@university.edu",
+            "available_slots": [
+                "Lu-2",
+                "Ma-2",
+                "Mi-2",
+                "Ju-2",
+                "Vi-2",
+                "Lu-3",
+                "Ma-3",
+                "Mi-3",
+                "Ju-3",
+                "Vi-3",
+                "Lu-4"
+            ]
+        },
+        {
+            "id": 24,
+            "name": "Ing. Juan Manuel Ornelas Llerena",
+            "email": "professor24@university.edu",
+            "available_slots": [
+                "Lu-10",
+                "Ma-10",
+                "Mi-10",
+                "Ju-10",
+                "Vi-10"
+            ]
+        },
+        {
+            "id": 25,
+            "name": "Eduardo Patricio González Nuño",
+            "email": "professor25@university.edu",
+            "available_slots": [
+                "Lu-1",
+                "Ma-1",
+                "Mi-1",
+                "Ju-1",
+                "Vi-1",
+                "Lu-2",
+                "Ma-2",
+                "Mi-2",
+                "Ju-2",
+                "Vi-2",
+                "Lu-3",
+                "Ma-3",
+                "Mi-3",
+                "Ju-3",
+                "Vi-3",
+                "Lu-4",
+                "Ma-4",
+                "Mi-4",
+                "Ju-4",
+                "Vi-4"
+            ]
+        },
+        {
+            "id": 26,
+            "name": "Lic. Myriam Ornelas Llerena",
+            "email": "professor26@university.edu",
+            "available_slots": [
+                "Lu-2",
+                "Ma-2",
+                "Mi-2",
+                "Ju-2",
+                "Lu-3",
+                "Ma-3",
+                "Mi-3",
+                "Ju-3",
+                "Lu-4",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6"
+            ]
+        },
+        {
+            "id": 27,
+            "name": "Luis F. Castillo Cortés",
+            "email": "professor27@university.edu",
+            "available_slots": [
+                "Ju-5",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6",
+                "Vi-6",
+                "Vi-7",
+                "Vi-8"
+            ]
+        },
+        {
+            "id": 28,
+            "name": "Lic. Carlos Castillo",
+            "email": "professor28@university.edu",
+            "available_slots": []
+        },
+        {
+            "id": 29,
+            "name": "Fernando Requena",
+            "email": "professor29@university.edu",
+            "available_slots": [
+                "Lu-3",
+                "Ma-3",
+                "Mi-3",
+                "Ju-3",
+                "Vi-3",
+                "Lu-4",
+                "Ma-4",
+                "Mi-4",
+                "Ju-4",
+                "Vi-4",
+                "Lu-6",
+                "Ma-6",
+                "Mi-6",
+                "Ju-6",
+                "Vi-6",
+                "Lu-7",
+                "Ma-7",
+                "Mi-7",
+                "Ju-7",
+                "Vi-7",
+                "Lu-8",
+                "Ma-8",
+                "Mi-8",
+                "Ju-8",
+                "Vi-8",
+                "Lu-10",
+                "Ma-10",
+                "Mi-10",
+                "Ju-10",
+                "Vi-10"
+            ]
+        },
+        {
+            "id": 30,
+            "name": "Oscar Romero de la Cruz",
+            "email": "professor30@university.edu",
+            "available_slots": []
+        },
+        {
+            "id": 31,
+            "name": "Alma Leticia Valdéz García",
+            "email": "professor31@university.edu",
+            "available_slots": [
+                "Lu-6",
+                "Ju-6",
+                "Lu-7",
+                "Ma-7",
+                "Mi-7",
+                "Ju-7",
+                "Lu-8",
+                "Ma-8",
+                "Mi-8",
+                "Ju-8",
+                "Lu-10",
+                "Ma-10",
+                "Mi-10"
+            ]
+        }
+    ],
+    "time_slots": {
+        "1": "07:00-07:55",
+        "2": "07:55-08:50",
+        "3": "08:50-09:45",
+        "4": "09:45-10:40",
+        "5": "11:10-12:05",
+        "6": "12:05-13:00",
+        "7": "13:00-13:55",
+        "8": "14:00-14:55",
+        "9": "14:55-15:50",
+        "10": "15:50-16:45"
+    },
+    "days": {
+        "Lu": "Lunes",
+        "Ma": "Martes",
+        "Mi": "Miércoles",
+        "Ju": "Jueves",
+        "Vi": "Viernes"
+    }
+}

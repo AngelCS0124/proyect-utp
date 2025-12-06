@@ -1,0 +1,16 @@
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+cd python_backend
+python3 setup.py build_ext --inplace
+
+python3 app.py
+
+
+cd cpp_core
+mkdir -p build
+cd build
+cmake ..
+make

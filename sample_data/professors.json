@@ -1,77 +1,441 @@
 [
     {
         "id": 1,
-        "name": "Dr. Juan Pérez",
-        "email": "jperez@utp.edu",
-        "available_timeslots": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8
-        ]
+        "name": "Dr. Jean-Michael Recher",
+        "email": "professor1@university.edu",
+        "available_timeslots": []
     },
     {
         "id": 2,
-        "name": "Dra. María González",
-        "email": "mgonzalez@utp.edu",
-        "available_timeslots": [
-            2,
-            3,
-            4,
-            5,
-            9,
-            10,
-            11,
-            12
-        ]
+        "name": "Dr. Alberto García Robledo",
+        "email": "professor2@university.edu",
+        "available_timeslots": []
     },
     {
         "id": 3,
-        "name": "Dr. Carlos Rodríguez",
-        "email": "crodriguez@utp.edu",
-        "available_timeslots": [
-            1,
-            2,
-            6,
-            7,
-            8,
-            13,
-            14,
-            15
-        ]
+        "name": "Dra. Karla E. Vázquez Ortiz",
+        "email": "professor3@university.edu",
+        "available_timeslots": []
     },
     {
         "id": 4,
-        "name": "Dra. Ana Martínez",
-        "email": "amartinez@utp.edu",
-        "available_timeslots": [
-            3,
-            4,
-            5,
-            9,
-            10,
-            11,
-            16,
-            17
-        ]
+        "name": "Dr. Hector Hugo Avilés Arriaga",
+        "email": "professor4@university.edu",
+        "available_timeslots": []
     },
     {
         "id": 5,
-        "name": "Dr. Luis Fernández",
-        "email": "lfernandez@utp.edu",
+        "name": "Dr. Said Polanco Martagón",
+        "email": "professor5@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 6,
+        "name": "Dr. Marco A. Nuño Maganda",
+        "email": "professor6@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 7,
+        "name": "M.C.A. Jorge Arturo Hernández Almazan",
+        "email": "professor7@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 8,
+        "name": "M.S.I. Mario H. Rodriguez Chávez",
+        "email": "professor8@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 9,
+        "name": "M.C. Jorge O. Jasso Luna",
+        "email": "professor9@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 10,
+        "name": "M.A.T. Hiram Herrera Rivas",
+        "email": "professor10@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 11,
+        "name": "M.S.I. Alma Delia Amaya Vázquez",
+        "email": "professor11@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 12,
+        "name": "M.S.I. José Fidencio López Luna",
+        "email": "professor12@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 13,
+        "name": "M.I. Manuel Ruiz Méndez",
+        "email": "professor13@university.edu",
+        "available_timeslots": [
+            13,
+            14,
+            113,
+            114,
+            213,
+            214,
+            313,
+            314,
+            413,
+            414
+        ]
+    },
+    {
+        "id": 14,
+        "name": "M.T.I. Israel Pulido Picazo",
+        "email": "professor14@university.edu",
         "available_timeslots": [
             1,
-            5,
-            6,
-            7,
             12,
             13,
             14,
-            18
+            101,
+            112,
+            113,
+            114,
+            201,
+            212,
+            213,
+            214,
+            312,
+            313,
+            314,
+            412,
+            413,
+            414
+        ]
+    },
+    {
+        "id": 15,
+        "name": "M.S.I. Marina Cristal Flores Flores",
+        "email": "professor15@university.edu",
+        "available_timeslots": [
+            12,
+            13,
+            14,
+            112,
+            113,
+            114,
+            212,
+            213,
+            214,
+            312,
+            313,
+            314
+        ]
+    },
+    {
+        "id": 16,
+        "name": "M.I. Arturo G. Mascorro Cienfuegos",
+        "email": "professor16@university.edu",
+        "available_timeslots": [
+            1,
+            12,
+            13,
+            101,
+            112,
+            113,
+            201,
+            212,
+            213,
+            301,
+            312,
+            313,
+            401,
+            412,
+            413
+        ]
+    },
+    {
+        "id": 17,
+        "name": "M.I. Hugo O. Camargo",
+        "email": "professor17@university.edu",
+        "available_timeslots": [
+            12,
+            13,
+            14,
+            112,
+            113,
+            114,
+            212,
+            213,
+            214,
+            312,
+            313,
+            314,
+            412,
+            413,
+            414
+        ]
+    },
+    {
+        "id": 18,
+        "name": "Ing. Hugo E. Treviño",
+        "email": "professor18@university.edu",
+        "available_timeslots": [
+            12,
+            13,
+            14,
+            112,
+            113,
+            114,
+            212,
+            213,
+            214,
+            312,
+            313,
+            314,
+            412,
+            413,
+            414
+        ]
+    },
+    {
+        "id": 19,
+        "name": "M.I. Adriana Lizeth Trujillo",
+        "email": "professor19@university.edu",
+        "available_timeslots": [
+            11,
+            12,
+            13,
+            111,
+            112,
+            113,
+            211,
+            212,
+            213
+        ]
+    },
+    {
+        "id": 20,
+        "name": "M.I. Luis R. De la Fuente",
+        "email": "professor20@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 21,
+        "name": "M.I. Erendira Guitierrez Meza",
+        "email": "professor21@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 22,
+        "name": "M.C. Maribel Marin Castro",
+        "email": "professor22@university.edu",
+        "available_timeslots": [
+            2,
+            3,
+            5,
+            6,
+            7,
+            9,
+            102,
+            103,
+            105,
+            106,
+            107,
+            109,
+            202,
+            203,
+            205,
+            206,
+            207,
+            209,
+            302,
+            303,
+            305,
+            306,
+            307,
+            309,
+            402,
+            403,
+            405,
+            406,
+            407,
+            409
+        ]
+    },
+    {
+        "id": 23,
+        "name": "M.C. Carlos Orozco Garcia",
+        "email": "professor23@university.edu",
+        "available_timeslots": [
+            1,
+            2,
+            3,
+            101,
+            102,
+            201,
+            202,
+            301,
+            302,
+            401,
+            402
+        ]
+    },
+    {
+        "id": 24,
+        "name": "Ing. Juan Manuel Ornelas Llerena",
+        "email": "professor24@university.edu",
+        "available_timeslots": [
+            9,
+            10,
+            11,
+            12,
+            109,
+            110,
+            111,
+            112,
+            209,
+            309,
+            310,
+            311,
+            409,
+            410,
+            411
+        ]
+    },
+    {
+        "id": 25,
+        "name": "Eduardo Patricio González Nuño",
+        "email": "professor25@university.edu",
+        "available_timeslots": [
+            1,
+            2,
+            3,
+            101,
+            102,
+            103,
+            201,
+            202,
+            203,
+            301,
+            302,
+            303,
+            401,
+            402,
+            403
+        ]
+    },
+    {
+        "id": 26,
+        "name": "Lic. Myriam Ornelas Llerena",
+        "email": "professor26@university.edu",
+        "available_timeslots": [
+            1,
+            2,
+            3,
+            5,
+            101,
+            102,
+            105,
+            201,
+            202,
+            205,
+            301,
+            302,
+            305
+        ]
+    },
+    {
+        "id": 27,
+        "name": "Luis F. Castillo Cortés",
+        "email": "professor27@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 28,
+        "name": "Lic. Carlos Castillo",
+        "email": "professor28@university.edu",
+        "available_timeslots": [
+            12,
+            13,
+            14,
+            112,
+            113,
+            114
+        ]
+    },
+    {
+        "id": 29,
+        "name": "Fernando Requena",
+        "email": "professor29@university.edu",
+        "available_timeslots": [
+            2,
+            3,
+            5,
+            6,
+            7,
+            9,
+            10,
+            11,
+            102,
+            103,
+            105,
+            106,
+            107,
+            109,
+            110,
+            111,
+            202,
+            203,
+            205,
+            206,
+            207,
+            209,
+            210,
+            211,
+            302,
+            303,
+            305,
+            306,
+            307,
+            309,
+            310,
+            311,
+            402,
+            403,
+            405,
+            406,
+            407,
+            409,
+            410,
+            411
+        ]
+    },
+    {
+        "id": 30,
+        "name": "Oscar Romero de la Cruz",
+        "email": "professor30@university.edu",
+        "available_timeslots": []
+    },
+    {
+        "id": 31,
+        "name": "Alma Leticia Valdéz García",
+        "email": "professor31@university.edu",
+        "available_timeslots": [
+            5,
+            6,
+            7,
+            9,
+            11,
+            106,
+            107,
+            109,
+            206,
+            207,
+            209,
+            305,
+            306,
+            307
         ]
     }
 ]

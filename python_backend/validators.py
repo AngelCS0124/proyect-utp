@@ -16,23 +16,23 @@ class Validator:
         warnings = []
         
         if not courses:
-            errors.append("No courses provided")
+            errors.append("No se proporcionaron cursos")
             return {'valid': False, 'errors': errors, 'warnings': warnings}
         
         # Check for duplicate IDs
         ids = [c.id for c in courses]
         if len(ids) != len(set(ids)):
-            errors.append("Duplicate course IDs found")
+            errors.append("Se encontraron IDs de cursos duplicados")
         
         # Check for valid enrollment numbers
         for course in courses:
             if course.enrollment <= 0:
-                errors.append(f"Course '{course.name}' has invalid enrollment: {course.enrollment}")
+                errors.append(f"El curso '{course.name}' tiene una matrícula inválida: {course.enrollment}")
             
             # Check prerequisites exist
             for prereq_id in course.prerequisites:
                 if prereq_id not in ids:
-                    warnings.append(f"Course '{course.name}' has non-existent prerequisite ID: {prereq_id}")
+                    warnings.append(f"El curso '{course.name}' tiene un prerrequisito inexistente: {prereq_id}")
         
         return {
             'valid': len(errors) == 0,
@@ -47,18 +47,18 @@ class Validator:
         warnings = []
         
         if not professors:
-            errors.append("No professors provided")
+            errors.append("No se proporcionaron profesores")
             return {'valid': False, 'errors': errors, 'warnings': warnings}
         
         # Check for duplicate IDs
         ids = [p.id for p in professors]
         if len(ids) != len(set(ids)):
-            errors.append("Duplicate professor IDs found")
+            errors.append("Se encontraron IDs de profesores duplicados")
         
         # Check for availability
         for professor in professors:
             if not professor.available_timeslots:
-                warnings.append(f"Professor '{professor.name}' has no available timeslots")
+                warnings.append(f"El profesor '{professor.name}' no tiene horarios disponibles")
         
         return {
             'valid': len(errors) == 0,
@@ -75,13 +75,13 @@ class Validator:
         warnings = []
         
         if not timeslots:
-            errors.append("No timeslots provided")
+            errors.append("No se proporcionaron horarios")
             return {'valid': False, 'errors': errors, 'warnings': warnings}
         
         # Check for duplicate IDs
         ids = [t.id for t in timeslots]
         if len(ids) != len(set(ids)):
-            errors.append("Duplicate timeslot IDs found")
+            errors.append("Se encontraron IDs de horarios duplicados")
         
         # Get all valid days (Spanish and English)
         valid_days = VALID_DAYS['es'] + VALID_DAYS['en']
@@ -94,17 +94,17 @@ class Validator:
             
             # Validate hours
             if not (0 <= timeslot.start_hour < 24 and 0 <= timeslot.end_hour < 24):
-                errors.append(f"Invalid hours for timeslot {timeslot.id}")
+                errors.append(f"Horas inválidas para el bloque {timeslot.id}")
             
             # Validate minutes
             if not (0 <= timeslot.start_minute < 60 and 0 <= timeslot.end_minute < 60):
-                errors.append(f"Invalid minutes for timeslot {timeslot.id}")
+                errors.append(f"Minutos inválidos para el bloque {timeslot.id}")
             
             # Validate time range
             start_time = timeslot.start_hour * 60 + timeslot.start_minute
             end_time = timeslot.end_hour * 60 + timeslot.end_minute
             if start_time >= end_time:
-                errors.append(f"Timeslot {timeslot.id} has invalid time range")
+                errors.append(f"El bloque {timeslot.id} tiene un rango de tiempo inválido (inicio >= fin)")
             
             # Validate against UTP time block constraints
             is_valid, error_msg = validate_timeslot_constraints(
@@ -115,7 +115,7 @@ class Validator:
             )
             
             if not is_valid:
-                errors.append(f"Timeslot {timeslot.id}: {error_msg}")
+                errors.append(f"Bloque {timeslot.id}: {error_msg}")
         
         return {
             'valid': len(errors) == 0,
@@ -134,10 +134,11 @@ class Validator:
         for course in courses:
             if course.professor_id is None:
                 print(f"DEBUG: Warning - Course {course.name} has no professor")
-                warnings.append(f"Course '{course.name}' has no professor assigned")
+                warnings.append(f"El curso '{course.name}' no tiene profesor asignado")
             elif course.professor_id not in professor_ids:
-                print(f"DEBUG: Error - Course {course.name} has invalid professor {course.professor_id}")
-                errors.append(f"Course '{course.name}' assigned to non-existent professor ID: {course.professor_id}")
+                print(f"DEBUG: Warning - Course {course.name} has invalid professor {course.professor_id}")
+                warnings.append(f"El curso '{course.name}' está asignado a un ID de profesor inexistente: {course.professor_id}. Se ignorará la asignación.")
+                course.professor_id = None # Reset invalid assignment
         
         print(f"DEBUG: Validation result - Errors: {len(errors)}, Warnings: {len(warnings)}")
         return {

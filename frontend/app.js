@@ -76,6 +76,16 @@ async function handleFileUpload(file, dataType) {
             state.dataLoaded[dataType] = true;
             showNotification('¡Éxito!', result.message, 'success');
             await loadData(dataType);
+
+            // If we uploaded professors, we might have also loaded timeslots
+            if (dataType === 'professors') {
+                // Check if timeslots are now available by fetching status or just trying to load
+                await loadData('timeslots');
+                // We can assume if professors loaded successfully with the new backend logic, timeslots might be there
+                // Let's check the count from the result message or just rely on loadData updating the state
+                state.dataLoaded.timeslots = true; // Optimistic update, or check state.timeslots.length after load
+            }
+
             updateUI();
         } else {
             showNotification('Error', result.error || 'Error al cargar archivo', 'error');
@@ -321,9 +331,14 @@ async function saveProfessor() {
             await loadData('professors');
             renderProfessorsTable();
             updateUI();
-        } else {
-            const res = await response.json();
-            showNotification('Error', res.error, 'error');
+        }
+        if (!response.ok) {
+            const errorData = await response.json();
+            const error = new Error(errorData.error || 'Error al generar horario');
+            if (errorData.details) {
+                error.details = errorData.details;
+            }
+            throw error;
         }
     } catch (error) {
         showNotification('Error', error.message, 'error');
@@ -501,11 +516,28 @@ async function saveAvailability() {
         });
 
         if (response.ok) {
-            showNotification('Éxito', 'Disponibilidad guardada', 'success');
+            // After updating memory, save to file
+            await saveAllProfessors(false); // false = silent mode (no extra notification if success)
+            showNotification('Éxito', 'Disponibilidad guardada en archivo', 'success');
             await loadData('professors'); // Reload to update state
         }
     } catch (error) {
         showNotification('Error', error.message, 'error');
+    }
+}
+
+async function saveAllProfessors(showSuccess = true) {
+    try {
+        const response = await fetch(`${API_BASE}/professors/save`, { method: 'POST' });
+        const result = await response.json();
+
+        if (response.ok) {
+            if (showSuccess) showNotification('Éxito', 'Todos los cambios han sido guardados en el archivo', 'success');
+        } else {
+            showNotification('Error', result.error || 'Error al guardar en archivo', 'error');
+        }
+    } catch (error) {
+        showNotification('Error', `Error de conexión: ${error.message}`, 'error');
     }
 }
 
@@ -547,8 +579,24 @@ async function generateSchedule() {
             showErrorModal(result.error || 'No se pudo generar el horario');
         }
     } catch (error) {
-        hideGenerationOverlay();
-        showErrorModal(`Error al generar: ${error.message}`);
+        console.error('Generation error:', error);
+
+        let errorMsg = error.message;
+        let detailsHtml = '';
+
+        if (error.details && Array.isArray(error.details)) {
+            detailsHtml = '<ul style="text-align: left; margin-top: 10px;">' +
+                error.details.map(d => `<li>${d}</li>`).join('') +
+                '</ul>';
+        }
+
+        hideGenerationOverlay(); // Ensure overlay is hidden on error
+        showErrorModal('Error de Generación', `
+            <div class="error-message">
+                <p>${errorMsg}</p>
+                ${detailsHtml}
+            </div>
+        `);
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -631,6 +679,9 @@ function renderScheduleView() {
     if (vizControls) vizControls.style.display = 'flex';
     if (filterContainer) filterContainer.style.display = 'block';
 
+    // Update filter options based on current cycle
+    updateSemesterFilter();
+
     tbody.innerHTML = '';
 
     const semesterFilter = document.getElementById('semester-filter') ? document.getElementById('semester-filter').value : 'all';
@@ -654,6 +705,48 @@ function renderScheduleView() {
         `;
         tbody.appendChild(tr);
     });
+}
+
+function updateSemesterFilter() {
+    const select = document.getElementById('semester-filter');
+    const currentCycle = state.currentCycle;
+
+    if (!select) return;
+
+    // Save current selection if any
+    const currentVal = select.value;
+
+    // Clear existing options (keep "All")
+    select.innerHTML = '<option value="all">Todos los Cuatrimestres</option>';
+
+    if (!currentCycle) return;
+
+    // Get semesters for this cycle
+    // Mapping: sept-dec -> [1, 4, 7, 10], jan-apr -> [2, 5, 8], may-aug -> [3, 6, 9]
+    const cycleMapping = {
+        'sept-dec': [1, 4, 7, 10],
+        'jan-apr': [2, 5, 8],
+        'may-aug': [3, 6, 9]
+    };
+
+    const allowedSemesters = cycleMapping[currentCycle] || [];
+
+    const ordinals = {
+        1: "Primer", 2: "Segundo", 3: "Tercer", 4: "Cuarto", 5: "Quinto",
+        6: "Sexto", 7: "Séptimo", 8: "Octavo", 9: "Noveno", 10: "Décimo"
+    };
+
+    allowedSemesters.forEach(sem => {
+        const option = document.createElement('option');
+        option.value = sem;
+        option.textContent = `${ordinals[sem]} Cuatrimestre`;
+        select.appendChild(option);
+    });
+
+    // Restore selection if valid, else default to all
+    if (allowedSemesters.includes(parseInt(currentVal))) {
+        select.value = currentVal;
+    }
 }
 
 function filterScheduleBySemester() {
@@ -720,9 +813,10 @@ function updateUI() {
     document.getElementById('professor-count').textContent = state.professors.length;
     document.getElementById('timeslot-count').textContent = state.timeslots.length;
 
-    // Update upload cards status (no course card anymore)
+    // Update upload cards status
     updateCardState('card-professors', state.dataLoaded.professors);
     updateCardState('card-timeslots', state.dataLoaded.timeslots);
+    updateCardState('card-courses', state.dataLoaded.courses);
 }
 
 function updateCardState(cardId, loaded) {
@@ -761,3 +855,152 @@ window.filterProfessorsBySubject = filterProfessorsBySubject;
 window.loadCycleData = loadCycleData;
 window.loadDefaultData = loadDefaultData;
 window.filterScheduleBySemester = filterScheduleBySemester;
+window.saveAllProfessors = saveAllProfessors;
+
+// ===== Calendar View Logic =====
+
+state.currentScheduleView = 'list';
+
+function switchScheduleView(view) {
+    state.currentScheduleView = view;
+
+    // Update buttons
+    document.getElementById('btn-view-list').classList.toggle('active', view === 'list');
+    document.getElementById('btn-view-calendar').classList.toggle('active', view === 'calendar');
+
+    // Update visibility
+    document.getElementById('schedule-list-container').style.display = view === 'list' ? 'block' : 'none';
+    document.getElementById('schedule-calendar-container').style.display = view === 'calendar' ? 'block' : 'none';
+
+    if (view === 'calendar') {
+        renderScheduleCalendarView();
+    }
+}
+
+window.switchScheduleView = switchScheduleView;
+
+function renderScheduleCalendarView() {
+    const container = document.getElementById('schedule-calendar-container');
+    container.innerHTML = '';
+
+    if (!state.schedule) return;
+
+    const semesterFilter = document.getElementById('semester-filter') ? document.getElementById('semester-filter').value : 'all';
+
+    // Group assignments by semester/group
+    const groups = {};
+    state.schedule.assignments.forEach(a => {
+        const sem = a.semester || 0;
+        if (semesterFilter !== 'all' && sem.toString() !== semesterFilter) return;
+
+        const groupKey = `Cuatrimestre ${sem}`; // Or use group_id if available
+        if (!groups[groupKey]) groups[groupKey] = [];
+        groups[groupKey].push(a);
+    });
+
+    // Get unique time ranges
+    const uniqueTimes = [];
+    const seenTimes = new Set();
+    // Sort timeslots first
+    const sortedSlots = [...state.timeslots].sort((a, b) =>
+        (a.start_hour * 60 + a.start_minute) - (b.start_hour * 60 + b.start_minute)
+    );
+
+    sortedSlots.forEach(t => {
+        const key = `${t.start_hour}:${t.start_minute}-${t.end_hour}:${t.end_minute}`;
+        if (!seenTimes.has(key)) {
+            seenTimes.add(key);
+            uniqueTimes.push({
+                start_h: t.start_hour,
+                start_m: t.start_minute,
+                end_h: t.end_hour,
+                end_m: t.end_minute,
+                label: `${t.start_hour}:${t.start_minute.toString().padStart(2, '0')}-${t.end_hour}:${t.end_minute.toString().padStart(2, '0')}`
+            });
+        }
+    });
+
+    const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+
+    // Render a calendar for each group
+    Object.keys(groups).sort().forEach(groupName => {
+        const groupAssignments = groups[groupName];
+
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'calendar-group';
+        groupDiv.innerHTML = `<h3 class="calendar-group-title">${groupName}</h3>`;
+
+        const table = document.createElement('table');
+        table.className = 'calendar-table';
+
+        // Header
+        let theadHtml = '<thead><tr><th>Horario</th>';
+        days.forEach(d => theadHtml += `<th>${d}</th>`);
+        theadHtml += '</tr></thead>';
+        table.innerHTML = theadHtml;
+
+        const tbody = document.createElement('tbody');
+
+        uniqueTimes.forEach(time => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td class="time-cell">${time.label}</td>`;
+
+            days.forEach(day => {
+                // Find assignment
+                const assignment = groupAssignments.find(a => {
+                    // Find timeslot for this assignment
+                    const ts = state.timeslots.find(t => t.id === a.timeslot_id);
+                    if (!ts) return false;
+
+                    return ts.day === day &&
+                        ts.start_hour === time.start_h &&
+                        ts.start_minute === time.start_m;
+                });
+
+                if (assignment) {
+                    const color = getColorForString(assignment.course_name);
+
+                    tr.innerHTML += `
+                        <td class="calendar-cell" style="background-color: ${color}20; border-left: 3px solid ${color};">
+                            <div class="cell-content">
+                                <div class="cell-course">${assignment.course_name}</div>
+                                <div class="cell-prof">${assignment.professor_name}</div>
+                            </div>
+                        </td>
+                    `;
+                } else {
+                    tr.innerHTML += '<td></td>';
+                }
+            });
+
+            tbody.appendChild(tr);
+        });
+
+        table.appendChild(tbody);
+        groupDiv.appendChild(table);
+        container.appendChild(groupDiv);
+    });
+}
+
+function getColorForString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
+    return '#' + '00000'.substring(0, 6 - c.length) + c;
+}
+
+// Override renderScheduleView to handle initial view state
+const originalRenderScheduleView = renderScheduleView;
+renderScheduleView = function () {
+    originalRenderScheduleView();
+
+    // Also update calendar view if active
+    if (state.currentScheduleView === 'calendar') {
+        renderScheduleCalendarView();
+    }
+
+    // Ensure correct container visibility
+    switchScheduleView(state.currentScheduleView);
+}

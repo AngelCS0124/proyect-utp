@@ -5,7 +5,8 @@
         "start_hour": 7,
         "start_minute": 0,
         "end_hour": 7,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Lunes 07:00-07:55"
     },
     {
         "id": 2,
@@ -13,7 +14,8 @@
         "start_hour": 7,
         "start_minute": 55,
         "end_hour": 8,
-        "end_minute": 49
+        "end_minute": 50,
+        "display": "Lunes 07:55-08:50"
     },
     {
         "id": 3,
@@ -21,7 +23,8 @@
         "start_hour": 8,
         "start_minute": 50,
         "end_hour": 9,
-        "end_minute": 44
+        "end_minute": 45,
+        "display": "Lunes 08:50-09:45"
     },
     {
         "id": 4,
@@ -29,7 +32,8 @@
         "start_hour": 9,
         "start_minute": 45,
         "end_hour": 10,
-        "end_minute": 39
+        "end_minute": 40,
+        "display": "Lunes 09:45-10:40"
     },
     {
         "id": 5,
@@ -37,15 +41,17 @@
         "start_hour": 11,
         "start_minute": 10,
         "end_hour": 12,
-        "end_minute": 4
+        "end_minute": 5,
+        "display": "Lunes 11:10-12:05"
     },
     {
         "id": 6,
         "day": "Lunes",
         "start_hour": 12,
         "start_minute": 5,
-        "end_hour": 12,
-        "end_minute": 59
+        "end_hour": 13,
+        "end_minute": 0,
+        "display": "Lunes 12:05-13:00"
     },
     {
         "id": 7,
@@ -53,15 +59,26 @@
         "start_hour": 13,
         "start_minute": 0,
         "end_hour": 13,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Lunes 13:00-13:55"
     },
     {
         "id": 8,
         "day": "Lunes",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
-        "end_minute": 49
+        "end_minute": 55,
+        "display": "Lunes 14:00-14:55"
+    },
+    {
+        "id": 9,
+        "day": "Lunes",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
+        "end_minute": 50,
+        "display": "Lunes 14:55-15:50"
     },
     {
         "id": 101,
@@ -69,7 +86,8 @@
         "start_hour": 7,
         "start_minute": 0,
         "end_hour": 7,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Martes 07:00-07:55"
     },
     {
         "id": 102,
@@ -77,7 +95,8 @@
         "start_hour": 7,
         "start_minute": 55,
         "end_hour": 8,
-        "end_minute": 49
+        "end_minute": 50,
+        "display": "Martes 07:55-08:50"
     },
     {
         "id": 103,
@@ -85,7 +104,8 @@
         "start_hour": 8,
         "start_minute": 50,
         "end_hour": 9,
-        "end_minute": 44
+        "end_minute": 45,
+        "display": "Martes 08:50-09:45"
     },
     {
         "id": 104,
@@ -93,7 +113,8 @@
         "start_hour": 9,
         "start_minute": 45,
         "end_hour": 10,
-        "end_minute": 39
+        "end_minute": 40,
+        "display": "Martes 09:45-10:40"
     },
     {
         "id": 105,
@@ -101,15 +122,17 @@
         "start_hour": 11,
         "start_minute": 10,
         "end_hour": 12,
-        "end_minute": 4
+        "end_minute": 5,
+        "display": "Martes 11:10-12:05"
     },
     {
         "id": 106,
         "day": "Martes",
         "start_hour": 12,
         "start_minute": 5,
-        "end_hour": 12,
-        "end_minute": 59
+        "end_hour": 13,
+        "end_minute": 0,
+        "display": "Martes 12:05-13:00"
     },
     {
         "id": 107,
@@ -117,15 +140,26 @@
         "start_hour": 13,
         "start_minute": 0,
         "end_hour": 13,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Martes 13:00-13:55"
     },
     {
         "id": 108,
         "day": "Martes",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
-        "end_minute": 49
+        "end_minute": 55,
+        "display": "Martes 14:00-14:55"
+    },
+    {
+        "id": 109,
+        "day": "Martes",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
+        "end_minute": 50,
+        "display": "Martes 14:55-15:50"
     },
     {
         "id": 201,
@@ -133,7 +167,8 @@
         "start_hour": 7,
         "start_minute": 0,
         "end_hour": 7,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Miércoles 07:00-07:55"
     },
     {
         "id": 202,
@@ -141,7 +176,8 @@
         "start_hour": 7,
         "start_minute": 55,
         "end_hour": 8,
-        "end_minute": 49
+        "end_minute": 50,
+        "display": "Miércoles 07:55-08:50"
     },
     {
         "id": 203,
@@ -149,7 +185,8 @@
         "start_hour": 8,
         "start_minute": 50,
         "end_hour": 9,
-        "end_minute": 44
+        "end_minute": 45,
+        "display": "Miércoles 08:50-09:45"
     },
     {
         "id": 204,
@@ -157,7 +194,8 @@
         "start_hour": 9,
         "start_minute": 45,
         "end_hour": 10,
-        "end_minute": 39
+        "end_minute": 40,
+        "display": "Miércoles 09:45-10:40"
     },
     {
         "id": 205,
@@ -165,15 +203,17 @@
         "start_hour": 11,
         "start_minute": 10,
         "end_hour": 12,
-        "end_minute": 4
+        "end_minute": 5,
+        "display": "Miércoles 11:10-12:05"
     },
     {
         "id": 206,
         "day": "Miércoles",
         "start_hour": 12,
         "start_minute": 5,
-        "end_hour": 12,
-        "end_minute": 59
+        "end_hour": 13,
+        "end_minute": 0,
+        "display": "Miércoles 12:05-13:00"
     },
     {
         "id": 207,
@@ -181,15 +221,26 @@
         "start_hour": 13,
         "start_minute": 0,
         "end_hour": 13,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Miércoles 13:00-13:55"
     },
     {
         "id": 208,
         "day": "Miércoles",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
-        "end_minute": 49
+        "end_minute": 55,
+        "display": "Miércoles 14:00-14:55"
+    },
+    {
+        "id": 209,
+        "day": "Miércoles",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
+        "end_minute": 50,
+        "display": "Miércoles 14:55-15:50"
     },
     {
         "id": 301,
@@ -197,7 +248,8 @@
         "start_hour": 7,
         "start_minute": 0,
         "end_hour": 7,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Jueves 07:00-07:55"
     },
     {
         "id": 302,
@@ -205,7 +257,8 @@
         "start_hour": 7,
         "start_minute": 55,
         "end_hour": 8,
-        "end_minute": 49
+        "end_minute": 50,
+        "display": "Jueves 07:55-08:50"
     },
     {
         "id": 303,
@@ -213,7 +266,8 @@
         "start_hour": 8,
         "start_minute": 50,
         "end_hour": 9,
-        "end_minute": 44
+        "end_minute": 45,
+        "display": "Jueves 08:50-09:45"
     },
     {
         "id": 304,
@@ -221,7 +275,8 @@
         "start_hour": 9,
         "start_minute": 45,
         "end_hour": 10,
-        "end_minute": 39
+        "end_minute": 40,
+        "display": "Jueves 09:45-10:40"
     },
     {
         "id": 305,
@@ -229,15 +284,17 @@
         "start_hour": 11,
         "start_minute": 10,
         "end_hour": 12,
-        "end_minute": 4
+        "end_minute": 5,
+        "display": "Jueves 11:10-12:05"
     },
     {
         "id": 306,
         "day": "Jueves",
         "start_hour": 12,
         "start_minute": 5,
-        "end_hour": 12,
-        "end_minute": 59
+        "end_hour": 13,
+        "end_minute": 0,
+        "display": "Jueves 12:05-13:00"
     },
     {
         "id": 307,
@@ -245,15 +302,26 @@
         "start_hour": 13,
         "start_minute": 0,
         "end_hour": 13,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Jueves 13:00-13:55"
     },
     {
         "id": 308,
         "day": "Jueves",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
-        "end_minute": 49
+        "end_minute": 55,
+        "display": "Jueves 14:00-14:55"
+    },
+    {
+        "id": 309,
+        "day": "Jueves",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
+        "end_minute": 50,
+        "display": "Jueves 14:55-15:50"
     },
     {
         "id": 401,
@@ -261,7 +329,8 @@
         "start_hour": 7,
         "start_minute": 0,
         "end_hour": 7,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Viernes 07:00-07:55"
     },
     {
         "id": 402,
@@ -269,7 +338,8 @@
         "start_hour": 7,
         "start_minute": 55,
         "end_hour": 8,
-        "end_minute": 49
+        "end_minute": 50,
+        "display": "Viernes 07:55-08:50"
     },
     {
         "id": 403,
@@ -277,7 +347,8 @@
         "start_hour": 8,
         "start_minute": 50,
         "end_hour": 9,
-        "end_minute": 44
+        "end_minute": 45,
+        "display": "Viernes 08:50-09:45"
     },
     {
         "id": 404,
@@ -285,7 +356,8 @@
         "start_hour": 9,
         "start_minute": 45,
         "end_hour": 10,
-        "end_minute": 39
+        "end_minute": 40,
+        "display": "Viernes 09:45-10:40"
     },
     {
         "id": 405,
@@ -293,15 +365,17 @@
         "start_hour": 11,
         "start_minute": 10,
         "end_hour": 12,
-        "end_minute": 4
+        "end_minute": 5,
+        "display": "Viernes 11:10-12:05"
     },
     {
         "id": 406,
         "day": "Viernes",
         "start_hour": 12,
         "start_minute": 5,
-        "end_hour": 12,
-        "end_minute": 59
+        "end_hour": 13,
+        "end_minute": 0,
+        "display": "Viernes 12:05-13:00"
     },
     {
         "id": 407,
@@ -309,14 +383,25 @@
         "start_hour": 13,
         "start_minute": 0,
         "end_hour": 13,
-        "end_minute": 54
+        "end_minute": 55,
+        "display": "Viernes 13:00-13:55"
     },
     {
         "id": 408,
         "day": "Viernes",
-        "start_hour": 13,
-        "start_minute": 55,
+        "start_hour": 14,
+        "start_minute": 0,
         "end_hour": 14,
-        "end_minute": 49
+        "end_minute": 55,
+        "display": "Viernes 14:00-14:55"
+    },
+    {
+        "id": 409,
+        "day": "Viernes",
+        "start_hour": 14,
+        "start_minute": 55,
+        "end_hour": 15,
+        "end_minute": 50,
+        "display": "Viernes 14:55-15:50"
     }
 ]
