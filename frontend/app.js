@@ -438,7 +438,7 @@ function renderAvailabilityGrid(availableSlots) {
         // Add separator before Bloque 5 (after recess)
         if (index === 4) {
             const separatorTr = document.createElement('tr');
-            separatorTr.innerHTML = '<td colspan="6" style="height: 20px; background-color: #f0f0f0; border-top: 2px solid #ccc; border-bottom: 2px solid #ccc;"><em style="color: #999;">Receso de 10:40 - 11:09</em></td>';
+            separatorTr.innerHTML = '<td colspan="6" style="height: 20px; background-color: #f0f0f0; border-top: 2px solid #ccc; border-bottom: 2px solid #ccc;"><em style="color: #999;">Receso: 10:40 - 11:09</em></td>';
             separatorTr.style.pointerEvents = 'none';
             tbody.appendChild(separatorTr);
         }
