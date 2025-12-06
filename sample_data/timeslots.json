@@ -68,8 +68,12 @@
         "start_hour": 14,
         "start_minute": 0,
         "end_hour": 14,
+<<<<<<< HEAD
         "end_minute": 55,
         "display": "Lunes 14:00-14:55"
+=======
+        "end_minute": 54
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     },
     {
         "id": 9,
@@ -77,8 +81,12 @@
         "start_hour": 14,
         "start_minute": 55,
         "end_hour": 15,
+<<<<<<< HEAD
         "end_minute": 50,
         "display": "Lunes 14:55-15:50"
+=======
+        "end_minute": 49
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     },
     {
         "id": 101,
@@ -149,8 +157,12 @@
         "start_hour": 14,
         "start_minute": 0,
         "end_hour": 14,
+<<<<<<< HEAD
         "end_minute": 55,
         "display": "Martes 14:00-14:55"
+=======
+        "end_minute": 54
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     },
     {
         "id": 109,
@@ -158,8 +170,12 @@
         "start_hour": 14,
         "start_minute": 55,
         "end_hour": 15,
+<<<<<<< HEAD
         "end_minute": 50,
         "display": "Martes 14:55-15:50"
+=======
+        "end_minute": 49
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     },
     {
         "id": 201,
@@ -230,8 +246,12 @@
         "start_hour": 14,
         "start_minute": 0,
         "end_hour": 14,
+<<<<<<< HEAD
         "end_minute": 55,
         "display": "Miércoles 14:00-14:55"
+=======
+        "end_minute": 54
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     },
     {
         "id": 209,
@@ -239,8 +259,12 @@
         "start_hour": 14,
         "start_minute": 55,
         "end_hour": 15,
+<<<<<<< HEAD
         "end_minute": 50,
         "display": "Miércoles 14:55-15:50"
+=======
+        "end_minute": 49
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     },
     {
         "id": 301,
@@ -311,8 +335,12 @@
         "start_hour": 14,
         "start_minute": 0,
         "end_hour": 14,
+<<<<<<< HEAD
         "end_minute": 55,
         "display": "Jueves 14:00-14:55"
+=======
+        "end_minute": 54
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     },
     {
         "id": 309,
@@ -320,8 +348,12 @@
         "start_hour": 14,
         "start_minute": 55,
         "end_hour": 15,
+<<<<<<< HEAD
         "end_minute": 50,
         "display": "Jueves 14:55-15:50"
+=======
+        "end_minute": 49
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     },
     {
         "id": 401,
@@ -392,8 +424,12 @@
         "start_hour": 14,
         "start_minute": 0,
         "end_hour": 14,
+<<<<<<< HEAD
         "end_minute": 55,
         "display": "Viernes 14:00-14:55"
+=======
+        "end_minute": 54
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     },
     {
         "id": 409,
@@ -401,7 +437,11 @@
         "start_hour": 14,
         "start_minute": 55,
         "end_hour": 15,
+<<<<<<< HEAD
         "end_minute": 50,
         "display": "Viernes 14:55-15:50"
+=======
+        "end_minute": 49
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     }
 ]

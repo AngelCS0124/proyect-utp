@@ -1,9 +1,9 @@
-"""
-Predefined courses for Software Engineering curriculum at UTP
-Based on the official curriculum plan with 10 cuatrimestres
+﻿"""
+Curriculum data for UTP - All 10 cuatrimestres
+Predefined courses for each academic cycle
 """
 
-from models import Course
+from modelos import Curso
 
 # Complete curriculum data extracted from the plan de estudios
 CURRICULUM = {
@@ -103,14 +103,15 @@ CYCLE_NAMES = {
 
 def get_all_courses():
     """
-    Get all courses from the curriculum as Course objects
-    Returns: List of Course objects
+    Get all courses from the curriculum as Curso objects
+    Returns: List of Curso objects
     """
     courses = []
     for cuatrimestre, cuatrimestre_courses in CURRICULUM.items():
         for course_data in cuatrimestre_courses:
-            course = Course(
+            course = Curso(
                 id=course_data["id"],
+<<<<<<< HEAD
                 name=course_data["name"],
                 code=course_data["code"],
                 credits=course_data["credits"],
@@ -118,6 +119,15 @@ def get_all_courses():
                 prerequisites=[],  # Can be added later if needed
                 professor_id=None,
                 semester=cuatrimestre
+=======
+                nombre=course_data["name"],
+                codigo=course_data["code"],
+                creditos=course_data["credits"],
+                matricula=course_data["enrollment"],
+                prerequisitos=[],  # Can be added later if needed
+                id_profesor=None,
+                cuatrimestre=cuatrimestre
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
             )
             courses.append(course)
     return courses
@@ -128,7 +138,7 @@ def get_courses_for_cycle(cycle):
     Get courses for a specific cycle
     Args:
         cycle: One of 'sept-dec', 'jan-apr', 'may-aug'
-    Returns: List of Course objects for that cycle
+    Returns: List of Curso objects for that cycle
     """
     if cycle not in CYCLE_MAPPING:
         raise ValueError(f"Invalid cycle: {cycle}. Must be one of {list(CYCLE_MAPPING.keys())}")
@@ -139,8 +149,9 @@ def get_courses_for_cycle(cycle):
     for cuatrimestre in cuatrimestres:
         if cuatrimestre in CURRICULUM:
             for course_data in CURRICULUM[cuatrimestre]:
-                course = Course(
+                course = Curso(
                     id=course_data["id"],
+<<<<<<< HEAD
                     name=course_data["name"],
                     code=course_data["code"],
                     credits=course_data["credits"],
@@ -148,6 +159,15 @@ def get_courses_for_cycle(cycle):
                     prerequisites=[],
                     professor_id=None,
                     semester=cuatrimestre
+=======
+                    nombre=course_data["name"],
+                    codigo=course_data["code"],
+                    creditos=course_data["credits"],
+                    matricula=course_data["enrollment"],
+                    prerequisitos=[],
+                    id_profesor=None,
+                    cuatrimestre=cuatrimestre
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
                 )
                 courses.append(course)
     

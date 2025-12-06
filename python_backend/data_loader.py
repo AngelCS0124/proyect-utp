@@ -6,14 +6,14 @@ import csv
 import json
 import pandas as pd
 from typing import List, Dict, Any
-from models import Course, Professor, TimeSlot
+from modelos import Curso, Profesor, BloqueTiempo
 
 
 class DataLoader:
     """Handles loading data from various file formats"""
     
     @staticmethod
-    def load_courses_from_csv(filepath: str) -> List[Course]:
+    def load_courses_from_csv(filepath: str) -> List[Curso]:
         """Load courses from CSV file"""
         courses = []
         with open(filepath, 'r', encoding='utf-8') as f:
@@ -23,7 +23,7 @@ class DataLoader:
                 if row.get('prerequisites'):
                     prerequisites = [int(x.strip()) for x in row['prerequisites'].split(',') if x.strip()]
                 
-                course = Course(
+                course = Curso(
                     id=int(row['id']),
                     name=row['name'],
                     code=row.get('code', ''),
@@ -36,14 +36,14 @@ class DataLoader:
         return courses
     
     @staticmethod
-    def load_courses_from_json(filepath: str) -> List[Course]:
+    def load_courses_from_json(filepath: str) -> List[Curso]:
         """Load courses from JSON file"""
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
         courses = []
         for item in data:
-            course = Course(
+            course = Curso(
                 id=item['id'],
                 name=item['name'],
                 code=item.get('code', ''),
@@ -55,7 +55,7 @@ class DataLoader:
         return courses
     
     @staticmethod
-    def load_courses_from_excel(filepath: str) -> List[Course]:
+    def load_courses_from_excel(filepath: str) -> List[Curso]:
         """Load courses from Excel file"""
         df = pd.read_excel(filepath)
         courses = []
@@ -65,7 +65,7 @@ class DataLoader:
             if pd.notna(row.get('prerequisites')):
                 prerequisites = [int(x.strip()) for x in str(row['prerequisites']).split(',') if x.strip()]
             
-            course = Course(
+            course = Curso(
                 id=int(row['id']),
                 name=row['name'],
                 code=row.get('code', ''),
@@ -77,7 +77,7 @@ class DataLoader:
         return courses
     
     @staticmethod
-    def load_professors_from_csv(filepath: str) -> List[Professor]:
+    def load_professors_from_csv(filepath: str) -> List[Profesor]:
         """Load professors from CSV file"""
         professors = []
         with open(filepath, 'r', encoding='utf-8') as f:
@@ -87,7 +87,7 @@ class DataLoader:
                 if row.get('available_timeslots'):
                     timeslots = [int(x.strip()) for x in row['available_timeslots'].split(',') if x.strip()]
                 
-                professor = Professor(
+                professor = Profesor(
                     id=int(row['id']),
                     name=row['name'],
                     email=row.get('email', ''),
@@ -97,12 +97,17 @@ class DataLoader:
         return professors
     
     @staticmethod
+<<<<<<< HEAD
     def load_professors_from_json(filepath: str) -> Dict[str, Any]:
         """
         Load professors from JSON file.
         Supports both list of professors and combined format (professors + timeslots).
         Returns a dictionary with 'professors' and optionally 'timeslots'.
         """
+=======
+    def load_professors_from_json(filepath: str) -> List[Profesor]:
+        """Load professors from JSON file"""
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
@@ -180,8 +185,13 @@ class DataLoader:
             professors_data = data
         
         professors = []
+<<<<<<< HEAD
         for item in professors_data:
             professor = Professor(
+=======
+        for item in data:
+            professor = Profesor(
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
                 id=item['id'],
                 name=item['name'],
                 email=item.get('email', ''),
@@ -195,7 +205,7 @@ class DataLoader:
         }
     
     @staticmethod
-    def load_timeslots_from_csv(filepath: str) -> List[TimeSlot]:
+    def load_timeslots_from_csv(filepath: str) -> List[BloqueTiempo]:
         """Load timeslots from CSV file"""
         timeslots = []
         with open(filepath, 'r', encoding='utf-8') as f:
@@ -213,7 +223,7 @@ class DataLoader:
         return timeslots
     
     @staticmethod
-    def load_timeslots_from_json(filepath: str) -> List[TimeSlot]:
+    def load_timeslots_from_json(filepath: str) -> List[BloqueTiempo]:
         """Load timeslots from JSON file"""
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)

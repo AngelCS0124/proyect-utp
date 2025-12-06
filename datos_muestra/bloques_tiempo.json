@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "dia": "Lunes",
+        "hora_inicio": 7,
+        "minuto_inicio": 0,
+        "hora_fin": 7,
+        "minuto_fin": 54
+    },
+    {
+        "id": 2,
+        "dia": "Lunes",
+        "hora_inicio": 7,
+        "minuto_inicio": 55,
+        "hora_fin": 8,
+        "minuto_fin": 49
+    },
+    {
+        "id": 3,
+        "dia": "Lunes",
+        "hora_inicio": 8,
+        "minuto_inicio": 50,
+        "hora_fin": 9,
+        "minuto_fin": 44
+    },
+    {
+        "id": 4,
+        "dia": "Lunes",
+        "hora_inicio": 9,
+        "minuto_inicio": 45,
+        "hora_fin": 10,
+        "minuto_fin": 39
+    },
+    {
+        "id": 5,
+        "dia": "Lunes",
+        "hora_inicio": 11,
+        "minuto_inicio": 10,
+        "hora_fin": 12,
+        "minuto_fin": 4
+    },
+    {
+        "id": 6,
+        "dia": "Lunes",
+        "hora_inicio": 12,
+        "minuto_inicio": 5,
+        "hora_fin": 12,
+        "minuto_fin": 59
+    },
+    {
+        "id": 7,
+        "dia": "Lunes",
+        "hora_inicio": 13,
+        "minuto_inicio": 0,
+        "hora_fin": 13,
+        "minuto_fin": 54
+    },
+    {
+        "id": 8,
+        "dia": "Lunes",
+        "hora_inicio": 14,
+        "minuto_inicio": 0,
+        "hora_fin": 14,
+        "minuto_fin": 54
+    },
+    {
+        "id": 9,
+        "dia": "Lunes",
+        "hora_inicio": 14,
+        "minuto_inicio": 55,
+        "hora_fin": 15,
+        "minuto_fin": 49
+    }
+]

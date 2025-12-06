@@ -3,7 +3,7 @@ Predefined courses for Software Engineering curriculum at UTP
 Based on the official curriculum plan with 10 semesters
 """
 
-from models import Course
+from modelos import Curso
 
 # Complete curriculum data extracted from the plan de estudios
 CURRICULUM = {
@@ -109,7 +109,7 @@ def get_all_courses():
     courses = []
     for semester, semester_courses in CURRICULUM.items():
         for course_data in semester_courses:
-            course = Course(
+            course = Curso(
                 id=course_data["id"],
                 name=course_data["name"],
                 code=course_data["code"],
@@ -140,7 +140,7 @@ def get_courses_for_cycle(cycle):
     for semester in semesters:
         if semester in CURRICULUM:
             for course_data in CURRICULUM[semester]:
-                course = Course(
+                course = Curso(
                     id=course_data["id"],
                     name=course_data["name"],
                     code=course_data["code"],

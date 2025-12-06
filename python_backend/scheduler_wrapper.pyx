@@ -5,118 +5,119 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp cimport bool
 
-# C++ declarations
-cdef extern from "scheduler_core.hpp" namespace "scheduler":
-    cdef cppclass Assignment:
-        int courseId
-        int timeslotId
-        int professorId
+# Declaraciones C++ (Traducidas)
+cdef extern from "planificador.hpp" namespace "planificador":
+    cdef cppclass Asignacion:
+        int idCurso
+        int idBloque
+        int idProfesor
         
-        Assignment() except +
-        Assignment(int, int, int) except +
+        Asignacion() except +
+        Asignacion(int, int, int) except +
     
-    cdef cppclass ScheduleResult:
-        bool success
-        vector[Assignment] assignments
-        string errorMessage
-        int backtrackCount
-        double computationTime
+    cdef cppclass ResultadoHorario:
+        bool exito
+        vector[Asignacion] asignaciones
+        string mensajeError
+        int conteoBacktrack
+        double tiempoComputo
         
-        ScheduleResult() except +
+        ResultadoHorario() except +
     
-    cdef cppclass SchedulerCore:
-        SchedulerCore() except +
+    cdef cppclass PlanificadorCore:
+        PlanificadorCore() except +
         
-        void loadCourse(int id, const string& name, int enrollment,
-                       const vector[int]& prerequisites, int groupId, int duration) except +
-        void loadProfessor(int id, const string& name,
-                          const vector[int]& availableTimeslots) except +
-        void loadTimeSlot(int id, const string& day, int startHour, int startMinute,
-                         int endHour, int endMinute) except +
+        void cargarCurso(int id, const string& nombre, int matricula,
+                       const vector[int]& prerrequisitos, int idGrupo, int duracion) except +
+        void cargarProfesor(int id, const string& nombre,
+                          const vector[int]& bloquesDisponibles) except +
+        void cargarBloqueTiempo(int id, const string& dia, int horaInicio, int minutoInicio,
+                         int horaFin, int minutoFin) except +
         
-        void assignProfessorToCourse(int courseId, int professorId) except +
+        void asignarProfesorACurso(int idCurso, int idProfesor) except +
         
-        ScheduleResult generateSchedule() except +
-        void stopGeneration() except +
-        void reset() except +
+        ResultadoHorario generarHorario() except +
+        void detenerGeneracion() except +
+        void reiniciar() except +
         
-        bool hasData() const
-        string validateData() const
+        bool tieneDatos() const
+        string validarDatos() const
 
 
-# Python wrapper class
+# Clase Wrapper en Python
+# Mantenemos nombres de métodos de Python para compatibilidad con backend existente
 cdef class PyScheduler:
-    cdef SchedulerCore* scheduler
+    cdef PlanificadorCore* scheduler
     
     def __cinit__(self):
-        self.scheduler = new SchedulerCore()
+        self.scheduler = new PlanificadorCore()
     
     def __dealloc__(self):
         if self.scheduler != NULL:
             del self.scheduler
     
     def load_course(self, int course_id, str name, int enrollment, list prerequisites=None, int group_id=0, int duration=1):
-        """Load a course into the scheduler"""
+        """Cargar curso en el planificador"""
         cdef vector[int] prereq_vec
         if prerequisites:
             for p in prerequisites:
                 prereq_vec.push_back(p)
         
-        self.scheduler.loadCourse(course_id, name.encode('utf-8'), enrollment, prereq_vec, group_id, duration)
+        self.scheduler.cargarCurso(course_id, name.encode('utf-8'), enrollment, prereq_vec, group_id, duration)
     
     def load_professor(self, int prof_id, str name, list available_timeslots):
-        """Load a professor with their available timeslots"""
+        """Cargar profesor con horarios disponibles"""
         cdef vector[int] timeslot_vec
         for ts in available_timeslots:
             timeslot_vec.push_back(ts)
         
-        self.scheduler.loadProfessor(prof_id, name.encode('utf-8'), timeslot_vec)
+        self.scheduler.cargarProfesor(prof_id, name.encode('utf-8'), timeslot_vec)
     
     def load_timeslot(self, int slot_id, str day, int start_hour, int start_minute,
                      int end_hour, int end_minute):
-        """Load a timeslot"""
-        self.scheduler.loadTimeSlot(slot_id, day.encode('utf-8'), 
+        """Cargar bloque de tiempo"""
+        self.scheduler.cargarBloqueTiempo(slot_id, day.encode('utf-8'), 
                                     start_hour, start_minute, end_hour, end_minute)
     
     def assign_professor_to_course(self, int course_id, int professor_id):
-        """Assign a professor to teach a course"""
-        self.scheduler.assignProfessorToCourse(course_id, professor_id)
+        """Asignar profesor a curso"""
+        self.scheduler.asignarProfesorACurso(course_id, professor_id)
     
     def generate_schedule(self):
-        """Generate the schedule using backtracking algorithm"""
-        cdef ScheduleResult result = self.scheduler.generateSchedule()
+        """Generar horario usando algoritmo"""
+        cdef ResultadoHorario resultado = self.scheduler.generarHorario()
         
-        # Convert to Python dict
+        # Convertir a dict Python
         py_result = {
-            'success': result.success,
-            'error_message': result.errorMessage.decode('utf-8'),
-            'backtrack_count': result.backtrackCount,
-            'computation_time': result.computationTime,
+            'success': resultado.exito,
+            'error_message': resultado.mensajeError.decode('utf-8'),
+            'backtrack_count': resultado.conteoBacktrack,
+            'computation_time': resultado.tiempoComputo,
             'assignments': []
         }
         
-        # Convert assignments
-        for assignment in result.assignments:
+        # Convertir asignaciones
+        for asignacion in resultado.asignaciones:
             py_result['assignments'].append({
-                'course_id': assignment.courseId,
-                'timeslot_id': assignment.timeslotId,
-                'professor_id': assignment.professorId
+                'course_id': asignacion.idCurso,
+                'timeslot_id': asignacion.idBloque,
+                'professor_id': asignacion.idProfesor
             })
         
         return py_result
     
     def stop_generation(self):
-        """Stop the schedule generation process"""
-        self.scheduler.stopGeneration()
+        """Detener generación"""
+        self.scheduler.detenerGeneracion()
     
     def reset(self):
-        """Reset the scheduler (clear all data)"""
-        self.scheduler.reset()
+        """Reiniciar planificador"""
+        self.scheduler.reiniciar()
     
     def has_data(self):
-        """Check if scheduler has any data loaded"""
-        return self.scheduler.hasData()
+        """Verificar si hay datos cargados"""
+        return self.scheduler.tieneDatos()
     
     def validate_data(self):
-        """Validate the loaded data"""
-        return self.scheduler.validateData().decode('utf-8')
+        """Validar datos cargados"""
+        return self.scheduler.validarDatos().decode('utf-8')

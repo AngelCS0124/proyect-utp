@@ -9,11 +9,11 @@ import os
 import tempfile
 from werkzeug.utils import secure_filename
 
-# Import from modular structure
-from models import Course, Professor, TimeSlot, Schedule
+# Importar desde estructura modular
+from modelos import Curso, Profesor, BloqueTiempo, Horario
 from data import get_all_courses, get_courses_for_cycle, get_available_cycles
 from data_loader import DataLoader
-from validators import Validator
+from validadores import Validador
 
 # Try to import the C++ scheduler (will fail if not built yet)
 try:
@@ -40,6 +40,25 @@ data_store = {
     'schedule': None,
     'current_cycle': None  # Track currently selected cycle
 }
+
+# Initialize predefined timeslots
+def initialize_timeslots():
+    """Initialize valid predefined timeslots for the schedule"""
+    from configuracion.bloques_tiempo import obtener_bloques_semanales
+    timeslot_dicts = obtener_bloques_semanales(language='es')
+    data_store['timeslots'] = [
+        BloqueTiempo(
+            id=ts['id'],
+            dia=ts['day'],
+            hora_inicio=ts['start_hour'],
+            minuto_inicio=ts['start_minute'],
+            hora_fin=ts['end_hour'],
+            minuto_fin=ts['end_minute']
+        ) for ts in timeslot_dicts
+    ]
+
+# Load default timeslots on app startup
+initialize_timeslots()
 
 
 def allowed_file(filename):
@@ -299,6 +318,7 @@ def validate_data():
     return jsonify(validation)
 
 
+<<<<<<< HEAD
 @app.route('/api/visualization', methods=['GET'])
 def get_visualization_data():
     """Get visualization data for scheduling algorithm structures"""
@@ -319,6 +339,8 @@ def get_visualization_data():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+=======
+>>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 @app.route('/api/generate', methods=['POST'])
 def generate_schedule():
     """Generate schedule using C++ backtracking algorithm"""
@@ -335,6 +357,8 @@ def generate_schedule():
         data_store['professors'],
         data_store['timeslots']
     )
+    
+    print(f"DEBUG: Validation result - valid: {validation['valid']}, errors: {validation['errors']}, warnings: {validation['warnings']}")
     
     if not validation['valid']:
         return jsonify({
@@ -412,6 +436,27 @@ def generate_schedule():
                 'error': result['error_message']
             }), 400
     
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/visualization', methods=['GET'])
+def get_visualization_data():
+    """Get visualization data for scheduling algorithm structures"""
+    from services.visualizacion import generar_datos_visualizacion
+    
+    if not data_store['schedule']:
+        return jsonify({'error': 'No schedule generated yet'}), 404
+    
+    try:
+        datos_viz = generar_datos_visualizacion(
+            data_store['courses'],
+            data_store['professors'],
+            data_store['timeslots'],
+            data_store['schedule']['assignments']
+        )
+        
+        return jsonify(datos_viz)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

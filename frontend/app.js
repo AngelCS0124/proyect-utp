@@ -434,26 +434,42 @@ function renderAvailabilityGrid(availableSlots) {
     const tbody = document.getElementById('availability-grid');
     tbody.innerHTML = '';
 
-    const ranges = [
-        { start: 7, end: 9 },
-        { start: 9, end: 11 },
-        { start: 11, end: 13 },
-        { start: 13, end: 15 },
-        { start: 15, end: 17 },
-        { start: 17, end: 19 },
-        { start: 19, end: 21 }
+    // Define the predefined time blocks (54 minutes each)
+    const timeBlocks = [
+        { name: 'Bloque 1', start_hour: 7, start_minute: 0, end_hour: 7, end_minute: 54 },
+        { name: 'Bloque 2', start_hour: 7, start_minute: 55, end_hour: 8, end_minute: 49 },
+        { name: 'Bloque 3', start_hour: 8, start_minute: 50, end_hour: 9, end_minute: 44 },
+        { name: 'Bloque 4', start_hour: 9, start_minute: 45, end_hour: 10, end_minute: 39 },
+        // RECESS: 10:40 - 11:09
+        { name: 'Bloque 5', start_hour: 11, start_minute: 10, end_hour: 12, end_minute: 4 },
+        { name: 'Bloque 6', start_hour: 12, start_minute: 5, end_hour: 12, end_minute: 59 },
+        { name: 'Bloque 7', start_hour: 13, start_minute: 0, end_hour: 13, end_minute: 54 },
+        { name: 'Bloque 8', start_hour: 14, start_minute: 0, end_hour: 14, end_minute: 54 },
+        { name: 'Bloque 9', start_hour: 14, start_minute: 55, end_hour: 15, end_minute: 49 }
     ];
 
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
-    ranges.forEach(range => {
+    timeBlocks.forEach((block, index) => {
+        // Add separator before Bloque 5 (after recess)
+        if (index === 4) {
+            const separatorTr = document.createElement('tr');
+            separatorTr.innerHTML = '<td colspan="6" style="height: 20px; background-color: #f0f0f0; border-top: 2px solid #ccc; border-bottom: 2px solid #ccc;"><em style="color: #999;">Receso: 10:40 - 11:09</em></td>';
+            separatorTr.style.pointerEvents = 'none';
+            tbody.appendChild(separatorTr);
+        }
+
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${range.start}:00 - ${range.end}:00</td>`;
+        const startTime = `${String(block.start_hour).padStart(2, '0')}:${String(block.start_minute).padStart(2, '0')}`;
+        const endTime = `${String(block.end_hour).padStart(2, '0')}:${String(block.end_minute).padStart(2, '0')}`;
+        tr.innerHTML = `<td>${startTime}-${endTime}</td>`;
 
         days.forEach(day => {
-            // Find timeslot ID matching this day and time
+            // Find timeslot ID matching this day and time block
             const slot = state.timeslots.find(t =>
-                t.day === day && t.start_hour === range.start
+                t.day === day && 
+                t.start_hour === block.start_hour && 
+                t.start_minute === block.start_minute
             );
 
             let slotId = slot ? slot.id : null;

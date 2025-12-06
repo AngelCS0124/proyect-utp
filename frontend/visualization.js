@@ -211,7 +211,7 @@ function renderizarRedRestricciones() {
                 size: 12
             }
         };
-    })));
+    }));
     
     // Configurar aristas
     const aristas = new vis.DataSet(datos.aristas.map(a => ({
@@ -304,7 +304,7 @@ function renderizarArbolBacktracking() {
                 size: 12
             }
         };
-    })));
+    }));
     
     // Configurar aristas
     const aristas = new vis.DataSet(datos.aristas.map(a => ({
