@@ -17,6 +17,13 @@
             302,
             303,
             305
+        ],
+        "available_courses": [
+            "FIS",
+            "PE",
+            "CI",
+            "CD",
+            "CVV"
         ]
     },
     {
@@ -49,6 +56,14 @@
             411,
             412,
             413
+        ],
+        "available_courses": [
+            "FIS",
+            "PE",
+            "CI",
+            "FM",
+            "FR",
+            "IF"
         ]
     },
     {
@@ -67,6 +82,11 @@
             303,
             402,
             403
+        ],
+        "available_courses": [
+            "FIS",
+            "PE",
+            "GPT"
         ]
     },
     {
@@ -89,6 +109,14 @@
             405,
             406,
             407
+        ],
+        "available_courses": [
+            "FP",
+            "CER",
+            "PEST",
+            "SO",
+            "CHD",
+            "GPT"
         ]
     },
     {
@@ -103,6 +131,13 @@
             306,
             307,
             308
+        ],
+        "available_courses": [
+            "LSE",
+            "DHV",
+            "EP",
+            "HG",
+            "LTD"
         ]
     },
     {
@@ -150,6 +185,16 @@
             408,
             409,
             410
+        ],
+        "available_courses": [
+            "TCADS",
+            "BD",
+            "POO",
+            "PI1",
+            "PI2",
+            "PI3",
+            "AW",
+            "SO"
         ]
     },
     {
@@ -169,6 +214,14 @@
             211,
             212,
             213
+        ],
+        "available_courses": [
+            "FIA",
+            "EDIG",
+            "AS",
+            "IOT",
+            "CDAT",
+            "PE"
         ]
     },
     {
@@ -192,6 +245,12 @@
             305,
             306,
             307
+        ],
+        "available_courses": [
+            "DHV",
+            "LSE",
+            "LTD",
+            "EP"
         ]
     },
     {
@@ -216,6 +275,12 @@
             409,
             410,
             411
+        ],
+        "available_courses": [
+            "FM",
+            "FIS",
+            "CD",
+            "CI"
         ]
     },
     {
@@ -232,6 +297,14 @@
             311,
             313,
             413
+        ],
+        "available_courses": [
+            "DAM",
+            "ADS",
+            "BDA",
+            "IMDS",
+            "AWOS",
+            "CDAT"
         ]
     },
     {
@@ -254,6 +327,13 @@
             411,
             412,
             413
+        ],
+        "available_courses": [
+            "TCADS",
+            "ADS",
+            "IMDS",
+            "EPT",
+            "TD"
         ]
     },
     {
@@ -273,6 +353,14 @@
             311,
             312,
             313
+        ],
+        "available_courses": [
+            "FR",
+            "CER",
+            "EPT",
+            "OAMDN",
+            "FPT",
+            "EPT"
         ]
     },
     {
@@ -284,6 +372,14 @@
             13,
             112,
             113
+        ],
+        "available_courses": [
+            "PI1",
+            "PI2",
+            "PI3",
+            "PEST",
+            "POO",
+            "LEAD"
         ]
     },
     {
@@ -321,6 +417,13 @@
             406,
             407,
             408
+        ],
+        "available_courses": [
+            "FM",
+            "CD",
+            "CI",
+            "CVV",
+            "EDIF"
         ]
     },
     {
@@ -343,6 +446,14 @@
             411,
             412,
             413
+        ],
+        "available_courses": [
+            "FP",
+            "PEST",
+            "POO",
+            "TCADS",
+            "ADS",
+            "IMDS"
         ]
     },
     {
@@ -373,6 +484,14 @@
             411,
             412,
             413
+        ],
+        "available_courses": [
+            "FR",
+            "CER",
+            "FPT",
+            "GPT",
+            "EPT",
+            "AS"
         ]
     },
     {
