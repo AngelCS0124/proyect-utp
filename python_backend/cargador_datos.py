@@ -45,26 +45,6 @@ class CargadorDatos:
                         v = fila[en]
                     return v if v is not None else default
 
-                # IDs y números
-                id_val = get_val('id', 'id')
-                nombre = get_val('nombre', 'name')
-                
-                # Usar safe_int para el ID
-                id_curso = CargadorDatos.safe_int(id_val)
-                if id_curso is None or not nombre: continue
-
-                prerrequisitos = []
-                prereq_raw = get_val('prerrequisitos', 'prerequisites')
-                if prereq_raw:
-                    # Limpiar y convertir cada prerequisito
-                    parts = str(prereq_raw).replace('"', '').split(',')
-                    for p in parts:
-                        p_val = CargadorDatos.safe_int(p.strip())
-                        if p_val is not None:
-                            prerrequisitos.append(p_val)
-                
-                id_profesor_val = get_val('id_profesor', 'professor_id')
-                id_profesor = CargadorDatos.safe_int(id_profesor_val)
                 
                 curso = Curso(
                     id=id_curso,
@@ -169,18 +149,27 @@ class CargadorDatos:
                         if val is not None:
                             bloques.append(val)
                 
+                materias = []
+                materias_raw = get_val('materias_capaces', 'available_courses')
+                if materias_raw:
+                    # Si viene como lista stringificada "['A', 'B']" o separada por comas
+                    parts = str(materias_raw).replace('"', '').replace("'", "").replace('[', '').replace(']', '').split(',')
+                    for p in parts:
+                        if p.strip():
+                            materias.append(p.strip())
+
                 profesor = Profesor(
                     id=CargadorDatos.safe_int(fila.get('id', fila.get('id'))),
                     nombre=get_val('nombre', 'name'),
                     email=get_val('email', 'email') or '',
-                    bloques_disponibles=bloques
+                    bloques_disponibles=bloques,
+                    materias_capaces=materias
                 )
                 profesores.append(profesor)
         return profesores
     
     @staticmethod
     def cargar_profesores_json(ruta_archivo: str) -> List[Profesor]:
-        """Cargar profesores desde archivo JSON"""
         with open(ruta_archivo, 'r', encoding='utf-8') as f:
             datos = json.load(f)
         
@@ -191,11 +180,14 @@ class CargadorDatos:
             bloques_raw = item.get('bloques_disponibles', item.get('available_timeslots', []))
             bloques = [CargadorDatos.safe_int(b) for b in bloques_raw if CargadorDatos.safe_int(b) is not None]
             
+            materias = item.get('materias_capaces', item.get('available_courses', []))
+
             profesor = Profesor(
                 id=CargadorDatos.safe_int(item.get('id')),
                 nombre=nombre,
                 email=email,
-                bloques_disponibles=bloques
+                bloques_disponibles=bloques,
+                materias_capaces=materias
             )
             profesores.append(profesor)
         return profesores

@@ -15,11 +15,12 @@ class Profesor:
         bloques_disponibles: Lista de IDs de bloques de tiempo disponibles
     """
     
-    def __init__(self, id: int, nombre: str, email: str = "", bloques_disponibles: List[int] = None):
+    def __init__(self, id: int, nombre: str, email: str = "", bloques_disponibles: List[int] = None, materias_capaces: List[str] = None):
         self.id = id
         self.nombre = nombre
         self.email = email
         self.bloques_disponibles = bloques_disponibles if bloques_disponibles is not None else []
+        self.materias_capaces = materias_capaces if materias_capaces is not None else []
     
     def a_diccionario(self):
         """
@@ -32,7 +33,8 @@ class Profesor:
             'id': self.id,
             'name': self.nombre,  # Mantener 'name' para compatibilidad con API
             'email': self.email,
-            'available_timeslots': self.bloques_disponibles  # Mantener nombre API
+            'available_timeslots': self.bloques_disponibles,  # Mantener nombre API
+            'available_courses': self.materias_capaces # Lista de códigos de materia
         }
     
     # Alias para compatibilidad con código existente

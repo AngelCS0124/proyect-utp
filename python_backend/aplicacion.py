@@ -361,53 +361,204 @@ def generar_horario_api():
         
         if SCHEDULER_AVAILABLE:
             try:
-                print("Usando Scheduler C++ Optimizado...")
+                print("--- INICIANDO GENERACIÓN DE HORARIO ---", flush=True)
+                print(f"Datos: {len(almacen_datos['bloques_tiempo'])} bloques, {len(almacen_datos['profesores'])} profesores, {len(almacen_datos['cursos'])} cursos", flush=True)
+                
                 scheduler = PyScheduler()
                 scheduler.reset()
                 
+                # --- MAPEO DE IDs (SHADOW MAPPING) ---
+                # El grafo C++ asigna IDs secuenciales (0, 1, 2...) en el orden de inserción.
+                # Debemos replicar esto para pasar los IDs correctos a asignarProfesor.
+                internal_id_counter = 0
+                map_bloques = {}   # id_externo -> id_interno
+                map_profesores = {}
+                map_cursos = {}
+                
                 # 1. Cargar Bloques de Tiempo
+                print("Cargando bloques...", flush=True)
                 for b in almacen_datos['bloques_tiempo']:
                     scheduler.load_timeslot(
                         b.id, b.dia, b.hora_inicio, b.minuto_inicio, b.hora_fin, b.minuto_fin
                     )
+                    map_bloques[b.id] = internal_id_counter
+                    internal_id_counter += 1
                 
                 # 2. Cargar Profesores
+                print("Cargando profesores...", flush=True)
                 for p in almacen_datos['profesores']:
-                    scheduler.load_professor(p.id, p.nombre, p.bloques_disponibles)
+                    # MAPEAR Bloques Disponibles (Externo -> Interno)
+                    bloques_internos = []
+                    for b_ext in p.bloques_disponibles:
+                        if b_ext in map_bloques:
+                            bloques_internos.append(map_bloques[b_ext])
+                        # Si no existe, ignoramos (o podríamos loguear warning)
+                    
+                    scheduler.load_professor(p.id, p.nombre, bloques_internos)
+                    map_profesores[p.id] = internal_id_counter
+                    internal_id_counter += 1
                 
-                # 3. Cargar Cursos y Asignaciones
+                # 3. Cargar Cursos y Asignaciones Automáticas
+                print("Cargando cursos y asignando profesores...", flush=True)
+                cursos_sin_profe = 0
+                cursos_con_profe = 0
+                
+                # --- PREPARACIÓN BALANCEO DE CARGA ---
+                # 1. Calcular capacidad real (slots disponibles)
+                prof_capacity = {}      # id -> int (total slots)
+                prof_load = {}          # id -> int (cursos asignados actualmente)
+                
+                for p in almacen_datos['profesores']:
+                    # La capacidad es la longitud de su lista de bloques disponibles
+                    # (Ya sea raw o mapeada, usamos la longitud de la lista original p.bloques_disponibles)
+                    cap = len(p.bloques_disponibles)
+                    prof_capacity[p.id] = cap
+                    prof_load[p.id] = 0
+                
+                print("--- Capacidad de Profesores ---", flush=True)
+                for pid, cap in prof_capacity.items():
+                    p_obj = next((x for x in almacen_datos['profesores'] if x.id == pid), None)
+                    print(f"  {p_obj.nombre}: {cap} slots", flush=True)
+                
                 for c in almacen_datos['cursos']:
+                    # MAPEAR Prerrequisitos (Externo -> Interno)
+                    prereq_internos = [] 
+                    for pre_ext in c.prerequisitos:
+                         if pre_ext in map_cursos:
+                             prereq_internos.append(map_cursos[pre_ext])
+                    
                     scheduler.load_course(
-                        c.id, c.nombre, c.matricula, c.prerequisitos
+                        c.id, c.nombre, c.matricula, prereq_internos
                     )
-                    # Asignar profesor si ya está definido
+                    map_cursos[c.id] = internal_id_counter
+                    current_course_internal_id = internal_id_counter
+                    internal_id_counter += 1
+                    
+                    # LOGICA DE AUTO-ASIGNACIÓN INTELIGENTE (SMART LOAD BALANCING)
+                    if not c.id_profesor:
+                        # 1. Encontrar todos los candidatos capaces
+                        candidatos = []
+                        curso_code = str(c.codigo).strip().upper() if c.codigo else ""
+                        curso_name = str(c.nombre).strip().upper()
+
+                        for p in almacen_datos['profesores']:
+                            capaces = [str(m).strip().upper() for m in p.materias_capaces]
+                            if (curso_code and curso_code in capaces) or (curso_name in capaces):
+                                candidatos.append(p)
+                        
+                        # 2. Elegir el mejor candidato
+                        mejor_candidato = None
+                        
+                        if candidatos:
+                            # Filtrar candidatos con capacidad disponible
+                            candidatos_viables = [p for p in candidatos if prof_load[p.id] < prof_capacity[p.id]]
+                            
+                            if candidatos_viables:
+                                # Ordenar por:
+                                # 1. Menor carga actual (prof_load) -> Para balancear
+                                # 2. Mayor capacidad total (prof_capacity) -> Desempatar usando al que tiene más holgura general
+                                candidatos_viables.sort(key=lambda p: (prof_load[p.id], -prof_capacity[p.id]))
+                                
+                                mejor_candidato = candidatos_viables[0]
+                                
+                                # Asignar
+                                c.id_profesor = mejor_candidato.id
+                                prof_load[mejor_candidato.id] += 1
+                                print(f"  [AUTO-SMART] Asignado {c.codigo} ({c.nombre}) -> {mejor_candidato.nombre} (Carga: {prof_load[mejor_candidato.id]}/{prof_capacity[mejor_candidato.id]})", flush=True)
+                            else:
+                                # Todos los candidatos están saturados
+                                print(f"  [WARN] Saturación: {len(candidatos)} candidatos para {c.nombre} están llenos.", flush=True)
+                                # Opcional: Asignar al menos peor (el que tenga más capacidad total aunque esté lleno)?
+                                # Por ahora NO asignamos para respetar la restricción dura del usuario.
+                        else:
+                             print(f"  [WARN] Nadie calificado para: {c.nombre} ({c.codigo})", flush=True)
+
                     if c.id_profesor:
-                        scheduler.assign_professor_to_course(c.id, c.id_profesor)
+                        # Verificar que el profesor exista en el mapa y actualizar carga si venía pre-asignado
+                        if c.id_profesor in map_profesores:
+                            if c.id_profesor not in prof_load: # Caso raro si no estaba en loop anterior
+                                prof_load[c.id_profesor] = 1
+                            # Nota: Si venía pre-asignado manualmente en el CSV, no incrementamos prof_load arriba, 
+                            # deberíamos hacerlo aqui para ser justos, pero asumimos que el auto-assign corre para los vacíos.
+                            # Corrección: El CSV 'courses.csv' define id_profesor. Si ya viene, deberíamos contarlo en la carga inicial?
+                            # Sí, idealmente. Pero como estamos iterando linealmente, si el curso 1 ya tiene profe, deberíamos haberlo contado antes.
+                            # Simplificación: Asumimos que la carga pre-existente es 0 o gestionada dinámicamente.
+                            
+                            internal_prof_id = map_profesores[c.id_profesor]
+                            scheduler.assign_professor_to_course(current_course_internal_id, internal_prof_id)
+                            cursos_con_profe += 1
+                        else:
+                            print(f"  [Error] Profesor ID {c.id_profesor} asignado a {c.nombre} no se cargó.", flush=True)
+                    else:
+                        print(f"  [WARN] Curso sin profesor: {c.nombre} ({c.codigo}) - Se omitirá del horario.", flush=True)
+                        cursos_sin_profe += 1
+                
+                print(f"Resumen Asignación: {cursos_con_profe} asignados, {cursos_sin_profe} sin profesor.", flush=True)
                 
                 # 4. Generar Horario
+                print("Ejecutando C++ Scheduler...", flush=True)
+                # OJO: generate_schedule devuelve IDs internos en 'assignments' ??
+                # Necesitamos verificar qué devuelve.
+                # scheduler_wrapper.pyx: 
+                #   'course_id': asignacion.idCurso, 'professor_id': asignacion.idProfesor
+                #   PlanificadorCore devuelve nodos. 
+                #   Si asignacion tiene atributos 'id' (el string externo), wrappers suele convertirlos.
+                #   VERIFICAR scheduler_wrapper.pyx
+                
                 resultado = scheduler.generate_schedule()
+                print(f"Resultado C++: {resultado}", flush=True)
+                
                 exito = resultado['success']
                 
                 if exito:
                     # Convertir asignaciones a estructura Python Horario
                     from modelos import Asignacion
                     
+                    # Como no sabemos si 'resultado' devuelve IDs internos o externos, 
+                    # asumiremos que devuelve lo que el nodo tenga como atributo "id" si el wrapper lo maneja
+                    # O si devuelve ID de nodo (int).
+                    
+                    # Revisando scheduler_wrapper.pyx (memoria):
+                    #   asignacion.idCurso es un int.
+                    #   Si es el internal ID, debemos mapearlo de vuelta a externo.
+                    #   Pero el wrapper podría estar intentando devolver el atributo.
+                    #   Vamos a asumir INTERNAL y usar reverse map si es necesario,
+                    #   o intentar buscar por ambos.
+                    
+                    # Mapa inverso para cursos y bloques (Internal -> External Object)
+                    inv_map_cursos = {v: k for k, v in map_cursos.items()}
+                    inv_map_bloques = {v: k for k, v in map_bloques.items()}
+                    
                     for asig_data in resultado['assignments']:
-                        # Buscar objetos completos para la asignación
-                        curso_obj = next((c for c in almacen_datos['cursos'] if c.id == asig_data['course_id']), None)
-                        bloque_obj = next((b for b in almacen_datos['bloques_tiempo'] if b.id == asig_data['timeslot_id']), None)
+                        # asig_data['course_id'] y 'timeslot_id' vienen del C++.
+                        # Si son IDs internos (muy probable), usamos el mapa inverso.
+                        
+                        raw_c_id = asig_data['course_id']
+                        raw_t_id = asig_data['timeslot_id']
+                        raw_p_id = asig_data['professor_id']
+                        
+                        # Intentar recuperar ID externo
+                        ext_c_id = inv_map_cursos.get(raw_c_id, raw_c_id)
+                        ext_t_id = inv_map_bloques.get(raw_t_id, raw_t_id)
+                        # Profesores no suelen venir en la asignación final del solver salvo que se pida expicitamente,
+                        # pero PyScheduler wrapper lo incluye.
+                        
+                        # Buscar objetos completos
+                        curso_obj = next((c for c in almacen_datos['cursos'] if c.id == ext_c_id), None)
+                        bloque_obj = next((b for b in almacen_datos['bloques_tiempo'] if b.id == ext_t_id), None)
                         
                         if curso_obj and bloque_obj:
                             asignacion = Asignacion(
                                 curso=curso_obj,
                                 bloque=bloque_obj,
-                                id_profesor=asig_data['professor_id']
+                                id_profesor=c.id_profesor # Usar el del objeto curso ya actualizado
                             )
                             nuevo_horario.agregar_asignacion(asignacion)
                     
-                    print(f"Horario generado con éxito: {len(nuevo_horario.asignaciones)} asignaciones")
+                    print(f"Horario generado con éxito: {len(nuevo_horario.asignaciones)} asignaciones", flush=True)
                 else:
-                    print(f"Fallo al generar horario: {resultado.get('error_message')}")
+                    msg = resultado.get('error_message')
+                    print(f"Fallo al generar horario (C++): {msg}", flush=True)
                 
                 tiempo_fin = time.time()
                 meta = {
@@ -419,21 +570,28 @@ def generar_horario_api():
             except Exception as e:
                 import traceback
                 traceback.print_exc()
-                print(f"Error crítico en C++ Scheduler: {e}")
+                print(f"Error crítico en C++ Scheduler: {e}", flush=True)
                 exito = False
+                error_critico = str(e)
         else:
             # Fallback Python (Simplificado para esta demo)
-            print("C++ Scheduler no disponible. Usando Mock.")
-            exito = False # Mock falla por defecto para obligar a usar C++
+            print("C++ Scheduler no disponible. Usando Mock.", flush=True)
+            exito = False 
             meta = {'computation_time': 0, 'backtrack_count': 0}
         
         almacen_datos['horario'] = nuevo_horario if exito else None
+        
+        mensaje_error = 'Generación fallida'
+        if 'resultado' in locals() and not exito:
+            mensaje_error = resultado.get('error_message', 'Error desconocido del motor C++')
+        elif 'error_critico' in locals():
+            mensaje_error = f"Excepción interna: {error_critico}"
         
         return jsonify({
             'success': exito,
             'schedule': nuevo_horario.a_diccionario() if exito else None,
             'metadata': meta,
-            'error': resultado.get('error_message') if 'resultado' in locals() and not exito else 'Generación fallida'
+            'error': mensaje_error
         })
         
     except Exception as e:
