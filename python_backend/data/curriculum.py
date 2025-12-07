@@ -127,13 +127,30 @@ def get_courses_for_cycle(cycle):
     """
     Get courses for a specific cycle
     Args:
-        cycle: One of 'sept-dec', 'jan-apr', 'may-aug'
+        cycle: One of 'sept-dec', 'jan-apr', 'may-aug' or Spanish equivalent 'Sep-Dic 2024'
     Returns: List of Curso objects for that cycle
     """
-    if cycle not in CYCLE_MAPPING:
-        raise ValueError(f"Invalid cycle: {cycle}. Must be one of {list(CYCLE_MAPPING.keys())}")
+    # Normalizar ciclo (quitar año y mapear español -> inglés si es necesario)
+    parts = cycle.split(' ')
+    base_cycle = parts[0]
     
-    cuatrimestres = CYCLE_MAPPING[cycle]
+    # Mapa de compatibilidad
+    mapping_es_en = {
+        "Ene-Abr": "jan-apr",
+        "May-Ago": "may-aug",
+        "Sep-Dic": "sept-dec",
+        "Sept-Dic": "sept-dec",
+        "jan-apr": "jan-apr",
+        "may-aug": "may-aug",
+        "sept-dec": "sept-dec"
+    }
+    
+    key = mapping_es_en.get(base_cycle, base_cycle)
+    
+    if key not in CYCLE_MAPPING:
+        raise ValueError(f"Invalid cycle: {cycle} (mapped to {key}). Must be one of {list(CYCLE_MAPPING.keys())} or Spanish equivalents.")
+    
+    cuatrimestres = CYCLE_MAPPING[key]
     courses = []
     
     for cuatrimestre in cuatrimestres:

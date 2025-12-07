@@ -14,26 +14,64 @@ class CargadorDatos:
     """Maneja la carga de datos desde varios formatos de archivo (español)"""
     
     @staticmethod
+    def safe_int(valor, default=None):
+        """Convierte valor a int de forma segura, manejando strings de floats ('32.0')"""
+        if valor is None:
+            return default
+        try:
+            # Primero intentar conversión directa
+            return int(valor)
+        except (ValueError, TypeError):
+            try:
+                # Intentar convertir float a int (ej: '32.0' -> 32.0 -> 32)
+                return int(float(valor))
+            except (ValueError, TypeError):
+                return default
+
+    @staticmethod
     def cargar_cursos_csv(ruta_archivo: str) -> List[Curso]:
         """Cargar cursos desde archivo CSV"""
         cursos = []
         with open(ruta_archivo, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for fila in reader:
-                prerrequisitos = []
-                if fila.get('prerrequisitos'):
-                    prerrequisitos = [int(x.strip()) for x in str(fila['prerrequisitos']).split(',') if x.strip()]
+                # Normalizar claves
+                keys = fila.keys()
                 
-                # Manejo de campos opcionales y tipos
-                id_profesor_val = fila.get('id_profesor')
-                id_profesor = int(id_profesor_val) if id_profesor_val and str(id_profesor_val).strip() else None
+                # Helper para obtener valor con claves ES o EN
+                def get_val(es, en, default=None):
+                    v = fila.get(es)
+                    if v is None and en in keys:
+                        v = fila[en]
+                    return v if v is not None else default
+
+                # IDs y números
+                id_val = get_val('id', 'id')
+                nombre = get_val('nombre', 'name')
+                
+                # Usar safe_int para el ID
+                id_curso = CargadorDatos.safe_int(id_val)
+                if id_curso is None or not nombre: continue
+
+                prerrequisitos = []
+                prereq_raw = get_val('prerrequisitos', 'prerequisites')
+                if prereq_raw:
+                    # Limpiar y convertir cada prerequisito
+                    parts = str(prereq_raw).replace('"', '').split(',')
+                    for p in parts:
+                        p_val = CargadorDatos.safe_int(p.strip())
+                        if p_val is not None:
+                            prerrequisitos.append(p_val)
+                
+                id_profesor_val = get_val('id_profesor', 'professor_id')
+                id_profesor = CargadorDatos.safe_int(id_profesor_val)
                 
                 curso = Curso(
-                    id=int(fila['id']),
-                    nombre=fila['nombre'],
-                    codigo=fila.get('codigo', ''),
-                    creditos=int(fila.get('creditos', 3)),
-                    matricula=int(fila['matricula']),
+                    id=id_curso,
+                    nombre=nombre,
+                    codigo=get_val('codigo', 'code', ''),
+                    creditos=CargadorDatos.safe_int(get_val('creditos', 'credits'), 3),
+                    matricula=CargadorDatos.safe_int(get_val('matricula', 'enrollment'), 0),
                     prerequisitos=prerrequisitos,
                     id_profesor=id_profesor
                 )
@@ -48,14 +86,24 @@ class CargadorDatos:
         
         cursos = []
         for item in datos:
+            # Helper local
+            def get_val(k_es, k_en, default=None):
+                return item.get(k_es, item.get(k_en, default))
+
+            # Prerrequisitos
+            prereq_raw = get_val('prerrequisitos', 'prerequisites', [])
+            prerrequisitos = []
+            if isinstance(prereq_raw, list):
+                prerrequisitos = [CargadorDatos.safe_int(p) for p in prereq_raw if CargadorDatos.safe_int(p) is not None]
+            
             curso = Curso(
-                id=item['id'],
-                nombre=item['nombre'],
-                codigo=item.get('codigo', ''),
-                creditos=item.get('creditos', 3), # JSON sample uses 'credits' sometimes, checking...
-                matricula=item['matricula'],
-                prerequisitos=item.get('prerrequisitos', []),
-                id_profesor=item.get('id_profesor')
+                id=CargadorDatos.safe_int(item.get('id')),
+                nombre=get_val('nombre', 'name'),
+                codigo=get_val('codigo', 'code', ''),
+                creditos=CargadorDatos.safe_int(get_val('creditos', 'credits'), 3),
+                matricula=CargadorDatos.safe_int(get_val('matricula', 'enrollment'), 0),
+                prerequisitos=prerrequisitos,
+                id_profesor=CargadorDatos.safe_int(get_val('id_profesor', 'professor_id'))
             )
             cursos.append(curso)
         return cursos
@@ -66,24 +114,33 @@ class CargadorDatos:
         df = pd.read_excel(ruta_archivo)
         cursos = []
         
+        # Mapeo de columnas si no existen las españolas
+        cols_map = {
+            'name': 'nombre', 'code': 'codigo', 'credits': 'creditos',
+            'enrollment': 'matricula', 'prerequisites': 'prerrequisitos',
+            'professor_id': 'id_profesor'
+        }
+        df.rename(columns=cols_map, inplace=True)
+        
         for _, fila in df.iterrows():
+            if 'nombre' not in fila and 'name' in fila: fila['nombre'] = fila['name']
+            
             prerrequisitos = []
             if pd.notna(fila.get('prerrequisitos')):
-                prerrequisitos = [int(x.strip()) for x in str(fila['prerrequisitos']).split(',') if x.strip()]
+                parts = str(fila['prerrequisitos']).replace('"', '').split(',')
+                for p in parts:
+                    val = CargadorDatos.safe_int(p.strip())
+                    if val is not None:
+                        prerrequisitos.append(val)
             
-            id_profesor = None
-            if pd.notna(fila.get('id_profesor')):
-                try:
-                    id_profesor = int(fila['id_profesor'])
-                except (ValueError, TypeError):
-                    pass
+            id_profesor = CargadorDatos.safe_int(fila.get('id_profesor'))
             
             curso = Curso(
-                id=int(fila['id']),
-                nombre=fila['nombre'],
+                id=CargadorDatos.safe_int(fila.get('id')),
+                nombre=fila.get('nombre', 'Sin Nombre'),
                 codigo=fila.get('codigo', ''),
-                creditos=int(fila.get('creditos', 3)),
-                matricula=int(fila['matricula']),
+                creditos=CargadorDatos.safe_int(fila.get('creditos'), 3),
+                matricula=CargadorDatos.safe_int(fila.get('matricula'), 0),
                 prerequisitos=prerrequisitos,
                 id_profesor=id_profesor
             )
@@ -97,14 +154,25 @@ class CargadorDatos:
         with open(ruta_archivo, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for fila in reader:
+                keys = fila.keys()
+                def get_val(es, en):
+                    v = fila.get(es)
+                    if v is None and en in keys: return fila[en]
+                    return v
+
                 bloques = []
-                if fila.get('bloques_disponibles'):
-                    bloques = [int(x.strip()) for x in str(fila['bloques_disponibles']).split(',') if x.strip()]
+                bloques_raw = get_val('bloques_disponibles', 'available_timeslots')
+                if bloques_raw:
+                    parts = str(bloques_raw).replace('"', '').split(',')
+                    for p in parts:
+                        val = CargadorDatos.safe_int(p.strip())
+                        if val is not None:
+                            bloques.append(val)
                 
                 profesor = Profesor(
-                    id=int(fila['id']),
-                    nombre=fila['nombre'],
-                    email=fila.get('email', ''),
+                    id=CargadorDatos.safe_int(fila.get('id', fila.get('id'))),
+                    nombre=get_val('nombre', 'name'),
+                    email=get_val('email', 'email') or '',
                     bloques_disponibles=bloques
                 )
                 profesores.append(profesor)
@@ -118,11 +186,16 @@ class CargadorDatos:
         
         profesores = []
         for item in datos:
+            nombre = item.get('nombre', item.get('name'))
+            email = item.get('email', '')
+            bloques_raw = item.get('bloques_disponibles', item.get('available_timeslots', []))
+            bloques = [CargadorDatos.safe_int(b) for b in bloques_raw if CargadorDatos.safe_int(b) is not None]
+            
             profesor = Profesor(
-                id=item['id'],
-                nombre=item['nombre'],
-                email=item.get('email', ''),
-                bloques_disponibles=item.get('bloques_disponibles', [])
+                id=CargadorDatos.safe_int(item.get('id')),
+                nombre=nombre,
+                email=email,
+                bloques_disponibles=bloques
             )
             profesores.append(profesor)
         return profesores
@@ -134,13 +207,16 @@ class CargadorDatos:
         with open(ruta_archivo, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for fila in reader:
+                keys = fila.keys()
+                def get_val(es, en): return fila.get(es) if fila.get(es) else fila[en]
+
                 bloque = BloqueTiempo(
-                    id=int(fila['id']),
-                    dia=fila['dia'],
-                    hora_inicio=int(fila['hora_inicio']),
-                    minuto_inicio=int(fila['minuto_inicio']),
-                    hora_fin=int(fila['hora_fin']),
-                    minuto_fin=int(fila['minuto_fin'])
+                    id=CargadorDatos.safe_int(fila.get('id', fila.get('id'))),
+                    dia=get_val('dia', 'day'),
+                    hora_inicio=CargadorDatos.safe_int(get_val('hora_inicio', 'start_hour')),
+                    minuto_inicio=CargadorDatos.safe_int(get_val('minuto_inicio', 'start_minute')),
+                    hora_fin=CargadorDatos.safe_int(get_val('hora_fin', 'end_hour')),
+                    minuto_fin=CargadorDatos.safe_int(get_val('minuto_fin', 'end_minute'))
                 )
                 bloques.append(bloque)
         return bloques
@@ -154,12 +230,12 @@ class CargadorDatos:
         bloques = []
         for item in datos:
             bloque = BloqueTiempo(
-                id=item['id'],
-                dia=item['dia'],
-                hora_inicio=item['hora_inicio'],
-                minuto_inicio=item['minuto_inicio'],
-                hora_fin=item['hora_fin'],
-                minuto_fin=item['minuto_fin']
+                id=CargadorDatos.safe_int(item.get('id')),
+                dia=item.get('dia', item.get('day')),
+                hora_inicio=CargadorDatos.safe_int(item.get('hora_inicio', item.get('start_hour'))),
+                minuto_inicio=CargadorDatos.safe_int(item.get('minuto_inicio', item.get('start_minute'))),
+                hora_fin=CargadorDatos.safe_int(item.get('hora_fin', item.get('end_hour'))),
+                minuto_fin=CargadorDatos.safe_int(item.get('minuto_fin', item.get('end_minute')))
             )
             bloques.append(bloque)
         return bloques
@@ -204,3 +280,4 @@ class CargadorDatos:
             return cargadores[clave_cargador](ruta_archivo)
         else:
             raise ValueError(f"No hay cargador para {tipo_dato} en formato {formato}")
+

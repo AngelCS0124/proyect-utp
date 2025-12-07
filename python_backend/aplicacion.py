@@ -121,12 +121,16 @@ def subir_archivo():
         
         try:
             # Mapeo de tipos de datos (inglés -> español)
-            tipo_map = {
+            mapa_tipos = {
                 'professors': 'profesores',
-                'timeslots': 'bloques'
+                'timeslots': 'bloques',
+                'courses': 'cursos',
+                'profesores': 'profesores',
+                'bloques': 'bloques',
+                'cursos': 'cursos'
             }
             
-            tipo_interno = tipo_map.get(tipo_dato)
+            tipo_interno = mapa_tipos.get(tipo_dato)
             
             if not tipo_interno:
                 return jsonify({'error': f'Invalid data type: {tipo_dato}'}), 400
@@ -135,8 +139,12 @@ def subir_archivo():
             datos = CargadorDatos.cargar_datos(ruta_archivo, tipo_interno)
             
             # Actualizar almacén de datos (mapa interno)
-            clave_almacen = 'profesores' if tipo_interno == 'profesores' else 'bloques_tiempo'
-            almacen_datos[clave_almacen] = datos
+            if tipo_interno == 'cursos':
+                almacen_datos['cursos'] = datos
+            elif tipo_interno == 'profesores':
+                almacen_datos['profesores'] = datos
+            elif 'bloques' in tipo_interno:
+                almacen_datos['bloques_tiempo'] = datos
             
             return jsonify({
                 'message': f'Successfully loaded {len(datos)} {tipo_dato}',
@@ -241,14 +249,15 @@ def cargar_datos_defecto():
 @app.route('/api/cycles', methods=['GET'])
 def obtener_ciclos():
     """Obtener ciclos disponibles"""
-    # En un sistema real esto vendría de BD o escaneo de archivos
-    ciclos = [
-        {'id': 'Ene-Abr 2024', 'name': 'Enero - Abril 2024'},
-        {'id': 'May-Ago 2024', 'name': 'Mayo - Agosto 2024'},
-        {'id': 'Sep-Dic 2024', 'name': 'Septiembre - Diciembre 2024'},
-        {'id': 'Ene-Abr 2025', 'name': 'Enero - Abril 2025'}
-    ]
-    return jsonify(ciclos)
+    """Obtener ciclos disponibles"""
+    # Obtener ciclos desde curriculum (tiene metadata correcta cuatrimestres)
+    ciclos = get_available_cycles()
+    
+    # Ordenar cronológicamente: Jan, May, Sept
+    order = {"jan-apr": 1, "may-aug": 2, "sept-dec": 3}
+    ciclos.sort(key=lambda x: order.get(x['id'], 99))
+    
+    return jsonify({'cycles': ciclos})
 
 @app.route('/api/courses/<cycle>', methods=['GET'])
 def obtener_cursos_por_ciclo(cycle):
@@ -268,7 +277,8 @@ def obtener_cursos_por_ciclo(cycle):
         
         return jsonify({
             'count': len(cursos),
-            'courses': cursos_dict
+            'data': cursos_dict,
+            'courses': cursos_dict  # Mantener por si acaso
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -286,7 +296,7 @@ def obtener_datos(data_type):
     else:
         return jsonify({'error': 'Invalid data type'}), 400
         
-    return jsonify([d.a_diccionario() for d in datos])
+    return jsonify({'data': [d.a_diccionario() for d in datos]})
 
 @app.route('/api/assign-professor', methods=['POST'])
 def asignar_profesor():
@@ -345,27 +355,85 @@ def generar_horario_api():
         import time
         tiempo_inicio = time.time()
         
-        # Aquí iría la llamada al scheduler real
-        # Por simplicidad en esta traducción, simulamos o usamos lo existente
-        # En un refactor completo, PyScheduler también debería traducirse
-        
-        # Simulación simple si no hay C++
+        exito = False
         nuevo_horario = Horario()
-        exito = True # Simulado
-        tiempo_fin = time.time()
+        meta = {}
         
-        almacen_datos['horario'] = nuevo_horario
+        if SCHEDULER_AVAILABLE:
+            try:
+                print("Usando Scheduler C++ Optimizado...")
+                scheduler = PyScheduler()
+                scheduler.reset()
+                
+                # 1. Cargar Bloques de Tiempo
+                for b in almacen_datos['bloques_tiempo']:
+                    scheduler.load_timeslot(
+                        b.id, b.dia, b.hora_inicio, b.minuto_inicio, b.hora_fin, b.minuto_fin
+                    )
+                
+                # 2. Cargar Profesores
+                for p in almacen_datos['profesores']:
+                    scheduler.load_professor(p.id, p.nombre, p.bloques_disponibles)
+                
+                # 3. Cargar Cursos y Asignaciones
+                for c in almacen_datos['cursos']:
+                    scheduler.load_course(
+                        c.id, c.nombre, c.matricula, c.prerequisitos
+                    )
+                    # Asignar profesor si ya está definido
+                    if c.id_profesor:
+                        scheduler.assign_professor_to_course(c.id, c.id_profesor)
+                
+                # 4. Generar Horario
+                resultado = scheduler.generate_schedule()
+                exito = resultado['success']
+                
+                if exito:
+                    # Convertir asignaciones a estructura Python Horario
+                    from modelos import Asignacion
+                    
+                    for asig_data in resultado['assignments']:
+                        # Buscar objetos completos para la asignación
+                        curso_obj = next((c for c in almacen_datos['cursos'] if c.id == asig_data['course_id']), None)
+                        bloque_obj = next((b for b in almacen_datos['bloques_tiempo'] if b.id == asig_data['timeslot_id']), None)
+                        
+                        if curso_obj and bloque_obj:
+                            asignacion = Asignacion(
+                                curso=curso_obj,
+                                bloque=bloque_obj,
+                                id_profesor=asig_data['professor_id']
+                            )
+                            nuevo_horario.agregar_asignacion(asignacion)
+                    
+                    print(f"Horario generado con éxito: {len(nuevo_horario.asignaciones)} asignaciones")
+                else:
+                    print(f"Fallo al generar horario: {resultado.get('error_message')}")
+                
+                tiempo_fin = time.time()
+                meta = {
+                    'computation_time': tiempo_fin - tiempo_inicio,
+                    'backtrack_count': resultado['backtrack_count'],
+                    'solutions_found': 1 if exito else 0
+                }
+                
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                print(f"Error crítico en C++ Scheduler: {e}")
+                exito = False
+        else:
+            # Fallback Python (Simplificado para esta demo)
+            print("C++ Scheduler no disponible. Usando Mock.")
+            exito = False # Mock falla por defecto para obligar a usar C++
+            meta = {'computation_time': 0, 'backtrack_count': 0}
         
-        meta = {
-            'computation_time': tiempo_fin - tiempo_inicio,
-            'backtrack_count': 0,
-            'solutions_found': 1 if exito else 0
-        }
+        almacen_datos['horario'] = nuevo_horario if exito else None
         
         return jsonify({
             'success': exito,
-            'schedule': nuevo_horario.a_diccionario(),
-            'metadata': meta
+            'schedule': nuevo_horario.a_diccionario() if exito else None,
+            'metadata': meta,
+            'error': resultado.get('error_message') if 'resultado' in locals() and not exito else 'Generación fallida'
         })
         
     except Exception as e:

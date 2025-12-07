@@ -65,7 +65,7 @@ function uploadFile(input, dataType) {
 async function handleFileUpload(file, dataType) {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('data_type', dataType);
+    formData.append('type', dataType);
 
     try {
         showNotification('Cargando...', `Subiendo ${dataType}...`, 'info');
@@ -77,13 +77,9 @@ async function handleFileUpload(file, dataType) {
             showNotification('¡Éxito!', result.message, 'success');
             await loadData(dataType);
 
-            // If we uploaded professors, we might have also loaded timeslots
             if (dataType === 'professors') {
-                // Check if timeslots are now available by fetching status or just trying to load
                 await loadData('timeslots');
-                // We can assume if professors loaded successfully with the new backend logic, timeslots might be there
-                // Let's check the count from the result message or just rely on loadData updating the state
-                state.dataLoaded.timeslots = true; // Optimistic update, or check state.timeslots.length after load
+                state.dataLoaded.timeslots = true;
             }
 
             updateUI();
@@ -104,15 +100,14 @@ async function uploadExcel(input) {
 
     try {
         showNotification('Cargando...', 'Procesando Excel...', 'info');
-        const response = await fetch(`${API_BASE}/upload_excel`, { method: 'POST', body: formData });
+        const response = await fetch(`${API_BASE}/upload-excel`, { method: 'POST', body: formData });
         const result = await response.json();
 
         if (response.ok) {
             state.dataLoaded.professors = true;
-            state.dataLoaded.courses = true; // Assuming courses are loaded too
+            state.dataLoaded.courses = true;
             showNotification('¡Éxito!', result.message, 'success');
 
-            // Reload data
             await loadData('professors');
             await loadData('courses');
             updateUI();
@@ -125,17 +120,9 @@ async function uploadExcel(input) {
 }
 
 async function loadDefaultData() {
-    // For default data, we can either call a specific endpoint or just re-upload the sample file if it exists on server
-    // Or we can create a new endpoint /api/load_defaults
-    // Since we don't have that endpoint, let's assume the user has the file locally or we provide a way to trigger it.
-    // But the user asked for "cargar valores por defecto".
-    // I'll implement a simple alert for now or try to fetch a default file if I had one served.
-    // Actually, I can implement an endpoint /api/load_defaults in backend that does exactly what extract_excel_data does with the sample file.
-
     try {
         showNotification('Cargando...', 'Cargando datos por defecto...', 'info');
-        // We'll use a new endpoint for this
-        const response = await fetch(`${API_BASE}/load_defaults`, { method: 'POST' });
+        const response = await fetch(`${API_BASE}/load-defaults`, { method: 'POST' });
         const result = await response.json();
 
         if (response.ok) {
@@ -584,7 +571,12 @@ async function generateSchedule() {
             await new Promise(r => setTimeout(r, 500));
 
             state.schedule = result.schedule;
-            showNotification('¡Horario Generado!', `Completado en ${result.schedule.metadata.computation_time.toFixed(4)}s con ${result.schedule.metadata.backtrack_count} backtracks.`, 'success');
+            // Access metadata from the root result object, not inside schedule
+            const meta = result.metadata || {}; 
+            const compTime = meta.computation_time !== undefined ? meta.computation_time : 0;
+            const backtracks = meta.backtrack_count !== undefined ? meta.backtrack_count : 0;
+            
+            showNotification('¡Horario Generado!', `Completado en ${compTime.toFixed(4)}s con ${backtracks} backtracks.`, 'success');
 
             hideGenerationOverlay();
             // Switch to Horario view
