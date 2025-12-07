@@ -409,11 +409,17 @@ def generar_horario_api():
                 prof_load = {}          # id -> int (cursos asignados actualmente)
                 
                 for p in almacen_datos['profesores']:
-                    # La capacidad es la longitud de su lista de bloques disponibles
-                    # (Ya sea raw o mapeada, usamos la longitud de la lista original p.bloques_disponibles)
-                    cap = len(p.bloques_disponibles)
+                    # La capacidad REAL son los bloques que existen en el sistema (map_bloques)
+                    # Si el JSON tiene bloques que no están en time_slots, no cuentan.
+                    valid_blocks = [b for b in p.bloques_disponibles if b in map_bloques]
+                    cap = len(valid_blocks)
                     prof_capacity[p.id] = cap
                     prof_load[p.id] = 0
+                
+                # Pre-calcular carga inicial de cursos YA asignados (por CSV)
+                for c in almacen_datos['cursos']:
+                     if c.id_profesor and c.id_profesor in prof_load:
+                         prof_load[c.id_profesor] += 1
                 
                 print("--- Capacidad de Profesores ---", flush=True)
                 for pid, cap in prof_capacity.items():
@@ -583,7 +589,12 @@ def generar_horario_api():
         
         mensaje_error = 'Generación fallida'
         if 'resultado' in locals() and not exito:
-            mensaje_error = resultado.get('error_message', 'Error desconocido del motor C++')
+            # Si el C++ devolvió un mensaje específico
+            detail = resultado.get('error_message', '')
+            if detail and str(detail).strip():
+                mensaje_error = f"Error del Motor: {detail}"
+            else:
+                 mensaje_error = "No se pudo encontrar un horario válido (Límite de intentos excedido o restricciones imposibles)."
         elif 'error_critico' in locals():
             mensaje_error = f"Excepción interna: {error_critico}"
         
