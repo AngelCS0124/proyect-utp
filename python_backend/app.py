@@ -585,7 +585,9 @@ def generate_schedule():
              result = scheduler.generate_schedule()
         
         # Process result (handle both success and partial success)
-        if result['success'] or result.get('partial', False):
+        # Process result (handle both success and partial success)
+        # If we have assignments, we consider it a partial success even if the algorithm says 'false'
+        if result['success'] or len(result.get('assignments', [])) > 0:
             # Enrich assignments with names
             enriched_assignments = []
             professor_workload = {} # Track assignments per professor
