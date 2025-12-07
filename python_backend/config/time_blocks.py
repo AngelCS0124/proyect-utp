@@ -5,23 +5,6 @@ Sistema de 9 bloques de 54 minutos, Lunes a Viernes, 7:00 AM - 3:49 PM
 
 # Bloques de tiempo predefinidos (54 minutos cada uno)
 TIME_BLOCKS = {
-<<<<<<< HEAD
-    # Morning blocks (before recess)
-    1: {"id": 1, "start_hour": 7, "start_minute": 0, "end_hour": 7, "end_minute": 55, "name": "Bloque 1"},
-    2: {"id": 2, "start_hour": 7, "start_minute": 55, "end_hour": 8, "end_minute": 50, "name": "Bloque 2"},
-    3: {"id": 3, "start_hour": 8, "start_minute": 50, "end_hour": 9, "end_minute": 45, "name": "Bloque 3"},
-    4: {"id": 4, "start_hour": 9, "start_minute": 45, "end_hour": 10, "end_minute": 40, "name": "Bloque 4"},
-    
-    # RECESS: 10:40 - 11:10 (30 minutes)
-    
-    # Afternoon blocks (after recess)
-    5: {"id": 5, "start_hour": 11, "start_minute": 10, "end_hour": 12, "end_minute": 5, "name": "Bloque 5"},
-    6: {"id": 6, "start_hour": 12, "start_minute": 5, "end_hour": 13, "end_minute": 0, "name": "Bloque 6"},
-    7: {"id": 7, "start_hour": 13, "start_minute": 0, "end_hour": 13, "end_minute": 55, "name": "Bloque 7"},
-    8: {"id": 8, "start_hour": 14, "start_minute": 0, "end_hour": 14, "end_minute": 55, "name": "Bloque 8"},
-    9: {"id": 9, "start_hour": 14, "start_minute": 55, "end_hour": 15, "end_minute": 50, "name": "Bloque 9"},
-    10: {"id": 10, "start_hour": 15, "start_minute": 50, "end_hour": 16, "end_minute": 45, "name": "Bloque 10"},
-=======
     1: {
         'id': 1,
         'name': 'Bloque 1',
@@ -95,7 +78,6 @@ TIME_BLOCKS = {
         'end_hour': 15,  # 3:49 PM
         'end_minute': 49
     }
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 }
 
 # Días válidos (solo entre semana)
@@ -117,19 +99,11 @@ RECESS_PERIOD = {
 SCHEDULE_CONSTRAINTS = {
     "earliest_start_hour": 7,
     "earliest_start_minute": 0,
-<<<<<<< HEAD
-    "latest_end_hour": 17,  # 5:00 PM
-    "latest_end_minute": 0,
-    "class_duration_minutes": 55,
-    "min_break_minutes": 0,  # Minimum break between classes
-    "max_break_minutes": 5,  # Maximum break to avoid gaps
-=======
     "latest_end_hour": 15,  # 3:49 PM = 15:49
     "latest_end_minute": 49,
     "class_duration_minutes": 54,
     "min_break_minutes": 1,  # Pausa mínima entre clases
     "max_break_minutes": 1,  # Pausa máxima para evitar huecos
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 }
 
 

@@ -130,13 +130,17 @@ def upload_file():
         
         # Validate data
         if data_type == 'professors':
-            validation = Validator.validate_professors(loaded_data)
+            print(f"DEBUG: Validating professors: {len(loaded_data)}")
+            validation = Validador.validar_profesores(loaded_data)
         elif data_type == 'timeslots':
-            validation = Validator.validate_timeslots(loaded_data)
+            print(f"DEBUG: Validating timeslots: {len(loaded_data)}")
+            validation = Validador.validar_bloques_tiempo(loaded_data)
         elif data_type == 'courses':
-            validation = Validator.validate_courses(loaded_data)
+            print(f"DEBUG: Validating courses: {len(loaded_data)}")
+            validation = Validador.validar_cursos(loaded_data)
         
         if not validation['valid']:
+            print(f"DEBUG: Validation failed: {validation['errors']}")
             return jsonify({
                 'error': 'Validation failed',
                 'details': validation['errors']
@@ -156,6 +160,7 @@ def upload_file():
         })
     
     except Exception as e:
+        print(f"DEBUG: Upload error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 
@@ -205,6 +210,7 @@ def upload_excel():
             return jsonify({'error': 'Failed to extract data from Excel'}), 500
             
     except Exception as e:
+        print(f"DEBUG: Excel upload error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 
@@ -230,6 +236,7 @@ def load_defaults():
             return jsonify({'error': 'Failed to extract default data'}), 500
             
     except Exception as e:
+        print(f"DEBUG: Load defaults error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 
@@ -298,18 +305,18 @@ def assign_professor():
     if not professor:
         return jsonify({'error': 'Professor not found'}), 404
     
-    course.professor_id = professor_id
+    course.id_profesor = professor_id
     
     return jsonify({
         'success': True,
-        'message': f'Assigned {professor.name} to {course.name}'
+        'message': f'Assigned {professor.nombre} to {course.nombre}'
     })
 
 
 @app.route('/api/validate', methods=['GET'])
 def validate_data():
     """Validate all loaded data"""
-    validation = Validator.validate_all_data(
+    validation = Validador.validar_todos_datos(
         data_store['courses'],
         data_store['professors'],
         data_store['timeslots']
@@ -318,7 +325,6 @@ def validate_data():
     return jsonify(validation)
 
 
-<<<<<<< HEAD
 @app.route('/api/visualization', methods=['GET'])
 def get_visualization_data():
     """Get visualization data for scheduling algorithm structures"""
@@ -339,8 +345,6 @@ def get_visualization_data():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-=======
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 @app.route('/api/generate', methods=['POST'])
 def generate_schedule():
     """Generate schedule using C++ backtracking algorithm"""
@@ -352,7 +356,7 @@ def generate_schedule():
         return jsonify({'error': 'Please select a cycle or upload courses first'}), 400
     
     # Validate data first
-    validation = Validator.validate_all_data(
+    validation = Validador.validar_todos_datos(
         data_store['courses'],
         data_store['professors'],
         data_store['timeslots']
@@ -381,21 +385,21 @@ def generate_schedule():
             # FIX: Credits are not duration in slots. Using 1 slot for now.
             # Ideally this should be calculated or stored in the course data.
             duration = 1 
-            print(f"DEBUG: Loading course {course.name} ({course.id}) duration={duration} group={group_id}")
-            scheduler.load_course(course.id, course.name, course.enrollment, course.prerequisites, group_id, duration)
+            print(f"DEBUG: Loading course {course.nombre} ({course.id}) duration={duration} group={group_id}")
+            scheduler.load_course(course.id, course.nombre, course.matricula, course.prerequisitos, group_id, duration)
         
         for professor in data_store['professors']:
-            scheduler.load_professor(professor.id, professor.name, professor.available_timeslots)
+            scheduler.load_professor(professor.id, professor.nombre, professor.bloques_disponibles)
         
         for timeslot in data_store['timeslots']:
-            scheduler.load_timeslot(timeslot.id, timeslot.day, 
-                                   timeslot.start_hour, timeslot.start_minute,
-                                   timeslot.end_hour, timeslot.end_minute)
+            scheduler.load_timeslot(timeslot.id, timeslot.dia, 
+                                   timeslot.hora_inicio, timeslot.minuto_inicio,
+                                   timeslot.hora_fin, timeslot.minuto_fin)
         
         # Assign professors to courses
         for course in data_store['courses']:
-            if course.professor_id is not None:
-                scheduler.assign_professor_to_course(course.id, course.professor_id)
+            if course.id_profesor is not None:
+                scheduler.assign_professor_to_course(course.id, course.id_profesor)
         
         # Generate schedule
         result = scheduler.generate_schedule()
@@ -403,6 +407,8 @@ def generate_schedule():
         if result['success']:
             # Enrich assignments with names
             enriched_assignments = []
+            professor_workload = {} # Track assignments per professor
+            
             for assignment in result['assignments']:
                 course = next((c for c in data_store['courses'] if c.id == assignment['course_id']), None)
                 professor = next((p for p in data_store['professors'] if p.id == assignment['professor_id']), None)
@@ -410,20 +416,41 @@ def generate_schedule():
                 
                 enriched_assignments.append({
                     **assignment,
-                    'course_name': course.name if course else 'Unknown',
-                    'course_code': course.code if course else '',
-                    'professor_name': professor.name if professor else 'Unknown',
+                    'course_name': course.nombre if course else 'Unknown',
+                    'course_code': course.codigo if course else '',
+                    'professor_name': professor.nombre if professor else 'Unknown',
                     'timeslot_display': timeslot.to_dict()['display'] if timeslot else 'Unknown',
-                    'semester': getattr(course, 'semester', None),
+                    'semester': getattr(course, 'cuatrimestre', None),
                     'group_id': getattr(course, 'group_id', 0)
                 })
+                
+                # Update workload count
+                if professor:
+                    professor_workload[professor.id] = professor_workload.get(professor.id, 0) + 1
+            
+            # Calculate workload stats
+            workload_stats = []
+            for professor in data_store['professors']:
+                assigned = professor_workload.get(professor.id, 0)
+                available = len(professor.bloques_disponibles)
+                percentage = (assigned / available * 100) if available > 0 else 0
+                
+                workload_stats.append({
+                    'id': professor.id,
+                    'name': professor.nombre,
+                    'assigned_hours': assigned,
+                    'available_hours': available,
+                    'load_percentage': round(percentage, 1)
+                })
+                print(f"DEBUG: Professor {professor.nombre}: {assigned}/{available} ({percentage:.1f}%)")
             
             data_store['schedule'] = {
                 'assignments': enriched_assignments,
                 'metadata': {
                     'backtrack_count': result['backtrack_count'],
                     'computation_time': result['computation_time']
-                }
+                },
+                'workload_stats': workload_stats
             }
             
             return jsonify({
@@ -431,34 +458,18 @@ def generate_schedule():
                 'schedule': data_store['schedule']
             })
         else:
+            print(f"DEBUG: Generation failed: {result['error_message']}")
             return jsonify({
                 'success': False,
                 'error': result['error_message']
             }), 400
     
     except Exception as e:
+        print(f"DEBUG: Generation error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/api/visualization', methods=['GET'])
-def get_visualization_data():
-    """Get visualization data for scheduling algorithm structures"""
-    from services.visualizacion import generar_datos_visualizacion
-    
-    if not data_store['schedule']:
-        return jsonify({'error': 'No schedule generated yet'}), 404
-    
-    try:
-        datos_viz = generar_datos_visualizacion(
-            data_store['courses'],
-            data_store['professors'],
-            data_store['timeslots'],
-            data_store['schedule']['assignments']
-        )
-        
-        return jsonify(datos_viz)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+
 
 
 @app.route('/api/schedule', methods=['GET'])

@@ -42,6 +42,9 @@ class BloqueTiempo:
             'display': f"{self.dia} {self.hora_inicio:02d}:{self.minuto_inicio:02d}-{self.hora_fin:02d}:{self.minuto_fin:02d}"
         }
     
+    # Alias para compatibilidad con código existente
+    to_dict = a_diccionario
+    
     def __repr__(self):
         """Representación en string del bloque de tiempo"""
         return f"BloqueTiempo(id={self.id}, dia='{self.dia}', {self.hora_inicio:02d}:{self.minuto_inicio:02d}-{self.hora_fin:02d}:{self.minuto_fin:02d})"

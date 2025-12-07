@@ -35,6 +35,9 @@ class Profesor:
             'available_timeslots': self.bloques_disponibles  # Mantener nombre API
         }
     
+    # Alias para compatibilidad con código existente
+    to_dict = a_diccionario
+    
     def __repr__(self):
         """Representación en string del profesor"""
         return f"Profesor(id={self.id}, nombre='{self.nombre}', email='{self.email}')"

@@ -55,6 +55,9 @@ class Curso:
             'sessions_per_week': self.sesiones_por_semana
         }
     
+    # Alias para compatibilidad con código existente
+    to_dict = a_diccionario
+    
     def __repr__(self):
         """Representación en string del curso"""
         return f"Curso(id={self.id}, codigo='{self.codigo}', nombre='{self.nombre}')"

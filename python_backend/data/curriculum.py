@@ -111,15 +111,6 @@ def get_all_courses():
         for course_data in cuatrimestre_courses:
             course = Curso(
                 id=course_data["id"],
-<<<<<<< HEAD
-                name=course_data["name"],
-                code=course_data["code"],
-                credits=course_data["credits"],
-                enrollment=course_data["enrollment"],
-                prerequisites=[],  # Can be added later if needed
-                professor_id=None,
-                semester=cuatrimestre
-=======
                 nombre=course_data["name"],
                 codigo=course_data["code"],
                 creditos=course_data["credits"],
@@ -127,7 +118,6 @@ def get_all_courses():
                 prerequisitos=[],  # Can be added later if needed
                 id_profesor=None,
                 cuatrimestre=cuatrimestre
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
             )
             courses.append(course)
     return courses
@@ -151,15 +141,6 @@ def get_courses_for_cycle(cycle):
             for course_data in CURRICULUM[cuatrimestre]:
                 course = Curso(
                     id=course_data["id"],
-<<<<<<< HEAD
-                    name=course_data["name"],
-                    code=course_data["code"],
-                    credits=course_data["credits"],
-                    enrollment=course_data["enrollment"],
-                    prerequisites=[],
-                    professor_id=None,
-                    semester=cuatrimestre
-=======
                     nombre=course_data["name"],
                     codigo=course_data["code"],
                     creditos=course_data["credits"],
@@ -167,7 +148,6 @@ def get_courses_for_cycle(cycle):
                     prerequisitos=[],
                     id_profesor=None,
                     cuatrimestre=cuatrimestre
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
                 )
                 courses.append(course)
     

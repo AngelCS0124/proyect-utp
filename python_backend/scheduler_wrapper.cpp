@@ -4,21 +4,22 @@
 {
     "distutils": {
         "depends": [
-            "C:\\Users\\as_co\\C\\proyect-utp\\cpp_core\\planificador.hpp"
+            "/home/gina/Documentos/EstDatos/proyect-utp/cpp_core/planificador.hpp"
         ],
         "extra_compile_args": [
-            "/std:c++17"
+            "-std=c++17",
+            "-O3"
         ],
         "include_dirs": [
-            "C:\\Users\\as_co\\C\\proyect-utp\\python_backend\\..\\cpp_core"
+            "/home/gina/Documentos/EstDatos/proyect-utp/python_backend/../cpp_core"
         ],
         "language": "c++",
         "name": "scheduler_wrapper",
         "sources": [
             "scheduler_wrapper.pyx",
-            "C:\\Users\\as_co\\C\\proyect-utp\\python_backend\\..\\cpp_core\\grafo.cpp",
-            "C:\\Users\\as_co\\C\\proyect-utp\\python_backend\\..\\cpp_core\\restricciones.cpp",
-            "C:\\Users\\as_co\\C\\proyect-utp\\python_backend\\..\\cpp_core\\planificador.cpp"
+            "/home/gina/Documentos/EstDatos/proyect-utp/python_backend/../cpp_core/grafo.cpp",
+            "/home/gina/Documentos/EstDatos/proyect-utp/python_backend/../cpp_core/restricciones.cpp",
+            "/home/gina/Documentos/EstDatos/proyect-utp/python_backend/../cpp_core/planificador.cpp"
         ]
     },
     "module_name": "scheduler_wrapper"
@@ -2266,10 +2267,6 @@ static const char __pyx_k_append[] = "append";
 static const char __pyx_k_enable[] = "enable";
 static const char __pyx_k_name_2[] = "__name__";
 static const char __pyx_k_reduce[] = "__reduce__";
-<<<<<<< HEAD
-static const char __pyx_k_result[] = "result";
-=======
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static const char __pyx_k_disable[] = "disable";
 static const char __pyx_k_prof_id[] = "prof_id";
 static const char __pyx_k_slot_id[] = "slot_id";
@@ -2286,12 +2283,8 @@ static const char __pyx_k_isenabled[] = "isenabled";
 static const char __pyx_k_py_result[] = "py_result";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
-<<<<<<< HEAD
-static const char __pyx_k_assignment[] = "assignment";
-=======
 static const char __pyx_k_resultado[] = "resultado";
 static const char __pyx_k_asignacion[] = "asignacion";
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static const char __pyx_k_end_minute[] = "end_minute";
 static const char __pyx_k_enrollment[] = "enrollment";
 static const char __pyx_k_prereq_vec[] = "prereq_vec";
@@ -2403,13 +2396,8 @@ typedef struct {
   PyObject *__pyx_n_s_TypeError;
   PyObject *__pyx_n_s__20;
   PyObject *__pyx_n_s_append;
-<<<<<<< HEAD
-  PyObject *__pyx_n_s_assign_professor_to_course;
-  PyObject *__pyx_n_s_assignment;
-=======
   PyObject *__pyx_n_s_asignacion;
   PyObject *__pyx_n_s_assign_professor_to_course;
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   PyObject *__pyx_n_u_assignments;
   PyObject *__pyx_n_s_asyncio_coroutines;
   PyObject *__pyx_n_s_available_timeslots;
@@ -2452,11 +2440,7 @@ typedef struct {
   PyObject *__pyx_n_s_reduce_cython;
   PyObject *__pyx_n_s_reduce_ex;
   PyObject *__pyx_n_s_reset;
-<<<<<<< HEAD
-  PyObject *__pyx_n_s_result;
-=======
   PyObject *__pyx_n_s_resultado;
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   PyObject *__pyx_n_s_scheduler_wrapper;
   PyObject *__pyx_kp_s_scheduler_wrapper_pyx;
   PyObject *__pyx_n_s_self;
@@ -2553,13 +2537,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_TypeError);
   Py_CLEAR(clear_module_state->__pyx_n_s__20);
   Py_CLEAR(clear_module_state->__pyx_n_s_append);
-<<<<<<< HEAD
-  Py_CLEAR(clear_module_state->__pyx_n_s_assign_professor_to_course);
-  Py_CLEAR(clear_module_state->__pyx_n_s_assignment);
-=======
   Py_CLEAR(clear_module_state->__pyx_n_s_asignacion);
   Py_CLEAR(clear_module_state->__pyx_n_s_assign_professor_to_course);
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   Py_CLEAR(clear_module_state->__pyx_n_u_assignments);
   Py_CLEAR(clear_module_state->__pyx_n_s_asyncio_coroutines);
   Py_CLEAR(clear_module_state->__pyx_n_s_available_timeslots);
@@ -2602,11 +2581,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_reduce_cython);
   Py_CLEAR(clear_module_state->__pyx_n_s_reduce_ex);
   Py_CLEAR(clear_module_state->__pyx_n_s_reset);
-<<<<<<< HEAD
-  Py_CLEAR(clear_module_state->__pyx_n_s_result);
-=======
   Py_CLEAR(clear_module_state->__pyx_n_s_resultado);
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   Py_CLEAR(clear_module_state->__pyx_n_s_scheduler_wrapper);
   Py_CLEAR(clear_module_state->__pyx_kp_s_scheduler_wrapper_pyx);
   Py_CLEAR(clear_module_state->__pyx_n_s_self);
@@ -2681,13 +2656,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_TypeError);
   Py_VISIT(traverse_module_state->__pyx_n_s__20);
   Py_VISIT(traverse_module_state->__pyx_n_s_append);
-<<<<<<< HEAD
-  Py_VISIT(traverse_module_state->__pyx_n_s_assign_professor_to_course);
-  Py_VISIT(traverse_module_state->__pyx_n_s_assignment);
-=======
   Py_VISIT(traverse_module_state->__pyx_n_s_asignacion);
   Py_VISIT(traverse_module_state->__pyx_n_s_assign_professor_to_course);
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   Py_VISIT(traverse_module_state->__pyx_n_u_assignments);
   Py_VISIT(traverse_module_state->__pyx_n_s_asyncio_coroutines);
   Py_VISIT(traverse_module_state->__pyx_n_s_available_timeslots);
@@ -2730,11 +2700,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_reduce_cython);
   Py_VISIT(traverse_module_state->__pyx_n_s_reduce_ex);
   Py_VISIT(traverse_module_state->__pyx_n_s_reset);
-<<<<<<< HEAD
-  Py_VISIT(traverse_module_state->__pyx_n_s_result);
-=======
   Py_VISIT(traverse_module_state->__pyx_n_s_resultado);
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   Py_VISIT(traverse_module_state->__pyx_n_s_scheduler_wrapper);
   Py_VISIT(traverse_module_state->__pyx_kp_s_scheduler_wrapper_pyx);
   Py_VISIT(traverse_module_state->__pyx_n_s_self);
@@ -2827,13 +2793,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_TypeError __pyx_mstate_global->__pyx_n_s_TypeError
 #define __pyx_n_s__20 __pyx_mstate_global->__pyx_n_s__20
 #define __pyx_n_s_append __pyx_mstate_global->__pyx_n_s_append
-<<<<<<< HEAD
-#define __pyx_n_s_assign_professor_to_course __pyx_mstate_global->__pyx_n_s_assign_professor_to_course
-#define __pyx_n_s_assignment __pyx_mstate_global->__pyx_n_s_assignment
-=======
 #define __pyx_n_s_asignacion __pyx_mstate_global->__pyx_n_s_asignacion
 #define __pyx_n_s_assign_professor_to_course __pyx_mstate_global->__pyx_n_s_assign_professor_to_course
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 #define __pyx_n_u_assignments __pyx_mstate_global->__pyx_n_u_assignments
 #define __pyx_n_s_asyncio_coroutines __pyx_mstate_global->__pyx_n_s_asyncio_coroutines
 #define __pyx_n_s_available_timeslots __pyx_mstate_global->__pyx_n_s_available_timeslots
@@ -2876,11 +2837,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_reduce_cython __pyx_mstate_global->__pyx_n_s_reduce_cython
 #define __pyx_n_s_reduce_ex __pyx_mstate_global->__pyx_n_s_reduce_ex
 #define __pyx_n_s_reset __pyx_mstate_global->__pyx_n_s_reset
-<<<<<<< HEAD
-#define __pyx_n_s_result __pyx_mstate_global->__pyx_n_s_result
-=======
 #define __pyx_n_s_resultado __pyx_mstate_global->__pyx_n_s_resultado
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 #define __pyx_n_s_scheduler_wrapper __pyx_mstate_global->__pyx_n_s_scheduler_wrapper
 #define __pyx_kp_s_scheduler_wrapper_pyx __pyx_mstate_global->__pyx_kp_s_scheduler_wrapper_pyx
 #define __pyx_n_s_self __pyx_mstate_global->__pyx_n_s_self
@@ -3288,11 +3245,7 @@ static int __pyx_pf_17scheduler_wrapper_11PyScheduler___cinit__(struct __pyx_obj
     __pyx_t_1 = new planificador::PlanificadorCore();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-    __PYX_ERR(1, 52, __pyx_L1_error)
-=======
     __PYX_ERR(1, 53, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   }
   __pyx_v_self->scheduler = __pyx_t_1;
 
@@ -3393,11 +3346,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-<<<<<<< HEAD
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_4load_course, "Load a course into the scheduler");
-=======
 PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_4load_course, "Cargar curso en el planificador");
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_5load_course = {"load_course", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_5load_course, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_4load_course};
 static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_5load_course(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -3459,11 +3408,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -3471,15 +3416,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("load_course", 0, 3, 6, 1); __PYX_ERR(1, 58, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("load_course", 0, 3, 6, 1); __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -3487,57 +3426,35 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("load_course", 0, 3, 6, 2); __PYX_ERR(1, 58, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("load_course", 0, 3, 6, 2); __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_prerequisites);
           if (value) { values[3] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-<<<<<<< HEAD
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-=======
           else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_group_id);
           if (value) { values[4] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-<<<<<<< HEAD
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-=======
           else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_duration);
           if (value) { values[5] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-<<<<<<< HEAD
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-=======
           else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-<<<<<<< HEAD
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "load_course") < 0)) __PYX_ERR(1, 58, __pyx_L3_error)
-=======
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "load_course") < 0)) __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
       }
     } else {
       switch (__pyx_nargs) {
@@ -3554,41 +3471,24 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
         default: goto __pyx_L5_argtuple_error;
       }
     }
-<<<<<<< HEAD
-    __pyx_v_course_id = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_course_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-    __pyx_v_name = ((PyObject*)values[1]);
-    __pyx_v_enrollment = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_enrollment == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-    __pyx_v_prerequisites = ((PyObject*)values[3]);
-    if (values[4]) {
-      __pyx_v_group_id = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_group_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-=======
     __pyx_v_course_id = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_course_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
     __pyx_v_name = ((PyObject*)values[1]);
     __pyx_v_enrollment = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_enrollment == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
     __pyx_v_prerequisites = ((PyObject*)values[3]);
     if (values[4]) {
       __pyx_v_group_id = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_group_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     } else {
       __pyx_v_group_id = ((int)0);
     }
     if (values[5]) {
-<<<<<<< HEAD
-      __pyx_v_duration = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_duration == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 58, __pyx_L3_error)
-=======
       __pyx_v_duration = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_duration == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     } else {
       __pyx_v_duration = ((int)1);
     }
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-<<<<<<< HEAD
-  __Pyx_RaiseArgtupleInvalid("load_course", 0, 3, 6, __pyx_nargs); __PYX_ERR(1, 58, __pyx_L3_error)
-=======
   __Pyx_RaiseArgtupleInvalid("load_course", 0, 3, 6, __pyx_nargs); __PYX_ERR(1, 59, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3602,13 +3502,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-<<<<<<< HEAD
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_name), (&PyUnicode_Type), 1, "name", 1))) __PYX_ERR(1, 58, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_prerequisites), (&PyList_Type), 1, "prerequisites", 1))) __PYX_ERR(1, 58, __pyx_L1_error)
-=======
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_name), (&PyUnicode_Type), 1, "name", 1))) __PYX_ERR(1, 59, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_prerequisites), (&PyList_Type), 1, "prerequisites", 1))) __PYX_ERR(1, 59, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_4load_course(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self), __pyx_v_course_id, __pyx_v_name, __pyx_v_enrollment, __pyx_v_prerequisites, __pyx_v_group_id, __pyx_v_duration);
 
   /* function exit code */
@@ -3661,11 +3556,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_4load_course(struct 
  */
     if (unlikely(__pyx_v_prerequisites == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-<<<<<<< HEAD
-      __PYX_ERR(1, 62, __pyx_L1_error)
-=======
       __PYX_ERR(1, 63, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     }
     __pyx_t_2 = __pyx_v_prerequisites; __Pyx_INCREF(__pyx_t_2);
     __pyx_t_3 = 0;
@@ -3673,24 +3564,14 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_4load_course(struct 
       {
         Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_2);
         #if !CYTHON_ASSUME_SAFE_MACROS
-<<<<<<< HEAD
-        if (unlikely((__pyx_temp < 0))) __PYX_ERR(1, 62, __pyx_L1_error)
-=======
         if (unlikely((__pyx_temp < 0))) __PYX_ERR(1, 63, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         #endif
         if (__pyx_t_3 >= __pyx_temp) break;
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-<<<<<<< HEAD
-      __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_4); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(1, 62, __pyx_L1_error)
-      #else
-      __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 62, __pyx_L1_error)
-=======
       __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_4); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(1, 63, __pyx_L1_error)
       #else
       __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 63, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
       __Pyx_GOTREF(__pyx_t_4);
       #endif
       __Pyx_XDECREF_SET(__pyx_v_p, __pyx_t_4);
@@ -3701,24 +3582,14 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_4load_course(struct 
  *             for p in prerequisites:
  *                 prereq_vec.push_back(p)             # <<<<<<<<<<<<<<
  * 
-<<<<<<< HEAD
- *         self.scheduler.loadCourse(course_id, name.encode('utf-8'), enrollment, prereq_vec, group_id, duration)
- */
-      __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_p); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 63, __pyx_L1_error)
-=======
  *         self.scheduler.cargarCurso(course_id, name.encode('utf-8'), enrollment, prereq_vec, group_id, duration)
  */
       __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_p); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 64, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
       try {
         __pyx_v_prereq_vec.push_back(__pyx_t_5);
       } catch(...) {
         __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-        __PYX_ERR(1, 63, __pyx_L1_error)
-=======
         __PYX_ERR(1, 64, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
       }
 
       /* "scheduler_wrapper.pyx":63
@@ -3749,29 +3620,17 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_4load_course(struct 
  */
   if (unlikely(__pyx_v_name == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
-<<<<<<< HEAD
-    __PYX_ERR(1, 65, __pyx_L1_error)
-  }
-  __pyx_t_2 = PyUnicode_AsUTF8String(__pyx_v_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 65, __pyx_L1_error)
-=======
     __PYX_ERR(1, 66, __pyx_L1_error)
   }
   __pyx_t_2 = PyUnicode_AsUTF8String(__pyx_v_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 66, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   try {
     __pyx_v_self->scheduler->cargarCurso(__pyx_v_course_id, __pyx_t_6, __pyx_v_enrollment, __pyx_v_prereq_vec, __pyx_v_group_id, __pyx_v_duration);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-    __PYX_ERR(1, 65, __pyx_L1_error)
-=======
     __PYX_ERR(1, 66, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   }
 
   /* "scheduler_wrapper.pyx":59
@@ -3813,11 +3672,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-<<<<<<< HEAD
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_6load_professor, "Load a professor with their available timeslots");
-=======
 PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_6load_professor, "Cargar profesor con horarios disponibles");
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_7load_professor = {"load_professor", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_7load_professor, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_6load_professor};
 static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_7load_professor(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -3869,11 +3724,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 67, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 68, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -3881,15 +3732,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 67, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("load_professor", 1, 3, 3, 1); __PYX_ERR(1, 67, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 68, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("load_professor", 1, 3, 3, 1); __PYX_ERR(1, 68, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -3897,24 +3742,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 67, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("load_professor", 1, 3, 3, 2); __PYX_ERR(1, 67, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 68, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("load_professor", 1, 3, 3, 2); __PYX_ERR(1, 68, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-<<<<<<< HEAD
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "load_professor") < 0)) __PYX_ERR(1, 67, __pyx_L3_error)
-=======
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "load_professor") < 0)) __PYX_ERR(1, 68, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
       }
     } else if (unlikely(__pyx_nargs != 3)) {
       goto __pyx_L5_argtuple_error;
@@ -3923,21 +3758,13 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
       values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
     }
-<<<<<<< HEAD
-    __pyx_v_prof_id = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_prof_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 67, __pyx_L3_error)
-=======
     __pyx_v_prof_id = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_prof_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 68, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     __pyx_v_name = ((PyObject*)values[1]);
     __pyx_v_available_timeslots = ((PyObject*)values[2]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-<<<<<<< HEAD
-  __Pyx_RaiseArgtupleInvalid("load_professor", 1, 3, 3, __pyx_nargs); __PYX_ERR(1, 67, __pyx_L3_error)
-=======
   __Pyx_RaiseArgtupleInvalid("load_professor", 1, 3, 3, __pyx_nargs); __PYX_ERR(1, 68, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3951,13 +3778,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-<<<<<<< HEAD
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_name), (&PyUnicode_Type), 1, "name", 1))) __PYX_ERR(1, 67, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_available_timeslots), (&PyList_Type), 1, "available_timeslots", 1))) __PYX_ERR(1, 67, __pyx_L1_error)
-=======
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_name), (&PyUnicode_Type), 1, "name", 1))) __PYX_ERR(1, 68, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_available_timeslots), (&PyList_Type), 1, "available_timeslots", 1))) __PYX_ERR(1, 68, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_6load_professor(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self), __pyx_v_prof_id, __pyx_v_name, __pyx_v_available_timeslots);
 
   /* function exit code */
@@ -3999,11 +3821,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_6load_professor(stru
  */
   if (unlikely(__pyx_v_available_timeslots == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-<<<<<<< HEAD
-    __PYX_ERR(1, 70, __pyx_L1_error)
-=======
     __PYX_ERR(1, 71, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   }
   __pyx_t_1 = __pyx_v_available_timeslots; __Pyx_INCREF(__pyx_t_1);
   __pyx_t_2 = 0;
@@ -4011,24 +3829,14 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_6load_professor(stru
     {
       Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_1);
       #if !CYTHON_ASSUME_SAFE_MACROS
-<<<<<<< HEAD
-      if (unlikely((__pyx_temp < 0))) __PYX_ERR(1, 70, __pyx_L1_error)
-=======
       if (unlikely((__pyx_temp < 0))) __PYX_ERR(1, 71, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
       #endif
       if (__pyx_t_2 >= __pyx_temp) break;
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-<<<<<<< HEAD
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(1, 70, __pyx_L1_error)
-    #else
-    __pyx_t_3 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 70, __pyx_L1_error)
-=======
     __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(1, 71, __pyx_L1_error)
     #else
     __pyx_t_3 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 71, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_ts, __pyx_t_3);
@@ -4039,24 +3847,14 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_6load_professor(stru
  *         for ts in available_timeslots:
  *             timeslot_vec.push_back(ts)             # <<<<<<<<<<<<<<
  * 
-<<<<<<< HEAD
- *         self.scheduler.loadProfessor(prof_id, name.encode('utf-8'), timeslot_vec)
- */
-    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_ts); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 71, __pyx_L1_error)
-=======
  *         self.scheduler.cargarProfesor(prof_id, name.encode('utf-8'), timeslot_vec)
  */
     __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_ts); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 72, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     try {
       __pyx_v_timeslot_vec.push_back(__pyx_t_4);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-      __PYX_ERR(1, 71, __pyx_L1_error)
-=======
       __PYX_ERR(1, 72, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     }
 
     /* "scheduler_wrapper.pyx":71
@@ -4078,29 +3876,17 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_6load_professor(stru
  */
   if (unlikely(__pyx_v_name == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
-<<<<<<< HEAD
-    __PYX_ERR(1, 73, __pyx_L1_error)
-  }
-  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 73, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 73, __pyx_L1_error)
-=======
     __PYX_ERR(1, 74, __pyx_L1_error)
   }
   __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 74, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   try {
     __pyx_v_self->scheduler->cargarProfesor(__pyx_v_prof_id, __pyx_t_5, __pyx_v_timeslot_vec);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-    __PYX_ERR(1, 73, __pyx_L1_error)
-=======
     __PYX_ERR(1, 74, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   }
 
   /* "scheduler_wrapper.pyx":68
@@ -4131,11 +3917,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_6load_professor(stru
  * 
  *     def load_timeslot(self, int slot_id, str day, int start_hour, int start_minute,             # <<<<<<<<<<<<<<
  *                      int end_hour, int end_minute):
-<<<<<<< HEAD
- *         """Load a timeslot"""
-=======
  *         """Cargar bloque de tiempo"""
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
 /* Python wrapper */
@@ -4146,11 +3928,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-<<<<<<< HEAD
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_8load_timeslot, "Load a timeslot");
-=======
 PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_8load_timeslot, "Cargar bloque de tiempo");
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_9load_timeslot = {"load_timeslot", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_9load_timeslot, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_8load_timeslot};
 static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_9load_timeslot(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -4211,11 +3989,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 75, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -4223,15 +3997,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 75, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 1); __PYX_ERR(1, 75, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 1); __PYX_ERR(1, 76, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -4239,15 +4007,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 75, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 2); __PYX_ERR(1, 75, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 2); __PYX_ERR(1, 76, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -4255,15 +4017,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 75, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 3); __PYX_ERR(1, 75, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 3); __PYX_ERR(1, 76, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -4271,15 +4027,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[4]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 75, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 4); __PYX_ERR(1, 75, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 4); __PYX_ERR(1, 76, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
         CYTHON_FALLTHROUGH;
         case  5:
@@ -4287,24 +4037,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[5]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 75, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 5); __PYX_ERR(1, 75, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, 5); __PYX_ERR(1, 76, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-<<<<<<< HEAD
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "load_timeslot") < 0)) __PYX_ERR(1, 75, __pyx_L3_error)
-=======
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "load_timeslot") < 0)) __PYX_ERR(1, 76, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
       }
     } else if (unlikely(__pyx_nargs != 6)) {
       goto __pyx_L5_argtuple_error;
@@ -4316,18 +4056,6 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[4] = __Pyx_Arg_FASTCALL(__pyx_args, 4);
       values[5] = __Pyx_Arg_FASTCALL(__pyx_args, 5);
     }
-<<<<<<< HEAD
-    __pyx_v_slot_id = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_slot_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 75, __pyx_L3_error)
-    __pyx_v_day = ((PyObject*)values[1]);
-    __pyx_v_start_hour = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_start_hour == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 75, __pyx_L3_error)
-    __pyx_v_start_minute = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_start_minute == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 75, __pyx_L3_error)
-    __pyx_v_end_hour = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_end_hour == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
-    __pyx_v_end_minute = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_end_minute == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
-  }
-  goto __pyx_L6_skip;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, __pyx_nargs); __PYX_ERR(1, 75, __pyx_L3_error)
-=======
     __pyx_v_slot_id = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_slot_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
     __pyx_v_day = ((PyObject*)values[1]);
     __pyx_v_start_hour = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_start_hour == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L3_error)
@@ -4338,7 +4066,6 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("load_timeslot", 1, 6, 6, __pyx_nargs); __PYX_ERR(1, 76, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4352,11 +4079,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-<<<<<<< HEAD
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_day), (&PyUnicode_Type), 1, "day", 1))) __PYX_ERR(1, 75, __pyx_L1_error)
-=======
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_day), (&PyUnicode_Type), 1, "day", 1))) __PYX_ERR(1, 76, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_8load_timeslot(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self), __pyx_v_slot_id, __pyx_v_day, __pyx_v_start_hour, __pyx_v_start_minute, __pyx_v_end_hour, __pyx_v_end_minute);
 
   /* function exit code */
@@ -4383,25 +4106,6 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_8load_timeslot(struc
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("load_timeslot", 1);
-<<<<<<< HEAD
-
-  /* "scheduler_wrapper.pyx":78
- *                      int end_hour, int end_minute):
- *         """Load a timeslot"""
- *         self.scheduler.loadTimeSlot(slot_id, day.encode('utf-8'),             # <<<<<<<<<<<<<<
- *                                     start_hour, start_minute, end_hour, end_minute)
- * 
- */
-  if (unlikely(__pyx_v_day == Py_None)) {
-    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
-    __PYX_ERR(1, 78, __pyx_L1_error)
-  }
-  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_day); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 78, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 78, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-=======
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 
   /* "scheduler_wrapper.pyx":79
  *                      int end_hour, int end_minute):
@@ -4430,11 +4134,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_8load_timeslot(struc
     __pyx_v_self->scheduler->cargarBloqueTiempo(__pyx_v_slot_id, __pyx_t_2, __pyx_v_start_hour, __pyx_v_start_minute, __pyx_v_end_hour, __pyx_v_end_minute);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-    __PYX_ERR(1, 78, __pyx_L1_error)
-=======
     __PYX_ERR(1, 79, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   }
 
   /* "scheduler_wrapper.pyx":76
@@ -4442,11 +4142,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_8load_timeslot(struc
  * 
  *     def load_timeslot(self, int slot_id, str day, int start_hour, int start_minute,             # <<<<<<<<<<<<<<
  *                      int end_hour, int end_minute):
-<<<<<<< HEAD
- *         """Load a timeslot"""
-=======
  *         """Cargar bloque de tiempo"""
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
   /* function exit code */
@@ -4466,13 +4162,8 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_8load_timeslot(struc
  *                                     start_hour, start_minute, end_hour, end_minute)
  * 
  *     def assign_professor_to_course(self, int course_id, int professor_id):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Assign a professor to teach a course"""
- *         self.scheduler.assignProfessorToCourse(course_id, professor_id)
-=======
  *         """Asignar profesor a curso"""
  *         self.scheduler.asignarProfesorACurso(course_id, professor_id)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
 /* Python wrapper */
@@ -4483,11 +4174,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-<<<<<<< HEAD
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_10assign_professor_to_course, "Assign a professor to teach a course");
-=======
 PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_10assign_professor_to_course, "Asignar profesor a curso");
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_11assign_professor_to_course = {"assign_professor_to_course", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_11assign_professor_to_course, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_10assign_professor_to_course};
 static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_11assign_professor_to_course(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -4536,11 +4223,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 81, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 82, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -4548,24 +4231,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-<<<<<<< HEAD
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 81, __pyx_L3_error)
-        else {
-          __Pyx_RaiseArgtupleInvalid("assign_professor_to_course", 1, 2, 2, 1); __PYX_ERR(1, 81, __pyx_L3_error)
-=======
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 82, __pyx_L3_error)
         else {
           __Pyx_RaiseArgtupleInvalid("assign_professor_to_course", 1, 2, 2, 1); __PYX_ERR(1, 82, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-<<<<<<< HEAD
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "assign_professor_to_course") < 0)) __PYX_ERR(1, 81, __pyx_L3_error)
-=======
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "assign_professor_to_course") < 0)) __PYX_ERR(1, 82, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -4573,21 +4246,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
     }
-<<<<<<< HEAD
-    __pyx_v_course_id = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_course_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 81, __pyx_L3_error)
-    __pyx_v_professor_id = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_professor_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 81, __pyx_L3_error)
-  }
-  goto __pyx_L6_skip;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("assign_professor_to_course", 1, 2, 2, __pyx_nargs); __PYX_ERR(1, 81, __pyx_L3_error)
-=======
     __pyx_v_course_id = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_course_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 82, __pyx_L3_error)
     __pyx_v_professor_id = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_professor_id == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 82, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("assign_professor_to_course", 1, 2, 2, __pyx_nargs); __PYX_ERR(1, 82, __pyx_L3_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4633,24 +4297,15 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_10assign_professor_t
     __pyx_v_self->scheduler->asignarProfesorACurso(__pyx_v_course_id, __pyx_v_professor_id);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-    __PYX_ERR(1, 83, __pyx_L1_error)
-=======
     __PYX_ERR(1, 84, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   }
 
   /* "scheduler_wrapper.pyx":82
  *                                     start_hour, start_minute, end_hour, end_minute)
  * 
  *     def assign_professor_to_course(self, int course_id, int professor_id):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Assign a professor to teach a course"""
- *         self.scheduler.assignProfessorToCourse(course_id, professor_id)
-=======
  *         """Asignar profesor a curso"""
  *         self.scheduler.asignarProfesorACurso(course_id, professor_id)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
   /* function exit code */
@@ -4669,13 +4324,8 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_10assign_professor_t
  *         self.scheduler.asignarProfesorACurso(course_id, professor_id)
  * 
  *     def generate_schedule(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Generate the schedule using backtracking algorithm"""
- *         cdef ScheduleResult result = self.scheduler.generateSchedule()
-=======
  *         """Generar horario usando algoritmo"""
  *         cdef ResultadoHorario resultado = self.scheduler.generarHorario()
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
 /* Python wrapper */
@@ -4686,11 +4336,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-<<<<<<< HEAD
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_12generate_schedule, "Generate the schedule using backtracking algorithm");
-=======
 PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_12generate_schedule, "Generar horario usando algoritmo");
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_13generate_schedule = {"generate_schedule", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_13generate_schedule, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_12generate_schedule};
 static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_13generate_schedule(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -4747,65 +4393,19 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  *         """Generar horario usando algoritmo"""
  *         cdef ResultadoHorario resultado = self.scheduler.generarHorario()             # <<<<<<<<<<<<<<
  * 
-<<<<<<< HEAD
- *         # Convert to Python dict
-=======
  *         # Convertir a dict Python
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
   try {
     __pyx_t_1 = __pyx_v_self->scheduler->generarHorario();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-    __PYX_ERR(1, 87, __pyx_L1_error)
-  }
-  __pyx_v_result = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
-
-  /* "scheduler_wrapper.pyx":91
- *         # Convert to Python dict
- *         py_result = {
- *             'success': result.success,             # <<<<<<<<<<<<<<
- *             'error_message': result.errorMessage.decode('utf-8'),
- *             'backtrack_count': result.backtrackCount,
- */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 91, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_v_result.success); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 91, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_success, __pyx_t_3) < 0) __PYX_ERR(1, 91, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-=======
     __PYX_ERR(1, 88, __pyx_L1_error)
   }
   __pyx_v_resultado = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 
   /* "scheduler_wrapper.pyx":92
  *         # Convertir a dict Python
  *         py_result = {
-<<<<<<< HEAD
- *             'success': result.success,
- *             'error_message': result.errorMessage.decode('utf-8'),             # <<<<<<<<<<<<<<
- *             'backtrack_count': result.backtrackCount,
- *             'computation_time': result.computationTime,
- */
-  __pyx_t_3 = __Pyx_decode_cpp_string(__pyx_v_result.errorMessage, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 92, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_error_message, __pyx_t_3) < 0) __PYX_ERR(1, 91, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "scheduler_wrapper.pyx":93
- *             'success': result.success,
- *             'error_message': result.errorMessage.decode('utf-8'),
- *             'backtrack_count': result.backtrackCount,             # <<<<<<<<<<<<<<
- *             'computation_time': result.computationTime,
- *             'assignments': []
- */
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_result.backtrackCount); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 93, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_backtrack_count, __pyx_t_3) < 0) __PYX_ERR(1, 91, __pyx_L1_error)
-=======
  *             'success': resultado.exito,             # <<<<<<<<<<<<<<
  *             'error_message': resultado.mensajeError.decode('utf-8'),
  *             'backtrack_count': resultado.conteoBacktrack,
@@ -4827,7 +4427,6 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
   __pyx_t_3 = __Pyx_decode_cpp_string(__pyx_v_resultado.mensajeError, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_error_message, __pyx_t_3) < 0) __PYX_ERR(1, 92, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "scheduler_wrapper.pyx":94
@@ -4836,18 +4435,10 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  *             'backtrack_count': resultado.conteoBacktrack,             # <<<<<<<<<<<<<<
  *             'computation_time': resultado.tiempoComputo,
  *             'assignments': []
-<<<<<<< HEAD
- *         }
- */
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_result.computationTime); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 94, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_computation_time, __pyx_t_3) < 0) __PYX_ERR(1, 91, __pyx_L1_error)
-=======
  */
   __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_resultado.conteoBacktrack); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_backtrack_count, __pyx_t_3) < 0) __PYX_ERR(1, 92, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "scheduler_wrapper.pyx":95
@@ -4869,15 +4460,9 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  *         }
  * 
  */
-<<<<<<< HEAD
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_assignments, __pyx_t_3) < 0) __PYX_ERR(1, 91, __pyx_L1_error)
-=======
   __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_assignments, __pyx_t_3) < 0) __PYX_ERR(1, 92, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_py_result = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
@@ -4887,40 +4472,6 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  *         # Convertir asignaciones
  *         for asignacion in resultado.asignaciones:             # <<<<<<<<<<<<<<
  *             py_result['assignments'].append({
-<<<<<<< HEAD
- *                 'course_id': assignment.courseId,
- */
-  __pyx_t_4 = __pyx_v_result.assignments.begin();
-  for (;;) {
-    if (!(__pyx_t_4 != __pyx_v_result.assignments.end())) break;
-    __pyx_t_5 = *__pyx_t_4;
-    ++__pyx_t_4;
-    __pyx_v_assignment = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_5);
-
-    /* "scheduler_wrapper.pyx":100
- *         # Convert assignments
- *         for assignment in result.assignments:
- *             py_result['assignments'].append({             # <<<<<<<<<<<<<<
- *                 'course_id': assignment.courseId,
- *                 'timeslot_id': assignment.timeslotId,
- */
-    __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_py_result, __pyx_n_u_assignments); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 100, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-
-    /* "scheduler_wrapper.pyx":101
- *         for assignment in result.assignments:
- *             py_result['assignments'].append({
- *                 'course_id': assignment.courseId,             # <<<<<<<<<<<<<<
- *                 'timeslot_id': assignment.timeslotId,
- *                 'professor_id': assignment.professorId
- */
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_assignment.courseId); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_course_id, __pyx_t_6) < 0) __PYX_ERR(1, 101, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-=======
  *                 'course_id': asignacion.idCurso,
  */
   __pyx_t_4 = __pyx_v_resultado.asignaciones.begin();
@@ -4939,21 +4490,10 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  */
     __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_py_result, __pyx_n_u_assignments); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 
     /* "scheduler_wrapper.pyx":102
  *         for asignacion in resultado.asignaciones:
  *             py_result['assignments'].append({
-<<<<<<< HEAD
- *                 'course_id': assignment.courseId,
- *                 'timeslot_id': assignment.timeslotId,             # <<<<<<<<<<<<<<
- *                 'professor_id': assignment.professorId
- *             })
- */
-    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_assignment.timeslotId); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 102, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_timeslot_id, __pyx_t_6) < 0) __PYX_ERR(1, 101, __pyx_L1_error)
-=======
  *                 'course_id': asignacion.idCurso,             # <<<<<<<<<<<<<<
  *                 'timeslot_id': asignacion.idBloque,
  *                 'professor_id': asignacion.idProfesor
@@ -4963,7 +4503,6 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
     __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_asignacion.idCurso); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 102, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_course_id, __pyx_t_6) < 0) __PYX_ERR(1, 102, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
     /* "scheduler_wrapper.pyx":103
@@ -4972,18 +4511,10 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  *                 'timeslot_id': asignacion.idBloque,             # <<<<<<<<<<<<<<
  *                 'professor_id': asignacion.idProfesor
  *             })
-<<<<<<< HEAD
- * 
- */
-    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_assignment.professorId); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_professor_id, __pyx_t_6) < 0) __PYX_ERR(1, 101, __pyx_L1_error)
-=======
  */
     __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_asignacion.idBloque); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 103, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_timeslot_id, __pyx_t_6) < 0) __PYX_ERR(1, 102, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
     /* "scheduler_wrapper.pyx":104
@@ -5002,17 +4533,10 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  *         # Convertir asignaciones
  *         for asignacion in resultado.asignaciones:
  *             py_result['assignments'].append({             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *                 'course_id': assignment.courseId,
- *                 'timeslot_id': assignment.timeslotId,
- */
-    __pyx_t_7 = __Pyx_PyObject_Append(__pyx_t_2, __pyx_t_3); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(1, 100, __pyx_L1_error)
-=======
  *                 'course_id': asignacion.idCurso,
  *                 'timeslot_id': asignacion.idBloque,
  */
     __pyx_t_7 = __Pyx_PyObject_Append(__pyx_t_2, __pyx_t_3); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(1, 101, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -5021,11 +4545,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  *         # Convertir asignaciones
  *         for asignacion in resultado.asignaciones:             # <<<<<<<<<<<<<<
  *             py_result['assignments'].append({
-<<<<<<< HEAD
- *                 'course_id': assignment.courseId,
-=======
  *                 'course_id': asignacion.idCurso,
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
   }
 
@@ -5045,13 +4565,8 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  *         self.scheduler.asignarProfesorACurso(course_id, professor_id)
  * 
  *     def generate_schedule(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Generate the schedule using backtracking algorithm"""
- *         cdef ScheduleResult result = self.scheduler.generateSchedule()
-=======
  *         """Generar horario usando algoritmo"""
  *         cdef ResultadoHorario resultado = self.scheduler.generarHorario()
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
   /* function exit code */
@@ -5072,13 +4587,8 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  *         return py_result
  * 
  *     def stop_generation(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Stop the schedule generation process"""
- *         self.scheduler.stopGeneration()
-=======
  *         """Detener generacin"""
  *         self.scheduler.detenerGeneracion()
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
 /* Python wrapper */
@@ -5089,11 +4599,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-<<<<<<< HEAD
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_14stop_generation, "Stop the schedule generation process");
-=======
 PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_14stop_generation, "Detener generaci\303\263n");
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_15stop_generation = {"stop_generation", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_15stop_generation, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_14stop_generation};
 static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_15stop_generation(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -5146,24 +4652,15 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14stop_generation(st
     __pyx_v_self->scheduler->detenerGeneracion();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-    __PYX_ERR(1, 110, __pyx_L1_error)
-=======
     __PYX_ERR(1, 111, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   }
 
   /* "scheduler_wrapper.pyx":109
  *         return py_result
  * 
  *     def stop_generation(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Stop the schedule generation process"""
- *         self.scheduler.stopGeneration()
-=======
  *         """Detener generacin"""
  *         self.scheduler.detenerGeneracion()
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
   /* function exit code */
@@ -5182,13 +4679,8 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14stop_generation(st
  *         self.scheduler.detenerGeneracion()
  * 
  *     def reset(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Reset the scheduler (clear all data)"""
- *         self.scheduler.reset()
-=======
  *         """Reiniciar planificador"""
  *         self.scheduler.reiniciar()
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
 /* Python wrapper */
@@ -5199,11 +4691,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-<<<<<<< HEAD
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_16reset, "Reset the scheduler (clear all data)");
-=======
 PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_16reset, "Reiniciar planificador");
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_17reset = {"reset", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_17reset, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_16reset};
 static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_17reset(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -5256,24 +4744,15 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16reset(struct __pyx
     __pyx_v_self->scheduler->reiniciar();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-<<<<<<< HEAD
-    __PYX_ERR(1, 114, __pyx_L1_error)
-=======
     __PYX_ERR(1, 115, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   }
 
   /* "scheduler_wrapper.pyx":113
  *         self.scheduler.detenerGeneracion()
  * 
  *     def reset(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Reset the scheduler (clear all data)"""
- *         self.scheduler.reset()
-=======
  *         """Reiniciar planificador"""
  *         self.scheduler.reiniciar()
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
   /* function exit code */
@@ -5292,13 +4771,8 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16reset(struct __pyx
  *         self.scheduler.reiniciar()
  * 
  *     def has_data(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Check if scheduler has any data loaded"""
- *         return self.scheduler.hasData()
-=======
  *         """Verificar si hay datos cargados"""
  *         return self.scheduler.tieneDatos()
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
 /* Python wrapper */
@@ -5309,11 +4783,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-<<<<<<< HEAD
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_18has_data, "Check if scheduler has any data loaded");
-=======
 PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_18has_data, "Verificar si hay datos cargados");
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_19has_data = {"has_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_19has_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_18has_data};
 static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_19has_data(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -5364,11 +4834,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(struct __
  *     def validate_data(self):
  */
   __Pyx_XDECREF(__pyx_r);
-<<<<<<< HEAD
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->scheduler->hasData()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 118, __pyx_L1_error)
-=======
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->scheduler->tieneDatos()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 119, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5378,13 +4844,8 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(struct __
  *         self.scheduler.reiniciar()
  * 
  *     def has_data(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Check if scheduler has any data loaded"""
- *         return self.scheduler.hasData()
-=======
  *         """Verificar si hay datos cargados"""
  *         return self.scheduler.tieneDatos()
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
   /* function exit code */
@@ -5402,13 +4863,8 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(struct __
  *         return self.scheduler.tieneDatos()
  * 
  *     def validate_data(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Validate the loaded data"""
- *         return self.scheduler.validateData().decode('utf-8')
-=======
  *         """Validar datos cargados"""
  *         return self.scheduler.validarDatos().decode('utf-8')
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
 /* Python wrapper */
@@ -5419,11 +4875,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-<<<<<<< HEAD
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_20validate_data, "Validate the loaded data");
-=======
 PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_20validate_data, "Validar datos cargados");
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_21validate_data = {"validate_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_21validate_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_20validate_data};
 static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_21validate_data(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -5468,19 +4920,11 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_20validate_data(stru
 
   /* "scheduler_wrapper.pyx":123
  *     def validate_data(self):
-<<<<<<< HEAD
- *         """Validate the loaded data"""
- *         return self.scheduler.validateData().decode('utf-8')             # <<<<<<<<<<<<<<
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->scheduler->validateData(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 122, __pyx_L1_error)
-=======
  *         """Validar datos cargados"""
  *         return self.scheduler.validarDatos().decode('utf-8')             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->scheduler->validarDatos(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 123, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5490,13 +4934,8 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_20validate_data(stru
  *         return self.scheduler.tieneDatos()
  * 
  *     def validate_data(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Validate the loaded data"""
- *         return self.scheduler.validateData().decode('utf-8')
-=======
  *         """Validar datos cargados"""
  *         return self.scheduler.validarDatos().decode('utf-8')
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
  */
 
   /* function exit code */
@@ -5913,13 +5352,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
     {&__pyx_n_s__20, __pyx_k__20, sizeof(__pyx_k__20), 0, 0, 1, 1},
     {&__pyx_n_s_append, __pyx_k_append, sizeof(__pyx_k_append), 0, 0, 1, 1},
-<<<<<<< HEAD
-    {&__pyx_n_s_assign_professor_to_course, __pyx_k_assign_professor_to_course, sizeof(__pyx_k_assign_professor_to_course), 0, 0, 1, 1},
-    {&__pyx_n_s_assignment, __pyx_k_assignment, sizeof(__pyx_k_assignment), 0, 0, 1, 1},
-=======
     {&__pyx_n_s_asignacion, __pyx_k_asignacion, sizeof(__pyx_k_asignacion), 0, 0, 1, 1},
     {&__pyx_n_s_assign_professor_to_course, __pyx_k_assign_professor_to_course, sizeof(__pyx_k_assign_professor_to_course), 0, 0, 1, 1},
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     {&__pyx_n_u_assignments, __pyx_k_assignments, sizeof(__pyx_k_assignments), 0, 1, 0, 1},
     {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
     {&__pyx_n_s_available_timeslots, __pyx_k_available_timeslots, sizeof(__pyx_k_available_timeslots), 0, 0, 1, 1},
@@ -5962,11 +5396,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
     {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
     {&__pyx_n_s_reset, __pyx_k_reset, sizeof(__pyx_k_reset), 0, 0, 1, 1},
-<<<<<<< HEAD
-    {&__pyx_n_s_result, __pyx_k_result, sizeof(__pyx_k_result), 0, 0, 1, 1},
-=======
     {&__pyx_n_s_resultado, __pyx_k_resultado, sizeof(__pyx_k_resultado), 0, 0, 1, 1},
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
     {&__pyx_n_s_scheduler_wrapper, __pyx_k_scheduler_wrapper, sizeof(__pyx_k_scheduler_wrapper), 0, 0, 1, 1},
     {&__pyx_kp_s_scheduler_wrapper_pyx, __pyx_k_scheduler_wrapper_pyx, sizeof(__pyx_k_scheduler_wrapper_pyx), 0, 0, 1, 0},
     {&__pyx_n_s_self, __pyx_k_self, sizeof(__pyx_k_self), 0, 0, 1, 1},
@@ -6000,109 +5430,6 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-<<<<<<< HEAD
-  /* "scheduler_wrapper.pyx":58
- *             del self.scheduler
- * 
- *     def load_course(self, int course_id, str name, int enrollment, list prerequisites=None, int group_id=0, int duration=1):             # <<<<<<<<<<<<<<
- *         """Load a course into the scheduler"""
- *         cdef vector[int] prereq_vec
- */
-  __pyx_tuple_ = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_course_id, __pyx_n_s_name, __pyx_n_s_enrollment, __pyx_n_s_prerequisites, __pyx_n_s_group_id, __pyx_n_s_duration, __pyx_n_s_prereq_vec, __pyx_n_s_p); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple_);
-  __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(7, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_load_course, 58, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(1, 58, __pyx_L1_error)
-  __pyx_tuple__3 = PyTuple_Pack(3, Py_None, __pyx_int_0, __pyx_int_1); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
-
-  /* "scheduler_wrapper.pyx":67
- *         self.scheduler.loadCourse(course_id, name.encode('utf-8'), enrollment, prereq_vec, group_id, duration)
- * 
- *     def load_professor(self, int prof_id, str name, list available_timeslots):             # <<<<<<<<<<<<<<
- *         """Load a professor with their available timeslots"""
- *         cdef vector[int] timeslot_vec
- */
-  __pyx_tuple__4 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_prof_id, __pyx_n_s_name, __pyx_n_s_available_timeslots, __pyx_n_s_timeslot_vec, __pyx_n_s_ts); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__4);
-  __Pyx_GIVEREF(__pyx_tuple__4);
-  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_load_professor, 67, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(1, 67, __pyx_L1_error)
-
-  /* "scheduler_wrapper.pyx":75
- *         self.scheduler.loadProfessor(prof_id, name.encode('utf-8'), timeslot_vec)
- * 
- *     def load_timeslot(self, int slot_id, str day, int start_hour, int start_minute,             # <<<<<<<<<<<<<<
- *                      int end_hour, int end_minute):
- *         """Load a timeslot"""
- */
-  __pyx_tuple__6 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_slot_id, __pyx_n_s_day, __pyx_n_s_start_hour, __pyx_n_s_start_minute, __pyx_n_s_end_hour, __pyx_n_s_end_minute); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 75, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
-  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(7, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_load_timeslot, 75, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(1, 75, __pyx_L1_error)
-
-  /* "scheduler_wrapper.pyx":81
- *                                     start_hour, start_minute, end_hour, end_minute)
- * 
- *     def assign_professor_to_course(self, int course_id, int professor_id):             # <<<<<<<<<<<<<<
- *         """Assign a professor to teach a course"""
- *         self.scheduler.assignProfessorToCourse(course_id, professor_id)
- */
-  __pyx_tuple__8 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_course_id, __pyx_n_s_professor_id); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__8);
-  __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_assign_professor_to_course, 81, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(1, 81, __pyx_L1_error)
-
-  /* "scheduler_wrapper.pyx":85
- *         self.scheduler.assignProfessorToCourse(course_id, professor_id)
- * 
- *     def generate_schedule(self):             # <<<<<<<<<<<<<<
- *         """Generate the schedule using backtracking algorithm"""
- *         cdef ScheduleResult result = self.scheduler.generateSchedule()
- */
-  __pyx_tuple__10 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_result, __pyx_n_s_py_result, __pyx_n_s_assignment); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 85, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__10);
-  __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_generate_schedule, 85, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(1, 85, __pyx_L1_error)
-
-  /* "scheduler_wrapper.pyx":108
- *         return py_result
- * 
- *     def stop_generation(self):             # <<<<<<<<<<<<<<
- *         """Stop the schedule generation process"""
- *         self.scheduler.stopGeneration()
- */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(1, 108, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_stop_generation, 108, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(1, 108, __pyx_L1_error)
-
-  /* "scheduler_wrapper.pyx":112
- *         self.scheduler.stopGeneration()
- * 
- *     def reset(self):             # <<<<<<<<<<<<<<
- *         """Reset the scheduler (clear all data)"""
- *         self.scheduler.reset()
- */
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_reset, 112, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(1, 112, __pyx_L1_error)
-
-  /* "scheduler_wrapper.pyx":116
- *         self.scheduler.reset()
- * 
- *     def has_data(self):             # <<<<<<<<<<<<<<
- *         """Check if scheduler has any data loaded"""
- *         return self.scheduler.hasData()
- */
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_has_data, 116, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(1, 116, __pyx_L1_error)
-
-  /* "scheduler_wrapper.pyx":120
- *         return self.scheduler.hasData()
- * 
- *     def validate_data(self):             # <<<<<<<<<<<<<<
- *         """Validate the loaded data"""
- *         return self.scheduler.validateData().decode('utf-8')
- */
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_validate_data, 120, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(1, 120, __pyx_L1_error)
-=======
   /* "scheduler_wrapper.pyx":59
  *             del self.scheduler
  * 
@@ -6204,7 +5531,6 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         return self.scheduler.validarDatos().decode('utf-8')
  */
   __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_validate_data, 121, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(1, 121, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -6286,24 +5612,15 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
   #if CYTHON_USE_TYPE_SPECS
-<<<<<<< HEAD
-  __pyx_ptype_17scheduler_wrapper_PyScheduler = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_17scheduler_wrapper_PyScheduler_spec, NULL); if (unlikely(!__pyx_ptype_17scheduler_wrapper_PyScheduler)) __PYX_ERR(1, 48, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_17scheduler_wrapper_PyScheduler_spec, __pyx_ptype_17scheduler_wrapper_PyScheduler) < 0) __PYX_ERR(1, 48, __pyx_L1_error)
-=======
   __pyx_ptype_17scheduler_wrapper_PyScheduler = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_17scheduler_wrapper_PyScheduler_spec, NULL); if (unlikely(!__pyx_ptype_17scheduler_wrapper_PyScheduler)) __PYX_ERR(1, 49, __pyx_L1_error)
   if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_17scheduler_wrapper_PyScheduler_spec, __pyx_ptype_17scheduler_wrapper_PyScheduler) < 0) __PYX_ERR(1, 49, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   #else
   __pyx_ptype_17scheduler_wrapper_PyScheduler = &__pyx_type_17scheduler_wrapper_PyScheduler;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-<<<<<<< HEAD
-  if (__Pyx_PyType_Ready(__pyx_ptype_17scheduler_wrapper_PyScheduler) < 0) __PYX_ERR(1, 48, __pyx_L1_error)
-=======
   if (__Pyx_PyType_Ready(__pyx_ptype_17scheduler_wrapper_PyScheduler) < 0) __PYX_ERR(1, 49, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_17scheduler_wrapper_PyScheduler->tp_print = 0;
@@ -6313,15 +5630,9 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_17scheduler_wrapper_PyScheduler->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-<<<<<<< HEAD
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PyScheduler, (PyObject *) __pyx_ptype_17scheduler_wrapper_PyScheduler) < 0) __PYX_ERR(1, 48, __pyx_L1_error)
-  #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_17scheduler_wrapper_PyScheduler) < 0) __PYX_ERR(1, 48, __pyx_L1_error)
-=======
   if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PyScheduler, (PyObject *) __pyx_ptype_17scheduler_wrapper_PyScheduler) < 0) __PYX_ERR(1, 49, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
   if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_17scheduler_wrapper_PyScheduler) < 0) __PYX_ERR(1, 49, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   #endif
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -6639,17 +5950,10 @@ if (!__Pyx_RefNanny) {
  *         """Cargar curso en el planificador"""
  *         cdef vector[int] prereq_vec
  */
-<<<<<<< HEAD
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_5load_course, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_load_course, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_load_course, __pyx_t_2) < 0) __PYX_ERR(1, 58, __pyx_L1_error)
-=======
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_5load_course, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_load_course, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__3);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_load_course, __pyx_t_2) < 0) __PYX_ERR(1, 59, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
@@ -6660,15 +5964,9 @@ if (!__Pyx_RefNanny) {
  *         """Cargar profesor con horarios disponibles"""
  *         cdef vector[int] timeslot_vec
  */
-<<<<<<< HEAD
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_7load_professor, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_load_professor, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_load_professor, __pyx_t_2) < 0) __PYX_ERR(1, 67, __pyx_L1_error)
-=======
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_7load_professor, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_load_professor, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_load_professor, __pyx_t_2) < 0) __PYX_ERR(1, 68, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
@@ -6677,19 +5975,11 @@ if (!__Pyx_RefNanny) {
  * 
  *     def load_timeslot(self, int slot_id, str day, int start_hour, int start_minute,             # <<<<<<<<<<<<<<
  *                      int end_hour, int end_minute):
-<<<<<<< HEAD
- *         """Load a timeslot"""
- */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_9load_timeslot, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_load_timeslot, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 75, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_load_timeslot, __pyx_t_2) < 0) __PYX_ERR(1, 75, __pyx_L1_error)
-=======
  *         """Cargar bloque de tiempo"""
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_9load_timeslot, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_load_timeslot, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_load_timeslot, __pyx_t_2) < 0) __PYX_ERR(1, 76, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
@@ -6697,21 +5987,12 @@ if (!__Pyx_RefNanny) {
  *                                     start_hour, start_minute, end_hour, end_minute)
  * 
  *     def assign_professor_to_course(self, int course_id, int professor_id):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Assign a professor to teach a course"""
- *         self.scheduler.assignProfessorToCourse(course_id, professor_id)
- */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_11assign_professor_to_course, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_assign_professor_to, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_assign_professor_to_course, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
-=======
  *         """Asignar profesor a curso"""
  *         self.scheduler.asignarProfesorACurso(course_id, professor_id)
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_11assign_professor_to_course, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_assign_professor_to, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_assign_professor_to_course, __pyx_t_2) < 0) __PYX_ERR(1, 82, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
@@ -6719,21 +6000,12 @@ if (!__Pyx_RefNanny) {
  *         self.scheduler.asignarProfesorACurso(course_id, professor_id)
  * 
  *     def generate_schedule(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Generate the schedule using backtracking algorithm"""
- *         cdef ScheduleResult result = self.scheduler.generateSchedule()
- */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_13generate_schedule, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_generate_schedule, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 85, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_generate_schedule, __pyx_t_2) < 0) __PYX_ERR(1, 85, __pyx_L1_error)
-=======
  *         """Generar horario usando algoritmo"""
  *         cdef ResultadoHorario resultado = self.scheduler.generarHorario()
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_13generate_schedule, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_generate_schedule, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_generate_schedule, __pyx_t_2) < 0) __PYX_ERR(1, 86, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
@@ -6741,21 +6013,12 @@ if (!__Pyx_RefNanny) {
  *         return py_result
  * 
  *     def stop_generation(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Stop the schedule generation process"""
- *         self.scheduler.stopGeneration()
- */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_15stop_generation, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_stop_generation, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 108, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_stop_generation, __pyx_t_2) < 0) __PYX_ERR(1, 108, __pyx_L1_error)
-=======
  *         """Detener generacin"""
  *         self.scheduler.detenerGeneracion()
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_15stop_generation, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_stop_generation, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_stop_generation, __pyx_t_2) < 0) __PYX_ERR(1, 109, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
@@ -6763,21 +6026,12 @@ if (!__Pyx_RefNanny) {
  *         self.scheduler.detenerGeneracion()
  * 
  *     def reset(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Reset the scheduler (clear all data)"""
- *         self.scheduler.reset()
- */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_17reset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_reset, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 112, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_reset, __pyx_t_2) < 0) __PYX_ERR(1, 112, __pyx_L1_error)
-=======
  *         """Reiniciar planificador"""
  *         self.scheduler.reiniciar()
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_17reset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_reset, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_reset, __pyx_t_2) < 0) __PYX_ERR(1, 113, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
@@ -6785,21 +6039,12 @@ if (!__Pyx_RefNanny) {
  *         self.scheduler.reiniciar()
  * 
  *     def has_data(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Check if scheduler has any data loaded"""
- *         return self.scheduler.hasData()
- */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_19has_data, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_has_data, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 116, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_has_data, __pyx_t_2) < 0) __PYX_ERR(1, 116, __pyx_L1_error)
-=======
  *         """Verificar si hay datos cargados"""
  *         return self.scheduler.tieneDatos()
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_19has_data, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_has_data, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_has_data, __pyx_t_2) < 0) __PYX_ERR(1, 117, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
@@ -6807,21 +6052,12 @@ if (!__Pyx_RefNanny) {
  *         return self.scheduler.tieneDatos()
  * 
  *     def validate_data(self):             # <<<<<<<<<<<<<<
-<<<<<<< HEAD
- *         """Validate the loaded data"""
- *         return self.scheduler.validateData().decode('utf-8')
- */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_21validate_data, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_validate_data, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 120, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_validate_data, __pyx_t_2) < 0) __PYX_ERR(1, 120, __pyx_L1_error)
-=======
  *         """Validar datos cargados"""
  *         return self.scheduler.validarDatos().decode('utf-8')
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_21validate_data, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_validate_data, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_validate_data, __pyx_t_2) < 0) __PYX_ERR(1, 121, __pyx_L1_error)
->>>>>>> 725028ee405d2bd02958b52203c1ac80fbefdb5e
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
