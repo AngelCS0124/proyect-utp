@@ -109,7 +109,7 @@ def subir_archivo():
         return jsonify({'error': 'No file part'}), 400
     
     archivo = request.files['file']
-    tipo_dato = request.form.get('type')  # 'professors', 'timeslots'
+    tipo_dato = request.form.get('data_type') or request.form.get('type')  # Frontend envía 'data_type'
     
     if archivo.filename == '':
         return jsonify({'error': 'No selected file'}), 400
@@ -243,6 +243,19 @@ def cargar_datos_defecto():
             }
         })
         
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/config', methods=['POST'])
+def configurar_parametros():
+    """Recibir configuración de generación (tiempo límite, estrategia)"""
+    try:
+        data = request.json
+        # Por ahora solo logueamos o guardamos en variable global si fuera necesario
+        # En esta versión, los parámetros suelen venir en el request de generación
+        # pero el frontend a veces manda config por separado.
+        print(f"Configuración recibida: {data}", flush=True)
+        return jsonify({'message': 'Configuration updated'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -554,12 +567,18 @@ def generar_horario_api():
                         bloque_obj = next((b for b in almacen_datos['bloques_tiempo'] if b.id == ext_t_id), None)
                         
                         if curso_obj and bloque_obj:
-                            asignacion = Asignacion(
-                                curso=curso_obj,
-                                bloque=bloque_obj,
-                                id_profesor=c.id_profesor # Usar el del objeto curso ya actualizado
+                            p_obj = next((p for p in almacen_datos['profesores'] if p.id == c.id_profesor), None)
+                            p_name = p_obj.nombre if p_obj else "Sin Profesor"
+                            
+                            nuevo_horario.agregar_asignacion(
+                                curso_obj.id, 
+                                pid, 
+                                bloque_obj.id,
+                                course_name=curso_obj.nombre,
+                                professor_name=p_name,
+                                semester=getattr(curso_obj, 'cuatrimestre', 1), # Corregido: atributo es 'cuatrimestre'
+                                group=getattr(curso_obj, 'id_grupo', 'A') # Corregido: atributo es 'id_grupo'
                             )
-                            nuevo_horario.agregar_asignacion(asignacion)
                     
                     print(f"Horario generado con éxito: {len(nuevo_horario.asignaciones)} asignaciones", flush=True)
                 else:

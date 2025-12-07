@@ -46,6 +46,23 @@ class CargadorDatos:
                     return v if v is not None else default
 
                 
+                # Inferir cuatrimestre si no existe columna
+                # Inferir cuatrimestre si no existe columna
+                cuatri = CargadorDatos.safe_int(get_val('cuatrimestre', 'semester'))
+                if cuatri is None and id_curso:
+                    # Heurística UTP: 101 -> 1, 901 -> 9, 1001 -> 10
+                    # Asumiendo IDs numérico
+                    try:
+                        numeric_id = int(float(id_curso)) # Manejar '101.0'
+                        cuatri = numeric_id // 100
+                        if cuatri == 0: cuatri = 1 # Fallback por si acaso
+                        print(f"DEBUG: Inferido curso {id_curso} (ID_NUM: {numeric_id}) -> Cuatri {cuatri}", flush=True)
+                    except Exception as e:
+                        print(f"DEBUG Error inferencia curso {id_curso}: {e}", flush=True)
+                        cuatri = 1
+                else:
+                    print(f"DEBUG: Curso {id_curso} tiene cuatri explicito: {cuatri}", flush=True)
+                
                 curso = Curso(
                     id=id_curso,
                     nombre=nombre,
@@ -53,7 +70,9 @@ class CargadorDatos:
                     creditos=CargadorDatos.safe_int(get_val('creditos', 'credits'), 3),
                     matricula=CargadorDatos.safe_int(get_val('matricula', 'enrollment'), 0),
                     prerequisitos=prerrequisitos,
-                    id_profesor=id_profesor
+                    id_profesor=id_profesor,
+                    cuatrimestre=cuatri if cuatri else 1,
+                    id_grupo=get_val('grupo', 'group_id', 'A')
                 )
                 cursos.append(curso)
         return cursos
@@ -83,7 +102,9 @@ class CargadorDatos:
                 creditos=CargadorDatos.safe_int(get_val('creditos', 'credits'), 3),
                 matricula=CargadorDatos.safe_int(get_val('matricula', 'enrollment'), 0),
                 prerequisitos=prerrequisitos,
-                id_profesor=CargadorDatos.safe_int(get_val('id_profesor', 'professor_id'))
+                id_profesor=CargadorDatos.safe_int(get_val('id_profesor', 'professor_id')),
+                cuatrimestre=CargadorDatos.safe_int(get_val('cuatrimestre', 'semester'), 1),
+                id_grupo=get_val('grupo', 'group_id', 'A')
             )
             cursos.append(curso)
         return cursos
@@ -98,7 +119,7 @@ class CargadorDatos:
         cols_map = {
             'name': 'nombre', 'code': 'codigo', 'credits': 'creditos',
             'enrollment': 'matricula', 'prerequisites': 'prerrequisitos',
-            'professor_id': 'id_profesor'
+            'professor_id': 'id_profesor', 'semester': 'cuatrimestre', 'group': 'grupo'
         }
         df.rename(columns=cols_map, inplace=True)
         
@@ -122,7 +143,9 @@ class CargadorDatos:
                 creditos=CargadorDatos.safe_int(fila.get('creditos'), 3),
                 matricula=CargadorDatos.safe_int(fila.get('matricula'), 0),
                 prerequisitos=prerrequisitos,
-                id_profesor=id_profesor
+                id_profesor=id_profesor,
+                cuatrimestre=CargadorDatos.safe_int(fila.get('cuatrimestre'), 1),
+                id_grupo=fila.get('grupo', 'A')
             )
             cursos.append(curso)
         return cursos
