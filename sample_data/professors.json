@@ -23,7 +23,9 @@
             "PE",
             "CI",
             "CD",
-            "CVV"
+            "CVV",
+            "ING5",
+            "PAIA"
         ]
     },
     {
@@ -48,7 +50,8 @@
             "CI",
             "FM",
             "FR",
-            "IF"
+            "IF",
+            "OPMA"
         ]
     },
     {
@@ -71,7 +74,11 @@
         "available_courses": [
             "FIS",
             "PE",
-            "GPT"
+            "GPT",
+            "ING1",
+            "ING3",
+            "BDA",
+            "ING8"
         ]
     },
     {
@@ -101,7 +108,8 @@
             "PEST",
             "SO",
             "CHD",
-            "GPT"
+            "GPT",
+            "LITIID"
         ]
     },
     {
@@ -122,7 +130,9 @@
             "DHV",
             "EP",
             "HG",
-            "LTD"
+            "LTD",
+            "EDSM",
+            "LITIID"
         ]
     },
     {
@@ -194,7 +204,8 @@
             "AS",
             "IOT",
             "CDAT",
-            "PE"
+            "PE",
+            "LITIID"
         ]
     },
     {
@@ -220,7 +231,9 @@
             "DHV",
             "LSE",
             "LTD",
-            "EP"
+            "EP",
+            "ING4",
+            "EDSM"
         ]
     },
     {
@@ -242,7 +255,9 @@
             "HG",
             "LEAD",
             "CD",
-            "CI"
+            "CI",
+            "AW",
+            "EDSM"
         ]
     },
     {
@@ -277,7 +292,8 @@
             "ADS",
             "IMDS",
             "EPT",
-            "TD"
+            "TD",
+            "ING6"
         ]
     },
     {
@@ -361,7 +377,8 @@
             "CD",
             "CI",
             "CVV",
-            "EDIF"
+            "EDIF",
+            "HG"
         ]
     },
     {
@@ -458,7 +475,8 @@
             "AW",
             "AWOS",
             "OAMDN",
-            "AS"
+            "AS",
+            "ING7"
         ]
     },
     {
@@ -583,7 +601,10 @@
         "available_courses": [
             "PEST",
             "IMDS",
-            "TD"
+            "TD",
+            "ING2",
+            "ED",
+            "PAIA"
         ]
     },
     {

@@ -2256,7 +2256,7 @@ static PyObject *__pyx_builtin_TypeError;
 static const char __pyx_k_p[] = "p";
 static const char __pyx_k_gc[] = "gc";
 static const char __pyx_k_ts[] = "ts";
-static const char __pyx_k__20[] = "?";
+static const char __pyx_k__23[] = "?";
 static const char __pyx_k_day[] = "day";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "name";
@@ -2271,12 +2271,14 @@ static const char __pyx_k_disable[] = "disable";
 static const char __pyx_k_prof_id[] = "prof_id";
 static const char __pyx_k_slot_id[] = "slot_id";
 static const char __pyx_k_success[] = "success";
+static const char __pyx_k_complete[] = "complete";
 static const char __pyx_k_duration[] = "duration";
 static const char __pyx_k_end_hour[] = "end_hour";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_group_id[] = "group_id";
 static const char __pyx_k_has_data[] = "has_data";
 static const char __pyx_k_setstate[] = "__setstate__";
+static const char __pyx_k_strategy[] = "strategy";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_course_id[] = "course_id";
 static const char __pyx_k_isenabled[] = "isenabled";
@@ -2289,6 +2291,7 @@ static const char __pyx_k_end_minute[] = "end_minute";
 static const char __pyx_k_enrollment[] = "enrollment";
 static const char __pyx_k_prereq_vec[] = "prereq_vec";
 static const char __pyx_k_start_hour[] = "start_hour";
+static const char __pyx_k_time_limit[] = "time_limit";
 static const char __pyx_k_PyScheduler[] = "PyScheduler";
 static const char __pyx_k_assignments[] = "assignments";
 static const char __pyx_k_load_course[] = "load_course";
@@ -2300,6 +2303,7 @@ static const char __pyx_k_stringsource[] = "<stringsource>";
 static const char __pyx_k_timeslot_vec[] = "timeslot_vec";
 static const char __pyx_k_error_message[] = "error_message";
 static const char __pyx_k_load_timeslot[] = "load_timeslot";
+static const char __pyx_k_modo_completo[] = "modo_completo";
 static const char __pyx_k_prerequisites[] = "prerequisites";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_validate_data[] = "validate_data";
@@ -2313,6 +2317,7 @@ static const char __pyx_k_generate_schedule[] = "generate_schedule";
 static const char __pyx_k_scheduler_wrapper[] = "scheduler_wrapper";
 static const char __pyx_k_asyncio_coroutines[] = "asyncio.coroutines";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_time_limit_seconds[] = "time_limit_seconds";
 static const char __pyx_k_available_timeslots[] = "available_timeslots";
 static const char __pyx_k_PyScheduler_has_data[] = "PyScheduler.has_data";
 static const char __pyx_k_scheduler_wrapper_pyx[] = "scheduler_wrapper.pyx";
@@ -2325,7 +2330,9 @@ static const char __pyx_k_PyScheduler___reduce_cython[] = "PyScheduler.__reduce_
 static const char __pyx_k_PyScheduler_stop_generation[] = "PyScheduler.stop_generation";
 static const char __pyx_k_PyScheduler___setstate_cython[] = "PyScheduler.__setstate_cython__";
 static const char __pyx_k_PyScheduler_generate_schedule[] = "PyScheduler.generate_schedule";
+static const char __pyx_k_generate_schedule_with_config[] = "generate_schedule_with_config";
 static const char __pyx_k_PyScheduler_assign_professor_to[] = "PyScheduler.assign_professor_to_course";
+static const char __pyx_k_PyScheduler_generate_schedule_wi[] = "PyScheduler.generate_schedule_with_config";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 /* #### Code section: decls ### */
 static int __pyx_pf_17scheduler_wrapper_11PyScheduler___cinit__(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
@@ -2335,12 +2342,13 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_6load_professor(stru
 static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_8load_timeslot(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self, int __pyx_v_slot_id, PyObject *__pyx_v_day, int __pyx_v_start_hour, int __pyx_v_start_minute, int __pyx_v_end_hour, int __pyx_v_end_minute); /* proto */
 static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_10assign_professor_to_course(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self, int __pyx_v_course_id, int __pyx_v_professor_id); /* proto */
 static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14stop_generation(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16reset(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_20validate_data(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_22__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_24__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14generate_schedule_with_config(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self, int __pyx_v_time_limit_seconds, PyObject *__pyx_v_strategy); /* proto */
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16stop_generation(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18reset(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_20has_data(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_22validate_data(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_24__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_26__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_17scheduler_wrapper_PyScheduler(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 /* #### Code section: late_includes ### */
 /* #### Code section: module_state ### */
@@ -2386,6 +2394,7 @@ typedef struct {
   PyObject *__pyx_n_s_PyScheduler___setstate_cython;
   PyObject *__pyx_n_s_PyScheduler_assign_professor_to;
   PyObject *__pyx_n_s_PyScheduler_generate_schedule;
+  PyObject *__pyx_n_s_PyScheduler_generate_schedule_wi;
   PyObject *__pyx_n_s_PyScheduler_has_data;
   PyObject *__pyx_n_s_PyScheduler_load_course;
   PyObject *__pyx_n_s_PyScheduler_load_professor;
@@ -2394,7 +2403,7 @@ typedef struct {
   PyObject *__pyx_n_s_PyScheduler_stop_generation;
   PyObject *__pyx_n_s_PyScheduler_validate_data;
   PyObject *__pyx_n_s_TypeError;
-  PyObject *__pyx_n_s__20;
+  PyObject *__pyx_n_s__23;
   PyObject *__pyx_n_s_append;
   PyObject *__pyx_n_s_asignacion;
   PyObject *__pyx_n_s_assign_professor_to_course;
@@ -2403,6 +2412,7 @@ typedef struct {
   PyObject *__pyx_n_s_available_timeslots;
   PyObject *__pyx_n_u_backtrack_count;
   PyObject *__pyx_n_s_cline_in_traceback;
+  PyObject *__pyx_n_u_complete;
   PyObject *__pyx_n_u_computation_time;
   PyObject *__pyx_n_s_course_id;
   PyObject *__pyx_n_u_course_id;
@@ -2416,6 +2426,7 @@ typedef struct {
   PyObject *__pyx_n_u_error_message;
   PyObject *__pyx_kp_u_gc;
   PyObject *__pyx_n_s_generate_schedule;
+  PyObject *__pyx_n_s_generate_schedule_with_config;
   PyObject *__pyx_n_s_getstate;
   PyObject *__pyx_n_s_group_id;
   PyObject *__pyx_n_s_has_data;
@@ -2425,6 +2436,7 @@ typedef struct {
   PyObject *__pyx_n_s_load_professor;
   PyObject *__pyx_n_s_load_timeslot;
   PyObject *__pyx_n_s_main;
+  PyObject *__pyx_n_s_modo_completo;
   PyObject *__pyx_n_s_name;
   PyObject *__pyx_n_s_name_2;
   PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
@@ -2450,9 +2462,12 @@ typedef struct {
   PyObject *__pyx_n_s_start_hour;
   PyObject *__pyx_n_s_start_minute;
   PyObject *__pyx_n_s_stop_generation;
+  PyObject *__pyx_n_s_strategy;
   PyObject *__pyx_kp_s_stringsource;
   PyObject *__pyx_n_u_success;
   PyObject *__pyx_n_s_test;
+  PyObject *__pyx_n_u_time_limit;
+  PyObject *__pyx_n_s_time_limit_seconds;
   PyObject *__pyx_n_u_timeslot_id;
   PyObject *__pyx_n_s_timeslot_vec;
   PyObject *__pyx_n_s_ts;
@@ -2466,18 +2481,21 @@ typedef struct {
   PyObject *__pyx_tuple__8;
   PyObject *__pyx_tuple__10;
   PyObject *__pyx_tuple__12;
-  PyObject *__pyx_tuple__18;
+  PyObject *__pyx_tuple__14;
+  PyObject *__pyx_tuple__15;
+  PyObject *__pyx_tuple__21;
   PyObject *__pyx_codeobj__2;
   PyObject *__pyx_codeobj__5;
   PyObject *__pyx_codeobj__7;
   PyObject *__pyx_codeobj__9;
   PyObject *__pyx_codeobj__11;
   PyObject *__pyx_codeobj__13;
-  PyObject *__pyx_codeobj__14;
-  PyObject *__pyx_codeobj__15;
   PyObject *__pyx_codeobj__16;
   PyObject *__pyx_codeobj__17;
+  PyObject *__pyx_codeobj__18;
   PyObject *__pyx_codeobj__19;
+  PyObject *__pyx_codeobj__20;
+  PyObject *__pyx_codeobj__22;
 } __pyx_mstate;
 
 #if CYTHON_USE_MODULE_STATE
@@ -2527,6 +2545,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_PyScheduler___setstate_cython);
   Py_CLEAR(clear_module_state->__pyx_n_s_PyScheduler_assign_professor_to);
   Py_CLEAR(clear_module_state->__pyx_n_s_PyScheduler_generate_schedule);
+  Py_CLEAR(clear_module_state->__pyx_n_s_PyScheduler_generate_schedule_wi);
   Py_CLEAR(clear_module_state->__pyx_n_s_PyScheduler_has_data);
   Py_CLEAR(clear_module_state->__pyx_n_s_PyScheduler_load_course);
   Py_CLEAR(clear_module_state->__pyx_n_s_PyScheduler_load_professor);
@@ -2535,7 +2554,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_PyScheduler_stop_generation);
   Py_CLEAR(clear_module_state->__pyx_n_s_PyScheduler_validate_data);
   Py_CLEAR(clear_module_state->__pyx_n_s_TypeError);
-  Py_CLEAR(clear_module_state->__pyx_n_s__20);
+  Py_CLEAR(clear_module_state->__pyx_n_s__23);
   Py_CLEAR(clear_module_state->__pyx_n_s_append);
   Py_CLEAR(clear_module_state->__pyx_n_s_asignacion);
   Py_CLEAR(clear_module_state->__pyx_n_s_assign_professor_to_course);
@@ -2544,6 +2563,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_available_timeslots);
   Py_CLEAR(clear_module_state->__pyx_n_u_backtrack_count);
   Py_CLEAR(clear_module_state->__pyx_n_s_cline_in_traceback);
+  Py_CLEAR(clear_module_state->__pyx_n_u_complete);
   Py_CLEAR(clear_module_state->__pyx_n_u_computation_time);
   Py_CLEAR(clear_module_state->__pyx_n_s_course_id);
   Py_CLEAR(clear_module_state->__pyx_n_u_course_id);
@@ -2557,6 +2577,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_u_error_message);
   Py_CLEAR(clear_module_state->__pyx_kp_u_gc);
   Py_CLEAR(clear_module_state->__pyx_n_s_generate_schedule);
+  Py_CLEAR(clear_module_state->__pyx_n_s_generate_schedule_with_config);
   Py_CLEAR(clear_module_state->__pyx_n_s_getstate);
   Py_CLEAR(clear_module_state->__pyx_n_s_group_id);
   Py_CLEAR(clear_module_state->__pyx_n_s_has_data);
@@ -2566,6 +2587,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_load_professor);
   Py_CLEAR(clear_module_state->__pyx_n_s_load_timeslot);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
+  Py_CLEAR(clear_module_state->__pyx_n_s_modo_completo);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
   Py_CLEAR(clear_module_state->__pyx_n_s_name_2);
   Py_CLEAR(clear_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
@@ -2591,9 +2613,12 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_start_hour);
   Py_CLEAR(clear_module_state->__pyx_n_s_start_minute);
   Py_CLEAR(clear_module_state->__pyx_n_s_stop_generation);
+  Py_CLEAR(clear_module_state->__pyx_n_s_strategy);
   Py_CLEAR(clear_module_state->__pyx_kp_s_stringsource);
   Py_CLEAR(clear_module_state->__pyx_n_u_success);
   Py_CLEAR(clear_module_state->__pyx_n_s_test);
+  Py_CLEAR(clear_module_state->__pyx_n_u_time_limit);
+  Py_CLEAR(clear_module_state->__pyx_n_s_time_limit_seconds);
   Py_CLEAR(clear_module_state->__pyx_n_u_timeslot_id);
   Py_CLEAR(clear_module_state->__pyx_n_s_timeslot_vec);
   Py_CLEAR(clear_module_state->__pyx_n_s_ts);
@@ -2607,18 +2632,21 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_tuple__8);
   Py_CLEAR(clear_module_state->__pyx_tuple__10);
   Py_CLEAR(clear_module_state->__pyx_tuple__12);
-  Py_CLEAR(clear_module_state->__pyx_tuple__18);
+  Py_CLEAR(clear_module_state->__pyx_tuple__14);
+  Py_CLEAR(clear_module_state->__pyx_tuple__15);
+  Py_CLEAR(clear_module_state->__pyx_tuple__21);
   Py_CLEAR(clear_module_state->__pyx_codeobj__2);
   Py_CLEAR(clear_module_state->__pyx_codeobj__5);
   Py_CLEAR(clear_module_state->__pyx_codeobj__7);
   Py_CLEAR(clear_module_state->__pyx_codeobj__9);
   Py_CLEAR(clear_module_state->__pyx_codeobj__11);
   Py_CLEAR(clear_module_state->__pyx_codeobj__13);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__14);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__15);
   Py_CLEAR(clear_module_state->__pyx_codeobj__16);
   Py_CLEAR(clear_module_state->__pyx_codeobj__17);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__18);
   Py_CLEAR(clear_module_state->__pyx_codeobj__19);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__20);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__22);
   return 0;
 }
 #endif
@@ -2646,6 +2674,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_PyScheduler___setstate_cython);
   Py_VISIT(traverse_module_state->__pyx_n_s_PyScheduler_assign_professor_to);
   Py_VISIT(traverse_module_state->__pyx_n_s_PyScheduler_generate_schedule);
+  Py_VISIT(traverse_module_state->__pyx_n_s_PyScheduler_generate_schedule_wi);
   Py_VISIT(traverse_module_state->__pyx_n_s_PyScheduler_has_data);
   Py_VISIT(traverse_module_state->__pyx_n_s_PyScheduler_load_course);
   Py_VISIT(traverse_module_state->__pyx_n_s_PyScheduler_load_professor);
@@ -2654,7 +2683,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_PyScheduler_stop_generation);
   Py_VISIT(traverse_module_state->__pyx_n_s_PyScheduler_validate_data);
   Py_VISIT(traverse_module_state->__pyx_n_s_TypeError);
-  Py_VISIT(traverse_module_state->__pyx_n_s__20);
+  Py_VISIT(traverse_module_state->__pyx_n_s__23);
   Py_VISIT(traverse_module_state->__pyx_n_s_append);
   Py_VISIT(traverse_module_state->__pyx_n_s_asignacion);
   Py_VISIT(traverse_module_state->__pyx_n_s_assign_professor_to_course);
@@ -2663,6 +2692,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_available_timeslots);
   Py_VISIT(traverse_module_state->__pyx_n_u_backtrack_count);
   Py_VISIT(traverse_module_state->__pyx_n_s_cline_in_traceback);
+  Py_VISIT(traverse_module_state->__pyx_n_u_complete);
   Py_VISIT(traverse_module_state->__pyx_n_u_computation_time);
   Py_VISIT(traverse_module_state->__pyx_n_s_course_id);
   Py_VISIT(traverse_module_state->__pyx_n_u_course_id);
@@ -2676,6 +2706,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_u_error_message);
   Py_VISIT(traverse_module_state->__pyx_kp_u_gc);
   Py_VISIT(traverse_module_state->__pyx_n_s_generate_schedule);
+  Py_VISIT(traverse_module_state->__pyx_n_s_generate_schedule_with_config);
   Py_VISIT(traverse_module_state->__pyx_n_s_getstate);
   Py_VISIT(traverse_module_state->__pyx_n_s_group_id);
   Py_VISIT(traverse_module_state->__pyx_n_s_has_data);
@@ -2685,6 +2716,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_load_professor);
   Py_VISIT(traverse_module_state->__pyx_n_s_load_timeslot);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
+  Py_VISIT(traverse_module_state->__pyx_n_s_modo_completo);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
   Py_VISIT(traverse_module_state->__pyx_n_s_name_2);
   Py_VISIT(traverse_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
@@ -2710,9 +2742,12 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_start_hour);
   Py_VISIT(traverse_module_state->__pyx_n_s_start_minute);
   Py_VISIT(traverse_module_state->__pyx_n_s_stop_generation);
+  Py_VISIT(traverse_module_state->__pyx_n_s_strategy);
   Py_VISIT(traverse_module_state->__pyx_kp_s_stringsource);
   Py_VISIT(traverse_module_state->__pyx_n_u_success);
   Py_VISIT(traverse_module_state->__pyx_n_s_test);
+  Py_VISIT(traverse_module_state->__pyx_n_u_time_limit);
+  Py_VISIT(traverse_module_state->__pyx_n_s_time_limit_seconds);
   Py_VISIT(traverse_module_state->__pyx_n_u_timeslot_id);
   Py_VISIT(traverse_module_state->__pyx_n_s_timeslot_vec);
   Py_VISIT(traverse_module_state->__pyx_n_s_ts);
@@ -2726,18 +2761,21 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_tuple__8);
   Py_VISIT(traverse_module_state->__pyx_tuple__10);
   Py_VISIT(traverse_module_state->__pyx_tuple__12);
-  Py_VISIT(traverse_module_state->__pyx_tuple__18);
+  Py_VISIT(traverse_module_state->__pyx_tuple__14);
+  Py_VISIT(traverse_module_state->__pyx_tuple__15);
+  Py_VISIT(traverse_module_state->__pyx_tuple__21);
   Py_VISIT(traverse_module_state->__pyx_codeobj__2);
   Py_VISIT(traverse_module_state->__pyx_codeobj__5);
   Py_VISIT(traverse_module_state->__pyx_codeobj__7);
   Py_VISIT(traverse_module_state->__pyx_codeobj__9);
   Py_VISIT(traverse_module_state->__pyx_codeobj__11);
   Py_VISIT(traverse_module_state->__pyx_codeobj__13);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__14);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__15);
   Py_VISIT(traverse_module_state->__pyx_codeobj__16);
   Py_VISIT(traverse_module_state->__pyx_codeobj__17);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__18);
   Py_VISIT(traverse_module_state->__pyx_codeobj__19);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__20);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__22);
   return 0;
 }
 #endif
@@ -2783,6 +2821,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_PyScheduler___setstate_cython __pyx_mstate_global->__pyx_n_s_PyScheduler___setstate_cython
 #define __pyx_n_s_PyScheduler_assign_professor_to __pyx_mstate_global->__pyx_n_s_PyScheduler_assign_professor_to
 #define __pyx_n_s_PyScheduler_generate_schedule __pyx_mstate_global->__pyx_n_s_PyScheduler_generate_schedule
+#define __pyx_n_s_PyScheduler_generate_schedule_wi __pyx_mstate_global->__pyx_n_s_PyScheduler_generate_schedule_wi
 #define __pyx_n_s_PyScheduler_has_data __pyx_mstate_global->__pyx_n_s_PyScheduler_has_data
 #define __pyx_n_s_PyScheduler_load_course __pyx_mstate_global->__pyx_n_s_PyScheduler_load_course
 #define __pyx_n_s_PyScheduler_load_professor __pyx_mstate_global->__pyx_n_s_PyScheduler_load_professor
@@ -2791,7 +2830,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_PyScheduler_stop_generation __pyx_mstate_global->__pyx_n_s_PyScheduler_stop_generation
 #define __pyx_n_s_PyScheduler_validate_data __pyx_mstate_global->__pyx_n_s_PyScheduler_validate_data
 #define __pyx_n_s_TypeError __pyx_mstate_global->__pyx_n_s_TypeError
-#define __pyx_n_s__20 __pyx_mstate_global->__pyx_n_s__20
+#define __pyx_n_s__23 __pyx_mstate_global->__pyx_n_s__23
 #define __pyx_n_s_append __pyx_mstate_global->__pyx_n_s_append
 #define __pyx_n_s_asignacion __pyx_mstate_global->__pyx_n_s_asignacion
 #define __pyx_n_s_assign_professor_to_course __pyx_mstate_global->__pyx_n_s_assign_professor_to_course
@@ -2800,6 +2839,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_available_timeslots __pyx_mstate_global->__pyx_n_s_available_timeslots
 #define __pyx_n_u_backtrack_count __pyx_mstate_global->__pyx_n_u_backtrack_count
 #define __pyx_n_s_cline_in_traceback __pyx_mstate_global->__pyx_n_s_cline_in_traceback
+#define __pyx_n_u_complete __pyx_mstate_global->__pyx_n_u_complete
 #define __pyx_n_u_computation_time __pyx_mstate_global->__pyx_n_u_computation_time
 #define __pyx_n_s_course_id __pyx_mstate_global->__pyx_n_s_course_id
 #define __pyx_n_u_course_id __pyx_mstate_global->__pyx_n_u_course_id
@@ -2813,6 +2853,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_u_error_message __pyx_mstate_global->__pyx_n_u_error_message
 #define __pyx_kp_u_gc __pyx_mstate_global->__pyx_kp_u_gc
 #define __pyx_n_s_generate_schedule __pyx_mstate_global->__pyx_n_s_generate_schedule
+#define __pyx_n_s_generate_schedule_with_config __pyx_mstate_global->__pyx_n_s_generate_schedule_with_config
 #define __pyx_n_s_getstate __pyx_mstate_global->__pyx_n_s_getstate
 #define __pyx_n_s_group_id __pyx_mstate_global->__pyx_n_s_group_id
 #define __pyx_n_s_has_data __pyx_mstate_global->__pyx_n_s_has_data
@@ -2822,6 +2863,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_load_professor __pyx_mstate_global->__pyx_n_s_load_professor
 #define __pyx_n_s_load_timeslot __pyx_mstate_global->__pyx_n_s_load_timeslot
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
+#define __pyx_n_s_modo_completo __pyx_mstate_global->__pyx_n_s_modo_completo
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
 #define __pyx_n_s_name_2 __pyx_mstate_global->__pyx_n_s_name_2
 #define __pyx_kp_s_no_default___reduce___due_to_non __pyx_mstate_global->__pyx_kp_s_no_default___reduce___due_to_non
@@ -2847,9 +2889,12 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_start_hour __pyx_mstate_global->__pyx_n_s_start_hour
 #define __pyx_n_s_start_minute __pyx_mstate_global->__pyx_n_s_start_minute
 #define __pyx_n_s_stop_generation __pyx_mstate_global->__pyx_n_s_stop_generation
+#define __pyx_n_s_strategy __pyx_mstate_global->__pyx_n_s_strategy
 #define __pyx_kp_s_stringsource __pyx_mstate_global->__pyx_kp_s_stringsource
 #define __pyx_n_u_success __pyx_mstate_global->__pyx_n_u_success
 #define __pyx_n_s_test __pyx_mstate_global->__pyx_n_s_test
+#define __pyx_n_u_time_limit __pyx_mstate_global->__pyx_n_u_time_limit
+#define __pyx_n_s_time_limit_seconds __pyx_mstate_global->__pyx_n_s_time_limit_seconds
 #define __pyx_n_u_timeslot_id __pyx_mstate_global->__pyx_n_u_timeslot_id
 #define __pyx_n_s_timeslot_vec __pyx_mstate_global->__pyx_n_s_timeslot_vec
 #define __pyx_n_s_ts __pyx_mstate_global->__pyx_n_s_ts
@@ -2863,18 +2908,21 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_tuple__8 __pyx_mstate_global->__pyx_tuple__8
 #define __pyx_tuple__10 __pyx_mstate_global->__pyx_tuple__10
 #define __pyx_tuple__12 __pyx_mstate_global->__pyx_tuple__12
-#define __pyx_tuple__18 __pyx_mstate_global->__pyx_tuple__18
+#define __pyx_tuple__14 __pyx_mstate_global->__pyx_tuple__14
+#define __pyx_tuple__15 __pyx_mstate_global->__pyx_tuple__15
+#define __pyx_tuple__21 __pyx_mstate_global->__pyx_tuple__21
 #define __pyx_codeobj__2 __pyx_mstate_global->__pyx_codeobj__2
 #define __pyx_codeobj__5 __pyx_mstate_global->__pyx_codeobj__5
 #define __pyx_codeobj__7 __pyx_mstate_global->__pyx_codeobj__7
 #define __pyx_codeobj__9 __pyx_mstate_global->__pyx_codeobj__9
 #define __pyx_codeobj__11 __pyx_mstate_global->__pyx_codeobj__11
 #define __pyx_codeobj__13 __pyx_mstate_global->__pyx_codeobj__13
-#define __pyx_codeobj__14 __pyx_mstate_global->__pyx_codeobj__14
-#define __pyx_codeobj__15 __pyx_mstate_global->__pyx_codeobj__15
 #define __pyx_codeobj__16 __pyx_mstate_global->__pyx_codeobj__16
 #define __pyx_codeobj__17 __pyx_mstate_global->__pyx_codeobj__17
+#define __pyx_codeobj__18 __pyx_mstate_global->__pyx_codeobj__18
 #define __pyx_codeobj__19 __pyx_mstate_global->__pyx_codeobj__19
+#define __pyx_codeobj__20 __pyx_mstate_global->__pyx_codeobj__20
+#define __pyx_codeobj__22 __pyx_mstate_global->__pyx_codeobj__22
 /* #### Code section: module_code ### */
 
 /* "string.from_py":13
@@ -4325,7 +4373,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_10assign_professor_t
  * 
  *     def generate_schedule(self):             # <<<<<<<<<<<<<<
  *         """Generar horario usando algoritmo"""
- *         cdef ResultadoHorario resultado = self.scheduler.generarHorario()
+ *         cdef ResultadoHorario resultado = self.scheduler.generarHorario(0, False)
  */
 
 /* Python wrapper */
@@ -4391,12 +4439,12 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
   /* "scheduler_wrapper.pyx":88
  *     def generate_schedule(self):
  *         """Generar horario usando algoritmo"""
- *         cdef ResultadoHorario resultado = self.scheduler.generarHorario()             # <<<<<<<<<<<<<<
+ *         cdef ResultadoHorario resultado = self.scheduler.generarHorario(0, False)             # <<<<<<<<<<<<<<
  * 
  *         # Convertir a dict Python
  */
   try {
-    __pyx_t_1 = __pyx_v_self->scheduler->generarHorario();
+    __pyx_t_1 = __pyx_v_self->scheduler->generarHorario(0, 0);
   } catch(...) {
     __Pyx_CppExn2PyErr();
     __PYX_ERR(1, 88, __pyx_L1_error)
@@ -4554,7 +4602,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  * 
  *         return py_result             # <<<<<<<<<<<<<<
  * 
- *     def stop_generation(self):
+ *     def generate_schedule_with_config(self, int time_limit_seconds=0, str strategy="time_limit"):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_py_result);
@@ -4566,7 +4614,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
  * 
  *     def generate_schedule(self):             # <<<<<<<<<<<<<<
  *         """Generar horario usando algoritmo"""
- *         cdef ResultadoHorario resultado = self.scheduler.generarHorario()
+ *         cdef ResultadoHorario resultado = self.scheduler.generarHorario(0, False)
  */
 
   /* function exit code */
@@ -4586,22 +4634,377 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_12generate_schedule(
 /* "scheduler_wrapper.pyx":109
  *         return py_result
  * 
- *     def stop_generation(self):             # <<<<<<<<<<<<<<
- *         """Detener generacin"""
- *         self.scheduler.detenerGeneracion()
+ *     def generate_schedule_with_config(self, int time_limit_seconds=0, str strategy="time_limit"):             # <<<<<<<<<<<<<<
+ *         """Generar horario con configuracin"""
+ *         cdef bool modo_completo = (strategy == "complete")
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_15stop_generation(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_15generate_schedule_with_config(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_14stop_generation, "Detener generaci\303\263n");
-static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_15stop_generation = {"stop_generation", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_15stop_generation, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_14stop_generation};
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_15stop_generation(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_14generate_schedule_with_config, "Generar horario con configuraci\303\263n");
+static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_15generate_schedule_with_config = {"generate_schedule_with_config", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_15generate_schedule_with_config, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_14generate_schedule_with_config};
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_15generate_schedule_with_config(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  int __pyx_v_time_limit_seconds;
+  PyObject *__pyx_v_strategy = 0;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[2] = {0,0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("generate_schedule_with_config (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_time_limit_seconds,&__pyx_n_s_strategy,0};
+    values[1] = __Pyx_Arg_NewRef_FASTCALL(((PyObject*)__pyx_n_u_time_limit));
+    if (__pyx_kwds) {
+      Py_ssize_t kw_args;
+      switch (__pyx_nargs) {
+        case  2: values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = __Pyx_NumKwargs_FASTCALL(__pyx_kwds);
+      switch (__pyx_nargs) {
+        case  0:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_time_limit_seconds);
+          if (value) { values[0] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 109, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_strategy);
+          if (value) { values[1] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 109, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        const Py_ssize_t kwd_pos_args = __pyx_nargs;
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "generate_schedule_with_config") < 0)) __PYX_ERR(1, 109, __pyx_L3_error)
+      }
+    } else {
+      switch (__pyx_nargs) {
+        case  2: values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    if (values[0]) {
+      __pyx_v_time_limit_seconds = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_time_limit_seconds == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 109, __pyx_L3_error)
+    } else {
+      __pyx_v_time_limit_seconds = ((int)0);
+    }
+    __pyx_v_strategy = ((PyObject*)values[1]);
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("generate_schedule_with_config", 0, 0, 2, __pyx_nargs); __PYX_ERR(1, 109, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_AddTraceback("scheduler_wrapper.PyScheduler.generate_schedule_with_config", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_strategy), (&PyUnicode_Type), 1, "strategy", 1))) __PYX_ERR(1, 109, __pyx_L1_error)
+  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_14generate_schedule_with_config(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self), __pyx_v_time_limit_seconds, __pyx_v_strategy);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14generate_schedule_with_config(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self, int __pyx_v_time_limit_seconds, PyObject *__pyx_v_strategy) {
+  bool __pyx_v_modo_completo;
+  planificador::ResultadoHorario __pyx_v_resultado;
+  PyObject *__pyx_v_py_result = NULL;
+  planificador::Asignacion __pyx_v_asignacion;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  planificador::ResultadoHorario __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  std::vector<planificador::Asignacion> ::iterator __pyx_t_5;
+  planificador::Asignacion __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
+  int __pyx_t_8;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("generate_schedule_with_config", 1);
+
+  /* "scheduler_wrapper.pyx":111
+ *     def generate_schedule_with_config(self, int time_limit_seconds=0, str strategy="time_limit"):
+ *         """Generar horario con configuracin"""
+ *         cdef bool modo_completo = (strategy == "complete")             # <<<<<<<<<<<<<<
+ *         cdef ResultadoHorario resultado = self.scheduler.generarHorario(time_limit_seconds, modo_completo)
+ * 
+ */
+  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_strategy, __pyx_n_u_complete, Py_EQ)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(1, 111, __pyx_L1_error)
+  __pyx_v_modo_completo = __pyx_t_1;
+
+  /* "scheduler_wrapper.pyx":112
+ *         """Generar horario con configuracin"""
+ *         cdef bool modo_completo = (strategy == "complete")
+ *         cdef ResultadoHorario resultado = self.scheduler.generarHorario(time_limit_seconds, modo_completo)             # <<<<<<<<<<<<<<
+ * 
+ *         # Convertir a dict Python
+ */
+  try {
+    __pyx_t_2 = __pyx_v_self->scheduler->generarHorario(__pyx_v_time_limit_seconds, __pyx_v_modo_completo);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(1, 112, __pyx_L1_error)
+  }
+  __pyx_v_resultado = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_2);
+
+  /* "scheduler_wrapper.pyx":116
+ *         # Convertir a dict Python
+ *         py_result = {
+ *             'success': resultado.exito,             # <<<<<<<<<<<<<<
+ *             'error_message': resultado.mensajeError.decode('utf-8'),
+ *             'backtrack_count': resultado.conteoBacktrack,
+ */
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 116, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyBool_FromLong(__pyx_v_resultado.exito); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 116, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_success, __pyx_t_4) < 0) __PYX_ERR(1, 116, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "scheduler_wrapper.pyx":117
+ *         py_result = {
+ *             'success': resultado.exito,
+ *             'error_message': resultado.mensajeError.decode('utf-8'),             # <<<<<<<<<<<<<<
+ *             'backtrack_count': resultado.conteoBacktrack,
+ *             'computation_time': resultado.tiempoComputo,
+ */
+  __pyx_t_4 = __Pyx_decode_cpp_string(__pyx_v_resultado.mensajeError, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 117, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_error_message, __pyx_t_4) < 0) __PYX_ERR(1, 116, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "scheduler_wrapper.pyx":118
+ *             'success': resultado.exito,
+ *             'error_message': resultado.mensajeError.decode('utf-8'),
+ *             'backtrack_count': resultado.conteoBacktrack,             # <<<<<<<<<<<<<<
+ *             'computation_time': resultado.tiempoComputo,
+ *             'assignments': []
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_resultado.conteoBacktrack); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 118, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_backtrack_count, __pyx_t_4) < 0) __PYX_ERR(1, 116, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "scheduler_wrapper.pyx":119
+ *             'error_message': resultado.mensajeError.decode('utf-8'),
+ *             'backtrack_count': resultado.conteoBacktrack,
+ *             'computation_time': resultado.tiempoComputo,             # <<<<<<<<<<<<<<
+ *             'assignments': []
+ *         }
+ */
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_resultado.tiempoComputo); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 119, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_computation_time, __pyx_t_4) < 0) __PYX_ERR(1, 116, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "scheduler_wrapper.pyx":120
+ *             'backtrack_count': resultado.conteoBacktrack,
+ *             'computation_time': resultado.tiempoComputo,
+ *             'assignments': []             # <<<<<<<<<<<<<<
+ *         }
+ * 
+ */
+  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_u_assignments, __pyx_t_4) < 0) __PYX_ERR(1, 116, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_v_py_result = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
+
+  /* "scheduler_wrapper.pyx":124
+ * 
+ *         # Convertir asignaciones
+ *         for asignacion in resultado.asignaciones:             # <<<<<<<<<<<<<<
+ *             py_result['assignments'].append({
+ *                 'course_id': asignacion.idCurso,
+ */
+  __pyx_t_5 = __pyx_v_resultado.asignaciones.begin();
+  for (;;) {
+    if (!(__pyx_t_5 != __pyx_v_resultado.asignaciones.end())) break;
+    __pyx_t_6 = *__pyx_t_5;
+    ++__pyx_t_5;
+    __pyx_v_asignacion = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_6);
+
+    /* "scheduler_wrapper.pyx":125
+ *         # Convertir asignaciones
+ *         for asignacion in resultado.asignaciones:
+ *             py_result['assignments'].append({             # <<<<<<<<<<<<<<
+ *                 'course_id': asignacion.idCurso,
+ *                 'timeslot_id': asignacion.idBloque,
+ */
+    __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_py_result, __pyx_n_u_assignments); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 125, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+
+    /* "scheduler_wrapper.pyx":126
+ *         for asignacion in resultado.asignaciones:
+ *             py_result['assignments'].append({
+ *                 'course_id': asignacion.idCurso,             # <<<<<<<<<<<<<<
+ *                 'timeslot_id': asignacion.idBloque,
+ *                 'professor_id': asignacion.idProfesor
+ */
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 126, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_asignacion.idCurso); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 126, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_u_course_id, __pyx_t_7) < 0) __PYX_ERR(1, 126, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+    /* "scheduler_wrapper.pyx":127
+ *             py_result['assignments'].append({
+ *                 'course_id': asignacion.idCurso,
+ *                 'timeslot_id': asignacion.idBloque,             # <<<<<<<<<<<<<<
+ *                 'professor_id': asignacion.idProfesor
+ *             })
+ */
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_asignacion.idBloque); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 127, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_u_timeslot_id, __pyx_t_7) < 0) __PYX_ERR(1, 126, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+    /* "scheduler_wrapper.pyx":128
+ *                 'course_id': asignacion.idCurso,
+ *                 'timeslot_id': asignacion.idBloque,
+ *                 'professor_id': asignacion.idProfesor             # <<<<<<<<<<<<<<
+ *             })
+ * 
+ */
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_asignacion.idProfesor); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 128, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_u_professor_id, __pyx_t_7) < 0) __PYX_ERR(1, 126, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+    /* "scheduler_wrapper.pyx":125
+ *         # Convertir asignaciones
+ *         for asignacion in resultado.asignaciones:
+ *             py_result['assignments'].append({             # <<<<<<<<<<<<<<
+ *                 'course_id': asignacion.idCurso,
+ *                 'timeslot_id': asignacion.idBloque,
+ */
+    __pyx_t_8 = __Pyx_PyObject_Append(__pyx_t_3, __pyx_t_4); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(1, 125, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+    /* "scheduler_wrapper.pyx":124
+ * 
+ *         # Convertir asignaciones
+ *         for asignacion in resultado.asignaciones:             # <<<<<<<<<<<<<<
+ *             py_result['assignments'].append({
+ *                 'course_id': asignacion.idCurso,
+ */
+  }
+
+  /* "scheduler_wrapper.pyx":131
+ *             })
+ * 
+ *         return py_result             # <<<<<<<<<<<<<<
+ * 
+ *     def stop_generation(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_py_result);
+  __pyx_r = __pyx_v_py_result;
+  goto __pyx_L0;
+
+  /* "scheduler_wrapper.pyx":109
+ *         return py_result
+ * 
+ *     def generate_schedule_with_config(self, int time_limit_seconds=0, str strategy="time_limit"):             # <<<<<<<<<<<<<<
+ *         """Generar horario con configuracin"""
+ *         cdef bool modo_completo = (strategy == "complete")
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_AddTraceback("scheduler_wrapper.PyScheduler.generate_schedule_with_config", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_py_result);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "scheduler_wrapper.pyx":133
+ *         return py_result
+ * 
+ *     def stop_generation(self):             # <<<<<<<<<<<<<<
+ *         """Detener generacin"""
+ *         self.scheduler.detenerGeneracion()
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_17stop_generation(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_16stop_generation, "Detener generaci\303\263n");
+static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_17stop_generation = {"stop_generation", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_17stop_generation, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_16stop_generation};
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_17stop_generation(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4626,14 +5029,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("stop_generation", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "stop_generation", 0))) return NULL;
-  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_14stop_generation(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
+  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_16stop_generation(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14stop_generation(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16stop_generation(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -4641,7 +5044,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14stop_generation(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("stop_generation", 1);
 
-  /* "scheduler_wrapper.pyx":111
+  /* "scheduler_wrapper.pyx":135
  *     def stop_generation(self):
  *         """Detener generacin"""
  *         self.scheduler.detenerGeneracion()             # <<<<<<<<<<<<<<
@@ -4652,10 +5055,10 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14stop_generation(st
     __pyx_v_self->scheduler->detenerGeneracion();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 111, __pyx_L1_error)
+    __PYX_ERR(1, 135, __pyx_L1_error)
   }
 
-  /* "scheduler_wrapper.pyx":109
+  /* "scheduler_wrapper.pyx":133
  *         return py_result
  * 
  *     def stop_generation(self):             # <<<<<<<<<<<<<<
@@ -4675,7 +5078,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14stop_generation(st
   return __pyx_r;
 }
 
-/* "scheduler_wrapper.pyx":113
+/* "scheduler_wrapper.pyx":137
  *         self.scheduler.detenerGeneracion()
  * 
  *     def reset(self):             # <<<<<<<<<<<<<<
@@ -4684,16 +5087,16 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_14stop_generation(st
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_17reset(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_19reset(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_16reset, "Reiniciar planificador");
-static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_17reset = {"reset", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_17reset, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_16reset};
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_17reset(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_18reset, "Reiniciar planificador");
+static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_19reset = {"reset", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_19reset, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_18reset};
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_19reset(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4718,14 +5121,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("reset", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "reset", 0))) return NULL;
-  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_16reset(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
+  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_18reset(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16reset(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18reset(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -4733,7 +5136,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16reset(struct __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("reset", 1);
 
-  /* "scheduler_wrapper.pyx":115
+  /* "scheduler_wrapper.pyx":139
  *     def reset(self):
  *         """Reiniciar planificador"""
  *         self.scheduler.reiniciar()             # <<<<<<<<<<<<<<
@@ -4744,10 +5147,10 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16reset(struct __pyx
     __pyx_v_self->scheduler->reiniciar();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 115, __pyx_L1_error)
+    __PYX_ERR(1, 139, __pyx_L1_error)
   }
 
-  /* "scheduler_wrapper.pyx":113
+  /* "scheduler_wrapper.pyx":137
  *         self.scheduler.detenerGeneracion()
  * 
  *     def reset(self):             # <<<<<<<<<<<<<<
@@ -4767,7 +5170,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16reset(struct __pyx
   return __pyx_r;
 }
 
-/* "scheduler_wrapper.pyx":117
+/* "scheduler_wrapper.pyx":141
  *         self.scheduler.reiniciar()
  * 
  *     def has_data(self):             # <<<<<<<<<<<<<<
@@ -4776,16 +5179,16 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_16reset(struct __pyx
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_19has_data(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_21has_data(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_18has_data, "Verificar si hay datos cargados");
-static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_19has_data = {"has_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_19has_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_18has_data};
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_19has_data(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_20has_data, "Verificar si hay datos cargados");
+static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_21has_data = {"has_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_21has_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_20has_data};
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_21has_data(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4810,14 +5213,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("has_data", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "has_data", 0))) return NULL;
-  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
+  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_20has_data(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_20has_data(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4826,7 +5229,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("has_data", 1);
 
-  /* "scheduler_wrapper.pyx":119
+  /* "scheduler_wrapper.pyx":143
  *     def has_data(self):
  *         """Verificar si hay datos cargados"""
  *         return self.scheduler.tieneDatos()             # <<<<<<<<<<<<<<
@@ -4834,13 +5237,13 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(struct __
  *     def validate_data(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->scheduler->tieneDatos()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 119, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->scheduler->tieneDatos()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "scheduler_wrapper.pyx":117
+  /* "scheduler_wrapper.pyx":141
  *         self.scheduler.reiniciar()
  * 
  *     def has_data(self):             # <<<<<<<<<<<<<<
@@ -4859,7 +5262,7 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(struct __
   return __pyx_r;
 }
 
-/* "scheduler_wrapper.pyx":121
+/* "scheduler_wrapper.pyx":145
  *         return self.scheduler.tieneDatos()
  * 
  *     def validate_data(self):             # <<<<<<<<<<<<<<
@@ -4868,16 +5271,16 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_18has_data(struct __
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_21validate_data(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_23validate_data(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_20validate_data, "Validar datos cargados");
-static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_21validate_data = {"validate_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_21validate_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_20validate_data};
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_21validate_data(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_17scheduler_wrapper_11PyScheduler_22validate_data, "Validar datos cargados");
+static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_23validate_data = {"validate_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_23validate_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_22validate_data};
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_23validate_data(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4902,14 +5305,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("validate_data", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "validate_data", 0))) return NULL;
-  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_20validate_data(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
+  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_22validate_data(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_20validate_data(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_22validate_data(struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4918,19 +5321,19 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_20validate_data(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("validate_data", 1);
 
-  /* "scheduler_wrapper.pyx":123
+  /* "scheduler_wrapper.pyx":147
  *     def validate_data(self):
  *         """Validar datos cargados"""
  *         return self.scheduler.validarDatos().decode('utf-8')             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->scheduler->validarDatos(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 123, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->scheduler->validarDatos(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "scheduler_wrapper.pyx":121
+  /* "scheduler_wrapper.pyx":145
  *         return self.scheduler.tieneDatos()
  * 
  *     def validate_data(self):             # <<<<<<<<<<<<<<
@@ -4956,15 +5359,15 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_20validate_data(stru
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_23__reduce_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_25__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_23__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_23__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_23__reduce_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_25__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_25__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_25__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4989,14 +5392,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("__reduce_cython__", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__reduce_cython__", 0))) return NULL;
-  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_22__reduce_cython__(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
+  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_24__reduce_cython__(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_22__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_24__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -5036,15 +5439,15 @@ static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_22__reduce_cython__(
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_25__setstate_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_27__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_25__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_25__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_25__setstate_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_17scheduler_wrapper_11PyScheduler_27__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_27__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_17scheduler_wrapper_11PyScheduler_27__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -5118,7 +5521,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_24__setstate_cython__(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self), __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_17scheduler_wrapper_11PyScheduler_26__setstate_cython__(((struct __pyx_obj_17scheduler_wrapper_PyScheduler *)__pyx_v_self), __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -5131,7 +5534,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_24__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_17scheduler_wrapper_11PyScheduler_26__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_17scheduler_wrapper_PyScheduler *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -5215,12 +5618,13 @@ static PyMethodDef __pyx_methods_17scheduler_wrapper_PyScheduler[] = {
   {"load_timeslot", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_9load_timeslot, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_8load_timeslot},
   {"assign_professor_to_course", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_11assign_professor_to_course, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_10assign_professor_to_course},
   {"generate_schedule", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_13generate_schedule, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_12generate_schedule},
-  {"stop_generation", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_15stop_generation, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_14stop_generation},
-  {"reset", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_17reset, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_16reset},
-  {"has_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_19has_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_18has_data},
-  {"validate_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_21validate_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_20validate_data},
-  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_23__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_25__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"generate_schedule_with_config", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_15generate_schedule_with_config, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_14generate_schedule_with_config},
+  {"stop_generation", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_17stop_generation, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_16stop_generation},
+  {"reset", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_19reset, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_18reset},
+  {"has_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_21has_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_20has_data},
+  {"validate_data", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_23validate_data, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17scheduler_wrapper_11PyScheduler_22validate_data},
+  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_25__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17scheduler_wrapper_11PyScheduler_27__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 #if CYTHON_USE_TYPE_SPECS
@@ -5342,6 +5746,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_PyScheduler___setstate_cython, __pyx_k_PyScheduler___setstate_cython, sizeof(__pyx_k_PyScheduler___setstate_cython), 0, 0, 1, 1},
     {&__pyx_n_s_PyScheduler_assign_professor_to, __pyx_k_PyScheduler_assign_professor_to, sizeof(__pyx_k_PyScheduler_assign_professor_to), 0, 0, 1, 1},
     {&__pyx_n_s_PyScheduler_generate_schedule, __pyx_k_PyScheduler_generate_schedule, sizeof(__pyx_k_PyScheduler_generate_schedule), 0, 0, 1, 1},
+    {&__pyx_n_s_PyScheduler_generate_schedule_wi, __pyx_k_PyScheduler_generate_schedule_wi, sizeof(__pyx_k_PyScheduler_generate_schedule_wi), 0, 0, 1, 1},
     {&__pyx_n_s_PyScheduler_has_data, __pyx_k_PyScheduler_has_data, sizeof(__pyx_k_PyScheduler_has_data), 0, 0, 1, 1},
     {&__pyx_n_s_PyScheduler_load_course, __pyx_k_PyScheduler_load_course, sizeof(__pyx_k_PyScheduler_load_course), 0, 0, 1, 1},
     {&__pyx_n_s_PyScheduler_load_professor, __pyx_k_PyScheduler_load_professor, sizeof(__pyx_k_PyScheduler_load_professor), 0, 0, 1, 1},
@@ -5350,7 +5755,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_PyScheduler_stop_generation, __pyx_k_PyScheduler_stop_generation, sizeof(__pyx_k_PyScheduler_stop_generation), 0, 0, 1, 1},
     {&__pyx_n_s_PyScheduler_validate_data, __pyx_k_PyScheduler_validate_data, sizeof(__pyx_k_PyScheduler_validate_data), 0, 0, 1, 1},
     {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
-    {&__pyx_n_s__20, __pyx_k__20, sizeof(__pyx_k__20), 0, 0, 1, 1},
+    {&__pyx_n_s__23, __pyx_k__23, sizeof(__pyx_k__23), 0, 0, 1, 1},
     {&__pyx_n_s_append, __pyx_k_append, sizeof(__pyx_k_append), 0, 0, 1, 1},
     {&__pyx_n_s_asignacion, __pyx_k_asignacion, sizeof(__pyx_k_asignacion), 0, 0, 1, 1},
     {&__pyx_n_s_assign_professor_to_course, __pyx_k_assign_professor_to_course, sizeof(__pyx_k_assign_professor_to_course), 0, 0, 1, 1},
@@ -5359,6 +5764,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_available_timeslots, __pyx_k_available_timeslots, sizeof(__pyx_k_available_timeslots), 0, 0, 1, 1},
     {&__pyx_n_u_backtrack_count, __pyx_k_backtrack_count, sizeof(__pyx_k_backtrack_count), 0, 1, 0, 1},
     {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
+    {&__pyx_n_u_complete, __pyx_k_complete, sizeof(__pyx_k_complete), 0, 1, 0, 1},
     {&__pyx_n_u_computation_time, __pyx_k_computation_time, sizeof(__pyx_k_computation_time), 0, 1, 0, 1},
     {&__pyx_n_s_course_id, __pyx_k_course_id, sizeof(__pyx_k_course_id), 0, 0, 1, 1},
     {&__pyx_n_u_course_id, __pyx_k_course_id, sizeof(__pyx_k_course_id), 0, 1, 0, 1},
@@ -5372,6 +5778,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_u_error_message, __pyx_k_error_message, sizeof(__pyx_k_error_message), 0, 1, 0, 1},
     {&__pyx_kp_u_gc, __pyx_k_gc, sizeof(__pyx_k_gc), 0, 1, 0, 0},
     {&__pyx_n_s_generate_schedule, __pyx_k_generate_schedule, sizeof(__pyx_k_generate_schedule), 0, 0, 1, 1},
+    {&__pyx_n_s_generate_schedule_with_config, __pyx_k_generate_schedule_with_config, sizeof(__pyx_k_generate_schedule_with_config), 0, 0, 1, 1},
     {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
     {&__pyx_n_s_group_id, __pyx_k_group_id, sizeof(__pyx_k_group_id), 0, 0, 1, 1},
     {&__pyx_n_s_has_data, __pyx_k_has_data, sizeof(__pyx_k_has_data), 0, 0, 1, 1},
@@ -5381,6 +5788,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_load_professor, __pyx_k_load_professor, sizeof(__pyx_k_load_professor), 0, 0, 1, 1},
     {&__pyx_n_s_load_timeslot, __pyx_k_load_timeslot, sizeof(__pyx_k_load_timeslot), 0, 0, 1, 1},
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+    {&__pyx_n_s_modo_completo, __pyx_k_modo_completo, sizeof(__pyx_k_modo_completo), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
     {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
     {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
@@ -5406,9 +5814,12 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_start_hour, __pyx_k_start_hour, sizeof(__pyx_k_start_hour), 0, 0, 1, 1},
     {&__pyx_n_s_start_minute, __pyx_k_start_minute, sizeof(__pyx_k_start_minute), 0, 0, 1, 1},
     {&__pyx_n_s_stop_generation, __pyx_k_stop_generation, sizeof(__pyx_k_stop_generation), 0, 0, 1, 1},
+    {&__pyx_n_s_strategy, __pyx_k_strategy, sizeof(__pyx_k_strategy), 0, 0, 1, 1},
     {&__pyx_kp_s_stringsource, __pyx_k_stringsource, sizeof(__pyx_k_stringsource), 0, 0, 1, 0},
     {&__pyx_n_u_success, __pyx_k_success, sizeof(__pyx_k_success), 0, 1, 0, 1},
     {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+    {&__pyx_n_u_time_limit, __pyx_k_time_limit, sizeof(__pyx_k_time_limit), 0, 1, 0, 1},
+    {&__pyx_n_s_time_limit_seconds, __pyx_k_time_limit_seconds, sizeof(__pyx_k_time_limit_seconds), 0, 0, 1, 1},
     {&__pyx_n_u_timeslot_id, __pyx_k_timeslot_id, sizeof(__pyx_k_timeslot_id), 0, 1, 0, 1},
     {&__pyx_n_s_timeslot_vec, __pyx_k_timeslot_vec, sizeof(__pyx_k_timeslot_vec), 0, 0, 1, 1},
     {&__pyx_n_s_ts, __pyx_k_ts, sizeof(__pyx_k_ts), 0, 0, 1, 1},
@@ -5486,7 +5897,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *     def generate_schedule(self):             # <<<<<<<<<<<<<<
  *         """Generar horario usando algoritmo"""
- *         cdef ResultadoHorario resultado = self.scheduler.generarHorario()
+ *         cdef ResultadoHorario resultado = self.scheduler.generarHorario(0, False)
  */
   __pyx_tuple__10 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_resultado, __pyx_n_s_py_result, __pyx_n_s_asignacion); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
@@ -5496,48 +5907,63 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "scheduler_wrapper.pyx":109
  *         return py_result
  * 
+ *     def generate_schedule_with_config(self, int time_limit_seconds=0, str strategy="time_limit"):             # <<<<<<<<<<<<<<
+ *         """Generar horario con configuracin"""
+ *         cdef bool modo_completo = (strategy == "complete")
+ */
+  __pyx_tuple__12 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_time_limit_seconds, __pyx_n_s_strategy, __pyx_n_s_modo_completo, __pyx_n_s_resultado, __pyx_n_s_py_result, __pyx_n_s_asignacion); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(1, 109, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__12);
+  __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_generate_schedule_with_config, 109, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(1, 109, __pyx_L1_error)
+  __pyx_tuple__14 = PyTuple_Pack(2, __pyx_int_0, __pyx_n_u_time_limit); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(1, 109, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
+
+  /* "scheduler_wrapper.pyx":133
+ *         return py_result
+ * 
  *     def stop_generation(self):             # <<<<<<<<<<<<<<
  *         """Detener generacin"""
  *         self.scheduler.detenerGeneracion()
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(1, 109, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_stop_generation, 109, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(1, 109, __pyx_L1_error)
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 133, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__15);
+  __Pyx_GIVEREF(__pyx_tuple__15);
+  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_stop_generation, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(1, 133, __pyx_L1_error)
 
-  /* "scheduler_wrapper.pyx":113
+  /* "scheduler_wrapper.pyx":137
  *         self.scheduler.detenerGeneracion()
  * 
  *     def reset(self):             # <<<<<<<<<<<<<<
  *         """Reiniciar planificador"""
  *         self.scheduler.reiniciar()
  */
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_reset, 113, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(1, 113, __pyx_L1_error)
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_reset, 137, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(1, 137, __pyx_L1_error)
 
-  /* "scheduler_wrapper.pyx":117
+  /* "scheduler_wrapper.pyx":141
  *         self.scheduler.reiniciar()
  * 
  *     def has_data(self):             # <<<<<<<<<<<<<<
  *         """Verificar si hay datos cargados"""
  *         return self.scheduler.tieneDatos()
  */
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_has_data, 117, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(1, 117, __pyx_L1_error)
+  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_has_data, 141, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(1, 141, __pyx_L1_error)
 
-  /* "scheduler_wrapper.pyx":121
+  /* "scheduler_wrapper.pyx":145
  *         return self.scheduler.tieneDatos()
  * 
  *     def validate_data(self):             # <<<<<<<<<<<<<<
  *         """Validar datos cargados"""
  *         return self.scheduler.validarDatos().decode('utf-8')
  */
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_validate_data, 121, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(1, 121, __pyx_L1_error)
+  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scheduler_wrapper_pyx, __pyx_n_s_validate_data, 145, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(1, 145, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 1, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -5545,10 +5971,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_tuple__18 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_pyx_state); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 3, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__18);
-  __Pyx_GIVEREF(__pyx_tuple__18);
-  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __pyx_tuple__21 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_pyx_state); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__21);
+  __Pyx_GIVEREF(__pyx_tuple__21);
+  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6001,7 +6427,7 @@ if (!__Pyx_RefNanny) {
  * 
  *     def generate_schedule(self):             # <<<<<<<<<<<<<<
  *         """Generar horario usando algoritmo"""
- *         cdef ResultadoHorario resultado = self.scheduler.generarHorario()
+ *         cdef ResultadoHorario resultado = self.scheduler.generarHorario(0, False)
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_13generate_schedule, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_generate_schedule, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -6012,52 +6438,66 @@ if (!__Pyx_RefNanny) {
   /* "scheduler_wrapper.pyx":109
  *         return py_result
  * 
+ *     def generate_schedule_with_config(self, int time_limit_seconds=0, str strategy="time_limit"):             # <<<<<<<<<<<<<<
+ *         """Generar horario con configuracin"""
+ *         cdef bool modo_completo = (strategy == "complete")
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_15generate_schedule_with_config, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_generate_schedule_wi, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 109, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__14);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_generate_schedule_with_config, __pyx_t_2) < 0) __PYX_ERR(1, 109, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
+
+  /* "scheduler_wrapper.pyx":133
+ *         return py_result
+ * 
  *     def stop_generation(self):             # <<<<<<<<<<<<<<
  *         """Detener generacin"""
  *         self.scheduler.detenerGeneracion()
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_15stop_generation, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_stop_generation, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 109, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_17stop_generation, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_stop_generation, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_stop_generation, __pyx_t_2) < 0) __PYX_ERR(1, 109, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_stop_generation, __pyx_t_2) < 0) __PYX_ERR(1, 133, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
-  /* "scheduler_wrapper.pyx":113
+  /* "scheduler_wrapper.pyx":137
  *         self.scheduler.detenerGeneracion()
  * 
  *     def reset(self):             # <<<<<<<<<<<<<<
  *         """Reiniciar planificador"""
  *         self.scheduler.reiniciar()
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_17reset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_reset, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 113, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_19reset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_reset, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_reset, __pyx_t_2) < 0) __PYX_ERR(1, 113, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_reset, __pyx_t_2) < 0) __PYX_ERR(1, 137, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
-  /* "scheduler_wrapper.pyx":117
+  /* "scheduler_wrapper.pyx":141
  *         self.scheduler.reiniciar()
  * 
  *     def has_data(self):             # <<<<<<<<<<<<<<
  *         """Verificar si hay datos cargados"""
  *         return self.scheduler.tieneDatos()
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_19has_data, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_has_data, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 117, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_21has_data, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_has_data, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_has_data, __pyx_t_2) < 0) __PYX_ERR(1, 117, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_has_data, __pyx_t_2) < 0) __PYX_ERR(1, 141, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
-  /* "scheduler_wrapper.pyx":121
+  /* "scheduler_wrapper.pyx":145
  *         return self.scheduler.tieneDatos()
  * 
  *     def validate_data(self):             # <<<<<<<<<<<<<<
  *         """Validar datos cargados"""
  *         return self.scheduler.validarDatos().decode('utf-8')
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_21validate_data, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_validate_data, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 121, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_23validate_data, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler_validate_data, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_validate_data, __pyx_t_2) < 0) __PYX_ERR(1, 121, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_17scheduler_wrapper_PyScheduler, __pyx_n_s_validate_data, __pyx_t_2) < 0) __PYX_ERR(1, 145, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_17scheduler_wrapper_PyScheduler);
 
@@ -6066,7 +6506,7 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_23__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler___reduce_cython, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_25__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler___reduce_cython, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -6077,7 +6517,7 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_25__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler___setstate_cython, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_17scheduler_wrapper_11PyScheduler_27__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyScheduler___setstate_cython, NULL, __pyx_n_s_scheduler_wrapper, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -9772,7 +10212,7 @@ __Pyx_PyType_GetName(PyTypeObject* tp)
     if (unlikely(name == NULL) || unlikely(!PyUnicode_Check(name))) {
         PyErr_Clear();
         Py_XDECREF(name);
-        name = __Pyx_NewRef(__pyx_n_s__20);
+        name = __Pyx_NewRef(__pyx_n_s__23);
     }
     return name;
 }

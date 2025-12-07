@@ -20,7 +20,7 @@ struct BloqueTiempo {
 
   BloqueTiempo();
   BloqueTiempo(int id, const std::string &dia, int horaInicio, int minutoInicio,
-           int horaFin, int minutoFin);
+               int horaFin, int minutoFin);
 
   bool seSolapa(const BloqueTiempo &otro) const;
   std::string aString() const;
@@ -43,7 +43,7 @@ private:
   std::unordered_map<int, std::unordered_set<int>>
       disponibilidadProfesor; // idProfesor -> set(idBloque)
   std::unordered_map<int, std::unordered_set<int>>
-      prerrequisitosCurso; // idCurso -> set(idPrerrequisito)
+      prerrequisitosCurso;                  // idCurso -> set(idPrerrequisito)
   std::unordered_map<int, int> gruposCurso; // idCurso -> idGrupo
 
 public:
@@ -56,32 +56,36 @@ public:
   void agregarGrupoCurso(int idCurso, int idGrupo);
 
   // Validación de restricciones
+  bool esAsignacionValida(
+      const Asignacion &asignacion,
+      const std::vector<Asignacion> &asignacionesExistentes) const;
+
   bool
-  esAsignacionValida(const Asignacion &asignacion,
-                    const std::vector<Asignacion> &asignacionesExistentes) const;
+  verificarConflictoTiempo(int idProfesor, int idBloque,
+                           const std::vector<Asignacion> &asignaciones) const;
 
-  bool verificarConflictoTiempo(int idProfesor, int idBloque,
-                         const std::vector<Asignacion> &asignaciones) const;
-
-  bool verificarConflictoGrupo(int idCurso, int idBloque,
+  bool
+  verificarConflictoGrupo(int idCurso, int idBloque,
                           const std::vector<Asignacion> &asignaciones) const;
 
   bool verificarDisponibilidadProfesor(int idProfesor, int idBloque) const;
 
-  bool verificarPrerrequisitos(int idCurso,
+  bool
+  verificarPrerrequisitos(int idCurso,
                           const std::vector<Asignacion> &asignaciones) const;
 
   // Obtener opciones disponibles
   std::vector<int>
   obtenerBloquesDisponibles(int idCurso, int idProfesor,
-                        const std::vector<Asignacion> &asignaciones) const;
+                            const std::vector<Asignacion> &asignaciones) const;
 
   int obtenerSiguienteBloqueConsecutivo(int idBloque) const;
+  std::string obtenerDiaBloque(int idBloque) const;
 
   // Mensajes de validación
   std::string
   obtenerMensajeViolacion(const Asignacion &asignacion,
-                      const std::vector<Asignacion> &asignaciones) const;
+                          const std::vector<Asignacion> &asignaciones) const;
 };
 
 } // namespace planificador

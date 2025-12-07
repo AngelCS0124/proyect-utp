@@ -36,7 +36,7 @@ cdef extern from "planificador.hpp" namespace "planificador":
         
         void asignarProfesorACurso(int idCurso, int idProfesor) except +
         
-        ResultadoHorario generarHorario() except +
+        ResultadoHorario generarHorario(int limiteTiempoSegundos, bool modoCompleto) except +
         void detenerGeneracion() except +
         void reiniciar() except +
         
@@ -85,7 +85,7 @@ cdef class PyScheduler:
     
     def generate_schedule(self):
         """Generar horario usando algoritmo"""
-        cdef ResultadoHorario resultado = self.scheduler.generarHorario()
+        cdef ResultadoHorario resultado = self.scheduler.generarHorario(0, False)
         
         # Convertir a dict Python
         py_result = {
@@ -104,6 +104,30 @@ cdef class PyScheduler:
                 'professor_id': asignacion.idProfesor
             })
         
+        return py_result
+
+    def generate_schedule_with_config(self, int time_limit_seconds=0, str strategy="time_limit"):
+        """Generar horario con configuración"""
+        cdef bool modo_completo = (strategy == "complete")
+        cdef ResultadoHorario resultado = self.scheduler.generarHorario(time_limit_seconds, modo_completo)
+        
+        # Convertir a dict Python
+        py_result = {
+            'success': resultado.exito,
+            'error_message': resultado.mensajeError.decode('utf-8'),
+            'backtrack_count': resultado.conteoBacktrack,
+            'computation_time': resultado.tiempoComputo,
+            'assignments': []
+        }
+        
+        # Convertir asignaciones
+        for asignacion in resultado.asignaciones:
+            py_result['assignments'].append({
+                'course_id': asignacion.idCurso,
+                'timeslot_id': asignacion.idBloque,
+                'professor_id': asignacion.idProfesor
+            })
+            
         return py_result
     
     def stop_generation(self):

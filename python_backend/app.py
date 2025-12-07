@@ -14,6 +14,7 @@ from modelos import Curso, Profesor, BloqueTiempo, Horario
 from data import get_all_courses, get_courses_for_cycle, get_available_cycles
 from data_loader import DataLoader
 from validadores import Validador
+from config.periods import PERIODOS, get_valid_semesters, get_valid_groups
 
 # Try to import the C++ scheduler (will fail if not built yet)
 try:
@@ -38,7 +39,12 @@ data_store = {
     'professors': [],
     'timeslots': [],
     'schedule': None,
-    'current_cycle': None  # Track currently selected cycle
+    'current_cycle': None,  # Track currently selected cycle
+    'config': {
+        'period': 'sep_dic', # Default period
+        'time_limit': 30,    # Default time limit in seconds
+        'strategy': 'time_limit' # Default strategy
+    }
 }
 
 # Initialize predefined timeslots
@@ -82,7 +88,43 @@ def get_status():
             'timeslots': len(data_store['timeslots'])
         },
         'schedule_generated': data_store['schedule'] is not None,
-        'current_cycle': data_store['current_cycle']
+        'current_cycle': data_store['current_cycle'],
+        'config': data_store['config']
+    })
+
+
+@app.route('/api/config', methods=['POST'])
+def update_config():
+    """Update system configuration"""
+    data = request.json
+    
+    if 'period' in data:
+        if data['period'] not in PERIODOS:
+            return jsonify({'error': 'Invalid period'}), 400
+        data_store['config']['period'] = data['period']
+        
+        # If courses are loaded, we might need to reload/filter them
+        # For now, we'll just update the config. The filtering happens at generation time
+        # or when loading courses.
+        
+    if 'time_limit' in data:
+        try:
+            limit = int(data['time_limit'])
+            if limit < 1:
+                return jsonify({'error': 'Time limit must be positive'}), 400
+            data_store['config']['time_limit'] = limit
+        except ValueError:
+            return jsonify({'error': 'Invalid time limit'}), 400
+            
+    if 'strategy' in data:
+        if data['strategy'] not in ['complete', 'time_limit']:
+            return jsonify({'error': 'Invalid strategy'}), 400
+        data_store['config']['strategy'] = data['strategy']
+        
+    return jsonify({
+        'success': True,
+        'config': data_store['config'],
+        'message': 'Configuration updated'
     })
 
 
@@ -355,9 +397,27 @@ def generate_schedule():
     if not data_store['current_cycle'] and not data_store['courses']:
         return jsonify({'error': 'Please select a cycle or upload courses first'}), 400
     
-    # Validate data first
+    # Filter courses based on selected period
+    current_period = data_store['config']['period']
+    valid_course_ids = get_valid_groups(current_period)
+    
+    courses_to_schedule = []
+    if data_store['courses']:
+        for course in data_store['courses']:
+            # Filter by ID as defined in periods.py
+            if course.id in valid_course_ids:
+                courses_to_schedule.append(course)
+                
+        print(f"DEBUG: Filtered {len(courses_to_schedule)} courses for period {current_period} using ID list")
+    else:
+        courses_to_schedule = []
+
+    if not courses_to_schedule:
+        return jsonify({'error': f'No courses found for period {current_period}'}), 400
+
+    # Validate data first (using filtered courses)
     validation = Validador.validar_todos_datos(
-        data_store['courses'],
+        courses_to_schedule,
         data_store['professors'],
         data_store['timeslots']
     )
@@ -372,20 +432,30 @@ def generate_schedule():
     
     try:
         print(f"DEBUG: Starting generation with:")
-        print(f"  - Courses: {len(data_store['courses'])}")
+        print(f"  - Courses: {len(courses_to_schedule)}")
         print(f"  - Professors: {len(data_store['professors'])}")
         print(f"  - Timeslots: {len(data_store['timeslots'])}")
+        print(f"  - Config: {data_store['config']}")
         
         # Create scheduler instance
         scheduler = PyScheduler()
         
         # Load data into C++ scheduler
-        for course in data_store['courses']:
+        for course in courses_to_schedule:
             group_id = getattr(course, 'group_id', 0)
-            # FIX: Credits are not duration in slots. Using 1 slot for now.
-            # Ideally this should be calculated or stored in the course data.
-            duration = 1 
-            print(f"DEBUG: Loading course {course.nombre} ({course.id}) duration={duration} group={group_id}")
+            
+            # Calculate duration based on credits
+            # 15 weeks per period
+            # Weekly hours = credits / 15
+            # Duration in slots = ceil(Weekly hours) (assuming 1 slot ~ 1 hour)
+            credits = getattr(course, 'creditos', 0)
+            weekly_hours = credits / 15.0 if credits > 0 else 4.0 # Default to 4 if no credits
+            
+            import math
+            duration = math.ceil(weekly_hours)
+            if duration < 1: duration = 1
+            
+            print(f"DEBUG: Loading course {course.nombre} ({course.id}) credits={credits} duration={duration} group={group_id}")
             scheduler.load_course(course.id, course.nombre, course.matricula, course.prerequisitos, group_id, duration)
         
         for professor in data_store['professors']:
@@ -397,20 +467,30 @@ def generate_schedule():
                                    timeslot.hora_fin, timeslot.minuto_fin)
         
         # Assign professors to courses
-        for course in data_store['courses']:
+        for course in courses_to_schedule:
             if course.id_profesor is not None:
                 scheduler.assign_professor_to_course(course.id, course.id_profesor)
         
-        # Generate schedule
-        result = scheduler.generate_schedule()
+        # Generate schedule with time limit
+        time_limit = data_store['config']['time_limit']
+        strategy = data_store['config']['strategy']
         
-        if result['success']:
+        # We need to update the wrapper to accept these arguments
+        # For now, we'll assume the wrapper has been updated or we'll update it next
+        if hasattr(scheduler, 'generate_schedule_with_config'):
+             result = scheduler.generate_schedule_with_config(time_limit, strategy)
+        else:
+             # Fallback for now until wrapper is updated
+             result = scheduler.generate_schedule()
+        
+        # Process result (handle both success and partial success)
+        if result['success'] or result.get('partial', False):
             # Enrich assignments with names
             enriched_assignments = []
             professor_workload = {} # Track assignments per professor
             
             for assignment in result['assignments']:
-                course = next((c for c in data_store['courses'] if c.id == assignment['course_id']), None)
+                course = next((c for c in courses_to_schedule if c.id == assignment['course_id']), None)
                 professor = next((p for p in data_store['professors'] if p.id == assignment['professor_id']), None)
                 timeslot = next((t for t in data_store['timeslots'] if t.id == assignment['timeslot_id']), None)
                 
@@ -442,20 +522,22 @@ def generate_schedule():
                     'available_hours': available,
                     'load_percentage': round(percentage, 1)
                 })
-                print(f"DEBUG: Professor {professor.nombre}: {assigned}/{available} ({percentage:.1f}%)")
             
             data_store['schedule'] = {
                 'assignments': enriched_assignments,
                 'metadata': {
                     'backtrack_count': result['backtrack_count'],
-                    'computation_time': result['computation_time']
+                    'computation_time': result['computation_time'],
+                    'status': 'success' if result['success'] else 'partial',
+                    'message': result.get('message', 'Schedule generated')
                 },
                 'workload_stats': workload_stats
             }
             
             return jsonify({
                 'success': True,
-                'schedule': data_store['schedule']
+                'schedule': data_store['schedule'],
+                'partial': not result['success']
             })
         else:
             print(f"DEBUG: Generation failed: {result['error_message']}")
@@ -466,6 +548,8 @@ def generate_schedule():
     
     except Exception as e:
         print(f"DEBUG: Generation error: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
 

@@ -554,6 +554,30 @@ async function generateSchedule() {
     showGenerationOverlay();
 
     try {
+        // Read config values
+        const timeLimit = parseInt(document.getElementById('time-limit').value);
+        const strategy = document.getElementById('strategy').value;
+        const currentPeriod = state.currentCycle ? state.currentCycle.id : null;
+
+        if (!currentPeriod) {
+            showNotification('Error', 'Por favor selecciona un ciclo académico primero', 'error');
+            hideGenerationOverlay();
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            return;
+        }
+
+        // Update config on backend
+        await fetch(`${API_BASE}/config`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                time_limit: timeLimit,
+                strategy: strategy,
+                period: currentPeriod
+            })
+        });
+
         // Simulate steps for visual effect
         await updateGenerationStep('Construyendo Grafo de Conflictos...', 10);
         await new Promise(r => setTimeout(r, 800));

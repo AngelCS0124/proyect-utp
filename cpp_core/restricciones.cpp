@@ -7,10 +7,11 @@ namespace planificador {
 
 // Implementación de BloqueTiempo
 BloqueTiempo::BloqueTiempo()
-    : id(-1), dia(""), horaInicio(0), minutoInicio(0), horaFin(0), minutoFin(0) {}
+    : id(-1), dia(""), horaInicio(0), minutoInicio(0), horaFin(0),
+      minutoFin(0) {}
 
 BloqueTiempo::BloqueTiempo(int id, const std::string &dia, int horaInicio,
-                   int minutoInicio, int horaFin, int minutoFin)
+                           int minutoInicio, int horaFin, int minutoFin)
     : id(id), dia(dia), horaInicio(horaInicio), minutoInicio(minutoInicio),
       horaFin(horaFin), minutoFin(minutoFin) {}
 
@@ -41,19 +42,20 @@ Asignacion::Asignacion(int idCurso, int idBloque, int idProfesor)
     : idCurso(idCurso), idBloque(idBloque), idProfesor(idProfesor) {}
 
 // Implementación de VerificadorRestricciones
-VerificadorRestricciones::VerificadorRestricciones(const Grafo &grafo) : grafo(grafo) {}
+VerificadorRestricciones::VerificadorRestricciones(const Grafo &grafo)
+    : grafo(grafo) {}
 
 void VerificadorRestricciones::agregarBloqueTiempo(const BloqueTiempo &bloque) {
   bloquesTiempo[bloque.id] = bloque;
 }
 
 void VerificadorRestricciones::agregarDisponibilidadProfesor(int idProfesor,
-                                                 int idBloque) {
+                                                             int idBloque) {
   disponibilidadProfesor[idProfesor].insert(idBloque);
 }
 
 void VerificadorRestricciones::agregarPrerrequisitoCurso(int idCurso,
-                                              int idPrerrequisito) {
+                                                         int idPrerrequisito) {
   prerrequisitosCurso[idCurso].insert(idPrerrequisito);
 }
 
@@ -66,19 +68,19 @@ bool VerificadorRestricciones::esAsignacionValida(
     const std::vector<Asignacion> &asignacionesExistentes) const {
   // Verificar disponibilidad profesor
   if (!verificarDisponibilidadProfesor(asignacion.idProfesor,
-                                  asignacion.idBloque)) {
+                                       asignacion.idBloque)) {
     return false;
   }
 
   // Verificar conflictos de tiempo (Profesor)
   if (verificarConflictoTiempo(asignacion.idProfesor, asignacion.idBloque,
-                        asignacionesExistentes)) {
+                               asignacionesExistentes)) {
     return false;
   }
 
   // Verificar conflictos de grupo (Estudiantes)
   if (verificarConflictoGrupo(asignacion.idCurso, asignacion.idBloque,
-                         asignacionesExistentes)) {
+                              asignacionesExistentes)) {
     return false;
   }
 
@@ -133,7 +135,8 @@ bool VerificadorRestricciones::verificarConflictoGrupo(
       auto existenteIt = bloquesTiempo.find(asignacion.idBloque);
       if (existenteIt != bloquesTiempo.end()) {
         if (nuevoBloque.seSolapa(existenteIt->second)) {
-          return true; // Conflicto: Mismo grupo tiene dos clases al mismo tiempo
+          return true; // Conflicto: Mismo grupo tiene dos clases al mismo
+                       // tiempo
         }
       }
     }
@@ -142,8 +145,8 @@ bool VerificadorRestricciones::verificarConflictoGrupo(
   return false;
 }
 
-bool VerificadorRestricciones::verificarDisponibilidadProfesor(int idProfesor,
-                                                   int idBloque) const {
+bool VerificadorRestricciones::verificarDisponibilidadProfesor(
+    int idProfesor, int idBloque) const {
   auto it = disponibilidadProfesor.find(idProfesor);
   if (it == disponibilidadProfesor.end()) {
     return false; // Sin datos de disponibilidad
@@ -200,19 +203,20 @@ std::string VerificadorRestricciones::obtenerMensajeViolacion(
   std::ostringstream oss;
 
   if (!verificarDisponibilidadProfesor(asignacion.idProfesor,
-                                  asignacion.idBloque)) {
+                                       asignacion.idBloque)) {
     oss << "Profesor no disponible en este horario. ";
   }
 
   if (verificarConflictoTiempo(asignacion.idProfesor, asignacion.idBloque,
-                        asignaciones)) {
+                               asignaciones)) {
     oss << "Conflicto de horario del profesor. ";
   }
 
   return oss.str();
 }
 
-int VerificadorRestricciones::obtenerSiguienteBloqueConsecutivo(int idBloque) const {
+int VerificadorRestricciones::obtenerSiguienteBloqueConsecutivo(
+    int idBloque) const {
   auto it = bloquesTiempo.find(idBloque);
   if (it == bloquesTiempo.end()) {
     return -1;
@@ -227,6 +231,14 @@ int VerificadorRestricciones::obtenerSiguienteBloqueConsecutivo(int idBloque) co
     }
   }
   return -1;
+}
+
+std::string VerificadorRestricciones::obtenerDiaBloque(int idBloque) const {
+  auto it = bloquesTiempo.find(idBloque);
+  if (it != bloquesTiempo.end()) {
+    return it->second.dia;
+  }
+  return "";
 }
 
 } // namespace planificador
