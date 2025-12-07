@@ -1,0 +1,22 @@
+{
+    "professors": [
+        {
+            "id": 1,
+            "name": "TEST PROFESSOR",
+            "email": "test@example.com",
+            "available_timeslots": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
+            "available_courses": [
+                "TC1",
+                "TC2",
+                "TC3"
+            ]
+        }
+    ]
+}

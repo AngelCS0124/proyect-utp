@@ -41,7 +41,7 @@ data_store = {
     'schedule': None,
     'current_cycle': None,  # Track currently selected cycle
     'config': {
-        'period': 'sep_dic', # Default period
+        'period': 'sept-dec', # Default period
         'time_limit': 30,    # Default time limit in seconds
         'strategy': 'time_limit' # Default strategy
     }
@@ -354,9 +354,28 @@ def get_courses_by_cycle(cycle):
         
         # CRITICAL FIX: Sync the config period with the selected cycle
         # This ensures generate_schedule uses the correct period for filtering
-        if cycle in PERIODOS:
-            data_store['config']['period'] = cycle
-            print(f"DEBUG: Switched period to {cycle}")
+        
+        # Normalize cycle key for config
+        mapping_es_en = {
+            "Ene-Abr": "jan-apr",
+            "May-Ago": "may-aug",
+            "Sep-Dic": "sept-dec",
+            "Sept-Dic": "sept-dec",
+            "jan-apr": "jan-apr",
+            "may-aug": "may-aug",
+            "sept-dec": "sept-dec",
+            "sep_dic": "sept-dec", # Handle old key just in case
+            "ene_abr": "jan-apr",
+            "may_ago": "may-aug"
+        }
+        
+        normalized_cycle = mapping_es_en.get(cycle.split(' ')[0], cycle)
+        
+        if normalized_cycle in PERIODOS:
+            data_store['config']['period'] = normalized_cycle
+            print(f"DEBUG: Switched period to {normalized_cycle} (from {cycle})")
+        else:
+            print(f"WARNING: Cycle {cycle} (normalized: {normalized_cycle}) not found in PERIODOS keys: {list(PERIODOS.keys())}")
             
         return jsonify({
             'data': [course.to_dict() for course in courses],

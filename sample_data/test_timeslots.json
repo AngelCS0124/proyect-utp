@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "day": "Lun",
+        "start_hour": 7,
+        "start_minute": 0,
+        "end_hour": 7,
+        "end_minute": 54
+    },
+    {
+        "id": 2,
+        "day": "Lun",
+        "start_hour": 7,
+        "start_minute": 55,
+        "end_hour": 8,
+        "end_minute": 49
+    },
+    {
+        "id": 3,
+        "day": "Lun",
+        "start_hour": 8,
+        "start_minute": 50,
+        "end_hour": 9,
+        "end_minute": 44
+    },
+    {
+        "id": 4,
+        "day": "Mar",
+        "start_hour": 7,
+        "start_minute": 0,
+        "end_hour": 7,
+        "end_minute": 54
+    },
+    {
+        "id": 5,
+        "day": "Mar",
+        "start_hour": 7,
+        "start_minute": 55,
+        "end_hour": 8,
+        "end_minute": 49
+    },
+    {
+        "id": 6,
+        "day": "Mar",
+        "start_hour": 8,
+        "start_minute": 50,
+        "end_hour": 9,
+        "end_minute": 44
+    }
+]

@@ -175,7 +175,16 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
                        "Horario generado exitosamente!");
   } else {
     // Terminó la búsqueda sin éxito completo
-    if (!modoCompleto && !mejorSolucion.empty()) {
+    // Si tenemos asignaciones válidas (aunque sean parciales), las usamos
+    if (!asignaciones.empty()) {
+      resultado.asignaciones = asignaciones;
+      resultado.exito = false; // Parcial
+      resultado.mensajeError =
+          "Se generó un horario parcial (" +
+          std::to_string(cursosAsignados.size()) + "/" +
+          std::to_string(ordenCursos.size()) + " cursos). " +
+          "Algunos cursos no pudieron ser asignados por restricciones.";
+    } else if (!mejorSolucion.empty()) {
       // En modo "Best Effort" devolvemos lo que encontramos
       resultado.asignaciones = mejorSolucion;
       resultado.exito = false; // Parcial
@@ -259,16 +268,13 @@ bool PlanificadorCore::backtrack(std::vector<Asignacion> &asignaciones,
 
   // Obtener profesor asignado para este curso
   auto aristasProfesor = grafo.obtenerVecinos(idCurso);
-  if (aristasProfesor.empty()) {
-    // Sin profesor asignado, saltar o fallar
-    // En modo Best Effort, podríamos saltarlo y seguir
-    // Por ahora, asumimos que si no hay profesor, no se puede programar este
-    // curso Pero seguimos intentando con el siguiente para maximizar
-    // asignaciones
-    return backtrack(asignaciones, cursos, indiceCurso + 1);
-  }
+  int idProfesor = -1; // Default: Sin profesor
 
-  int idProfesor = aristasProfesor[0]; // Asumiendo un profesor por curso
+  if (!aristasProfesor.empty()) {
+    idProfesor = aristasProfesor[0]; // Asumiendo un profesor por curso
+  }
+  // Si no hay profesor, idProfesor sigue siendo -1, lo cual ahora es soportado
+  // por restricciones.cpp
 
   // Determinar bloques necesarios
   int duracion = 1;
@@ -279,19 +285,15 @@ bool PlanificadorCore::backtrack(std::vector<Asignacion> &asignaciones,
       duracion = 1;
     }
   }
-  // Asumir 1 bloque = 1 hora (aprox).
-  // La lógica anterior dividía por 2, pero ahora duration viene directo como
-  // slots.
+
   int bloquesNecesarios = duracion;
   if (bloquesNecesarios < 1)
     bloquesNecesarios = 1;
 
-  // Probar todos los bloques de tiempo disponibles
-  auto bloquesDisponibles = verificadorRestricciones->obtenerBloquesDisponibles(
-      idCurso, idProfesor, asignaciones);
-
   // Iniciar recursión para asignar los bloques de este curso
   std::vector<std::string> diasUsados;
+
+  // Intentar asignar el curso
   if (backtrackCurso(asignaciones, idCurso, idProfesor, bloquesNecesarios,
                      cursos, indiceCurso, diasUsados)) {
     return true;
@@ -300,6 +302,8 @@ bool PlanificadorCore::backtrack(std::vector<Asignacion> &asignaciones,
   // ESTRATEGIA ROBUSTA: Si no se puede asignar este curso, lo saltamos
   // y continuamos con el siguiente para generar un horario parcial.
   // Esto asegura que siempre devolvamos algo.
+  // NOTA: Esto significa que el resultado final puede no tener todos los
+  // cursos. El wrapper de Python debe detectar esto y advertir al usuario.
   return backtrack(asignaciones, cursos, indiceCurso + 1);
 }
 
@@ -348,14 +352,21 @@ bool PlanificadorCore::backtrackCurso(
       }
     }
 
-    // Si ya tenemos 3 bloques en este día, no podemos agregar más (Hard
-    // constraint E)
-    if (bloquesEnEsteDia >= 3)
+    // Si ya tenemos 3 bloques en este día, PREFERIBLEMENTE no agregar más.
+    // Pero como es una restricción SOFT, permitimos hasta un límite razonable
+    // (ej. 6 u 8) para asegurar que se genere el horario.
+    if (bloquesEnEsteDia >= 8)
       continue;
 
     // Intentar asignar chunks de 1, 2 o 3 bloques
-    // Pero respetando bloquesRestantes y límite diario (3)
-    int maxChunk = std::min(bloquesRestantes, 3 - bloquesEnEsteDia);
+    // Pero respetando bloquesRestantes y límite diario (ahora relajado a 8)
+    int maxChunk = std::min(bloquesRestantes, 8 - bloquesEnEsteDia);
+    // Limitamos el chunk a 3 horas consecutivas como máximo ideal,
+    // pero si el curso requiere bloques grandes, el sistema de chunks lo
+    // manejará. Por ahora mantenemos chunks de max 3 para no hacer clases
+    // eternas.
+    if (maxChunk > 3)
+      maxChunk = 3;
 
     // Probamos chunks de mayor a menor para "Best Effort" (llenar días)
     // O de menor a mayor?

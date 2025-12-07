@@ -3,7 +3,7 @@ Configuration for Academic Periods
 """
 
 PERIODOS = {
-    "sep_dic": {  # Septiembre a Diciembre (1 Sep - 12 Dic = 15 semanas)
+    "sept-dec": {  # Septiembre a Diciembre (1 Sep - 12 Dic = 15 semanas)
         "semanas": 15,
         "cuatrimestres": {
             1: [101, 102, 103, 104, 105, 106, 107],
@@ -13,7 +13,7 @@ PERIODOS = {
         }
     },
     
-    "ene_abr": {  # Enero a Abril (5 Ene - 24 Abr = 15 semanas)
+    "jan-apr": {  # Enero a Abril (5 Ene - 24 Abr = 15 semanas)
         "semanas": 15,
         "cuatrimestres": {
             2: [201, 202, 203, 204, 205, 206, 207],
@@ -22,7 +22,7 @@ PERIODOS = {
         }
     },
     
-    "may_ago": {  # Mayo a Agosto (4 May - 21 Ago = 15 semanas)
+    "may-aug": {  # Mayo a Agosto (4 May - 21 Ago = 15 semanas)
         "semanas": 15,
         "cuatrimestres": {
             3: [301, 302, 303, 304, 305, 306, 307],

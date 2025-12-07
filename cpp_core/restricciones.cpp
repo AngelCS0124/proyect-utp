@@ -66,19 +66,21 @@ void VerificadorRestricciones::agregarGrupoCurso(int idCurso, int idGrupo) {
 bool VerificadorRestricciones::esAsignacionValida(
     const Asignacion &asignacion,
     const std::vector<Asignacion> &asignacionesExistentes) const {
-  // Verificar disponibilidad profesor
-  if (!verificarDisponibilidadProfesor(asignacion.idProfesor,
-                                       asignacion.idBloque)) {
-    return false;
+  // Verificar disponibilidad profesor (Solo si hay profesor asignado)
+  if (asignacion.idProfesor >= 0) {
+    if (!verificarDisponibilidadProfesor(asignacion.idProfesor,
+                                         asignacion.idBloque)) {
+      return false;
+    }
+
+    // Verificar conflictos de tiempo (Profesor)
+    if (verificarConflictoTiempo(asignacion.idProfesor, asignacion.idBloque,
+                                 asignacionesExistentes)) {
+      return false;
+    }
   }
 
-  // Verificar conflictos de tiempo (Profesor)
-  if (verificarConflictoTiempo(asignacion.idProfesor, asignacion.idBloque,
-                               asignacionesExistentes)) {
-    return false;
-  }
-
-  // Verificar conflictos de grupo (Estudiantes)
+  // Verificar conflictos de grupo (Estudiantes) - SIEMPRE
   if (verificarConflictoGrupo(asignacion.idCurso, asignacion.idBloque,
                               asignacionesExistentes)) {
     return false;
@@ -181,6 +183,16 @@ std::vector<int> VerificadorRestricciones::obtenerBloquesDisponibles(
     const std::vector<Asignacion> &asignaciones) const {
 
   std::vector<int> disponibles;
+
+  if (idProfesor < 0) {
+    // Si no hay profesor, todos los bloques son potencialmente válidos
+    // (sujetos a restricciones de grupo que se verifican después o aquí mismo)
+    // Devolvemos todos los bloques existentes
+    for (const auto &par : bloquesTiempo) {
+      disponibles.push_back(par.first);
+    }
+    return disponibles;
+  }
 
   auto dispoIt = disponibilidadProfesor.find(idProfesor);
   if (dispoIt == disponibilidadProfesor.end()) {
