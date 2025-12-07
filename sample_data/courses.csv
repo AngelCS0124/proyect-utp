@@ -1,63 +1,63 @@
 id,name,code,credits,enrollment,prerequisites,professor_id
-1,Inglés I,SUBJ001,5,30,,
-2,Valores del Ser,SUBJ002,3,30,,
-3,Algoritmos,SUBJ003,6,30,,12
-4,Herramientas Ofimáticas,SUBJ004,4,30,,17
-5,Introducción a la ITI,SUBJ005,3,30,,14
-6,Arquitectura de Computadoras,SUBJ006,5,30,,13
-7,Matemáticas Básicas,SUBJ007,6,30,,16
+1,Inglés I,SUBJ001,5,30,,32.0
+2,Valores del Ser,SUBJ002,3,30,,33.0
+3,Algoritmos,SUBJ003,6,30,,25.0
+4,Herramientas Ofimáticas,SUBJ004,4,30,,18.0
+5,Introducción a la ITI,SUBJ005,3,30,,16.0
+6,Arquitectura de Computadoras,SUBJ006,5,30,,10.0
+7,Matemáticas Básicas,SUBJ007,6,30,,2.0
 8,Lógica Computacional,SUBJ008,5,30,,
-9,Inteligencia Emocional,SUBJ009,3,30,,26
-10,Herramientas Multimedia,SUBJ010,4,30,,8
-11,Fundamentos de Redes,SUBJ011,5,30,,10
-12,Fundamentos de Física,SUBJ012,6,30,,25
-13,Matemáticas Discretas,SUBJ013,6,30,,21
-14,Inglés II,SUBJ014,5,30,,
-15,Inteligencia Emocional,SUBJ015,3,30,,31
-16,Lógica Computacional,SUBJ016,6,30,,19
-17,Herramientas Multimedia,SUBJ017,4,30,,18
-18,Fundamentos de Redes,SUBJ018,5,30,,15
-19,Fundamentos de Física,SUBJ019,6,30,,24
-20,Matemáticas Discretas,SUBJ020,6,30,,4
-21,Inglés IV,SUBJ021,6,30,,
+9,Inteligencia Emocional,SUBJ009,3,30,,1.0
+10,Herramientas Multimedia,SUBJ010,4,30,,29.0
+11,Fundamentos de Redes,SUBJ011,5,30,,27.0
+12,Fundamentos de Física,SUBJ012,6,30,,19.0
+13,Matemáticas Discretas,SUBJ013,6,30,,4.0
+14,Inglés II,SUBJ014,5,30,,32.0
+15,Inteligencia Emocional,SUBJ015,3,30,,1.0
+16,Lógica Computacional,SUBJ016,6,30,,19.0
+17,Herramientas Multimedia,SUBJ017,4,30,,29.0
+18,Fundamentos de Redes,SUBJ018,5,30,,27.0
+19,Fundamentos de Física,SUBJ019,6,30,,19.0
+20,Matemáticas Discretas,SUBJ020,6,30,,4.0
+21,Inglés IV,SUBJ021,6,30,,32.0
 22,Habilidades del Pensamiento,SUBJ022,4,30,,
-23,Introducción a la Programación Orientada a Objetos,SUBJ023,6,30,,20
-24,Introducción a las Bases de Datos,SUBJ024,5,30,,22
-25,Switcheo y Wireless,SUBJ025,6,30,,14
-26,Álgebra Lineal,SUBJ026,6,30,,24
+23,Introducción a la Programación Orientada a Objetos,SUBJ023,6,30,,19.0
+24,Introducción a las Bases de Datos,SUBJ024,5,30,,14.0
+25,Switcheo y Wireless,SUBJ025,6,30,,16.0
+26,Álgebra Lineal,SUBJ026,6,30,,9.0
 27,Estancia I,SUBJ027,0,30,,
-28,Inglés V,SUBJ028,5,30,,
-29,Habilidades Organizacionales,SUBJ029,3,30,,31
-30,Estructura de Datos,SUBJ030,6,30,,3
-31,Diseño de Bases de Datos,SUBJ031,5,30,,9
-32,Tecnologías WAN,SUBJ032,5,30,,10
-33,Probabilidad y Estadística,SUBJ033,6,30,,4
-34,Ingeniería de Requerimientos,SUBJ034,4,30,,11
-35,Inglés V,SUBJ035,5,30,,
-36,Habilidades Organizacionales,SUBJ036,3,30,,29
-37,Estructura de Datos,SUBJ037,6,30,,2
-38,Diseño de Bases de Datos,SUBJ038,5,30,,9
-39,Tecnologías WAN,SUBJ039,5,30,,15
-40,Probabilidad y Estadística,SUBJ040,5,30,,19
-41,Ingeniería de Requerimientos,SUBJ041,4,30,,14
-42,Inglés VII,SUBJ042,6,30,,
-43,Diseño de Interfaces,SUBJ043,5,30,,18
-44,Programación Orientada a Objetos,SUBJ044,6,30,,20
-45,Seguridad Informática,SUBJ045,5,30,,15
-46,Introducción a la Graficación por Computadora,SUBJ046,6,30,,6
-47,Seminario de Investigación,SUBJ047,4,30,,1
+28,Inglés V,SUBJ028,5,30,,32.0
+29,Habilidades Organizacionales,SUBJ029,3,30,,8.0
+30,Estructura de Datos,SUBJ030,6,30,,21.0
+31,Diseño de Bases de Datos,SUBJ031,5,30,,20.0
+32,Tecnologías WAN,SUBJ032,5,30,,27.0
+33,Probabilidad y Estadística,SUBJ033,6,30,,19.0
+34,Ingeniería de Requerimientos,SUBJ034,4,30,,23.0
+35,Inglés V,SUBJ035,5,30,,32.0
+36,Habilidades Organizacionales,SUBJ036,3,30,,8.0
+37,Estructura de Datos,SUBJ037,6,30,,21.0
+38,Diseño de Bases de Datos,SUBJ038,5,30,,20.0
+39,Tecnologías WAN,SUBJ039,5,30,,27.0
+40,Probabilidad y Estadística,SUBJ040,5,30,,19.0
+41,Ingeniería de Requerimientos,SUBJ041,4,30,,23.0
+42,Inglés VII,SUBJ042,6,30,,32.0
+43,Diseño de Interfaces,SUBJ043,5,30,,11.0
+44,Programación Orientada a Objetos,SUBJ044,6,30,,19.0
+45,Seguridad Informática,SUBJ045,5,30,,12.0
+46,Introducción a la Graficación por Computadora,SUBJ046,6,30,,28.0
+47,Seminario de Investigación,SUBJ047,4,30,,26.0
 48,Estancia II,SUBJ048,0,30,,
-49,Inglés VIII,SUBJ049,5,30,,
-50,Negocios Electrónicos,SUBJ050,3,30,,8
-51,Programación WEB,SUBJ051,5,30,,16
-52,Minería de Datos Aplicada,SUBJ052,5,30,,1
-53,Graficación Por Computadora Avanzada,SUBJ053,6,30,,6
-54,Proyectos de Tecnologías de la Información,SUBJ054,3,30,,21
-55,Administración de Sistemas Integrales,SUBJ055,3,30,,12
-56,Inglés VIII,SUBJ056,5,30,,
-57,Negocios Electrónicos,SUBJ057,3,30,,16
-58,Programación WEB,SUBJ058,5,30,,17
-59,Minería de Datos Aplicada,SUBJ059,5,30,,2
-60,Graficación Por Computadora Avanzada,SUBJ060,6,30,,13
-61,Proyectos de Tecnologías de la Información,SUBJ061,3,30,,12
-62,Administración de Sistemas Integrales,SUBJ062,3,30,,18
+49,Inglés VIII,SUBJ049,5,30,,32.0
+50,Negocios Electrónicos,SUBJ050,3,30,,29.0
+51,Programación WEB,SUBJ051,5,30,,2.0
+52,Minería de Datos Aplicada,SUBJ052,5,30,,26.0
+53,Graficación Por Computadora Avanzada,SUBJ053,6,30,,28.0
+54,Proyectos de Tecnologías de la Información,SUBJ054,3,30,,4.0
+55,Administración de Sistemas Integrales,SUBJ055,3,30,,25.0
+56,Inglés VIII,SUBJ056,5,30,,32.0
+57,Negocios Electrónicos,SUBJ057,3,30,,29.0
+58,Programación WEB,SUBJ058,5,30,,2.0
+59,Minería de Datos Aplicada,SUBJ059,5,30,,26.0
+60,Graficación Por Computadora Avanzada,SUBJ060,6,30,,28.0
+61,Proyectos de Tecnologías de la Información,SUBJ061,3,30,,4.0
+62,Administración de Sistemas Integrales,SUBJ062,3,30,,25.0

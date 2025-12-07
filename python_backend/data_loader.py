@@ -24,13 +24,13 @@ class DataLoader:
                     prerequisites = [int(x.strip()) for x in row['prerequisites'].split(',') if x.strip()]
                 
                 course = Curso(
-                    id=int(row['id']),
+                    id=int(float(row['id'])),
                     nombre=row['name'],
                     codigo=row.get('code', ''),
-                    creditos=int(row.get('credits', 3)),
-                    matricula=int(row['enrollment']),
+                    creditos=int(float(row.get('credits', 3))),
+                    matricula=int(float(row['enrollment'])),
                     prerequisitos=prerequisites,
-                    id_profesor=int(row['professor_id']) if row.get('professor_id') else None
+                    id_profesor=int(float(row['professor_id'])) if row.get('professor_id') and row.get('professor_id').strip() else None
                 )
                 courses.append(course)
         return courses
@@ -88,7 +88,7 @@ class DataLoader:
                     timeslots = [int(x.strip()) for x in row['available_timeslots'].split(',') if x.strip()]
                 
                 professor = Profesor(
-                    id=int(row['id']),
+                    id=int(float(row['id'])),
                     nombre=row['name'],
                     email=row.get('email', ''),
                     bloques_disponibles=timeslots
