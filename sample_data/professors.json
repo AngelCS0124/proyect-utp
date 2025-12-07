@@ -554,7 +554,6 @@
             "FP",
             "AW",
             "AWOS",
-            "EDSM",
             "OAMDN",
             "AS"
         ]
@@ -864,8 +863,8 @@
             "ADS",
             "IMDS",
             "FPT",
-            "803",
-            "806",
+            "GPT",
+            "AS",
             "EPT",
             "OFD"
         ]
@@ -925,13 +924,11 @@
             "ADS",
             "IMDS",
             "PI2",
-            "EDSM",
             "LMTI",
-            "803",
+            "GPT",
             "EPT",
             "OFD",
-            "PI3",
-            "LITIID"
+            "PI3"
         ]
     },
     {
@@ -990,14 +987,12 @@
             "ED",
             "EDIF",
             "AWOS",
-            "EDSM",
             "FIA",
             "OAMDN",
             "EDIG",
             "IF",
             "IOT",
-            "TD",
-            "LITIID"
+            "TD"
         ]
     },
     {
@@ -1047,15 +1042,13 @@
             410
         ],
         "available_courses": [
-            104,
-            204,
+            "FR",
+            "CER",
             "IMDS",
-            "EDSM",
             "SI",
             "IF",
             "CDAT",
-            "PI3",
-            "LITIID"
+            "PI3"
         ]
     },
     {
@@ -1107,12 +1100,10 @@
         "available_courses": [
             "PI1",
             "DAM",
-            "EDSM",
             "LMTI",
-            "806",
+            "AS",
             "OFD",
-            "PI3",
-            "LITIID"
+            "PI3"
         ]
     },
     {
@@ -1282,12 +1273,10 @@
         "available_courses": [
             "POO",
             "ED",
-            "EDSM",
             "FIA",
             "PAIA",
             "IOT",
-            "EPT",
-            "LITIID"
+            "EPT"
         ]
     },
     {
