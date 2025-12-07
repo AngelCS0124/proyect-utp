@@ -65,7 +65,7 @@ function uploadFile(input, dataType) {
 async function handleFileUpload(file, dataType) {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('type', dataType);
+    formData.append('data_type', dataType);
 
     try {
         showNotification('Cargando...', `Subiendo ${dataType}...`, 'info');
@@ -454,8 +454,8 @@ function renderAvailabilityGrid(availableSlots) {
         days.forEach(day => {
             // Find timeslot ID matching this day and time block
             const slot = state.timeslots.find(t =>
-                t.day === day && 
-                t.start_hour === block.start_hour && 
+                t.day === day &&
+                t.start_hour === block.start_hour &&
                 t.start_minute === block.start_minute
             );
 
@@ -572,10 +572,10 @@ async function generateSchedule() {
 
             state.schedule = result.schedule;
             // Access metadata from the root result object, not inside schedule
-            const meta = result.metadata || {}; 
+            const meta = result.metadata || {};
             const compTime = meta.computation_time !== undefined ? meta.computation_time : 0;
             const backtracks = meta.backtrack_count !== undefined ? meta.backtrack_count : 0;
-            
+
             showNotification('¡Horario Generado!', `Completado en ${compTime.toFixed(4)}s con ${backtracks} backtracks.`, 'success');
 
             hideGenerationOverlay();

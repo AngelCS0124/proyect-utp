@@ -166,8 +166,14 @@ class Validador:
         
         for curso in cursos:
             if curso.id_profesor is None:
-                print(f"DEBUG: Advertencia - Curso {curso.nombre} no tiene profesor")
-                advertencias.append(f"Curso '{curso.nombre}' no tiene profesor asignado")
+                # Check eligibility
+                profesores_elegibles = [p for p in profesores if curso.codigo in p.materias_capaces]
+                if profesores_elegibles:
+                    print(f"DEBUG: Advertencia - Curso {curso.nombre} no tiene profesor asignado, pero hay {len(profesores_elegibles)} elegibles")
+                    advertencias.append(f"Curso '{curso.nombre}' no tiene profesor asignado (hay {len(profesores_elegibles)} elegibles)")
+                else:
+                    print(f"DEBUG: Advertencia - Curso {curso.nombre} no tiene profesor y no hay elegibles")
+                    advertencias.append(f"Curso '{curso.nombre}' no tiene profesor asignado y NO hay profesores elegibles")
             elif curso.id_profesor not in ids_profesores:
                 print(f"DEBUG: Error - Curso {curso.nombre} tiene profesor inválido {curso.id_profesor}")
                 errores.append(f"Curso '{curso.nombre}' asignado a profesor inexistente ID: {curso.id_profesor}")

@@ -160,7 +160,8 @@ class DataLoader:
                 id=item['id'],
                 nombre=item['name'],
                 email=item.get('email', ''),
-                bloques_disponibles=item.get('available_timeslots', [])
+                bloques_disponibles=item.get('available_timeslots', []),
+                materias_capaces=item.get('available_courses', [])
             )
             professors.append(professor)
             
