@@ -28,7 +28,7 @@ class DataLoader:
                     nombre=row['name'],
                     codigo=row.get('code', ''),
                     creditos=int(float(row.get('credits', 3))),
-                    matricula=int(float(row['enrollment'])),
+                    matricula=int(float(row['enrollment'])) if row.get('enrollment') and row.get('enrollment').strip() else 30,
                     prerequisitos=prerequisites,
                     id_profesor=int(float(row['professor_id'])) if row.get('professor_id') and row.get('professor_id').strip() else None
                 )
