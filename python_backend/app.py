@@ -66,6 +66,51 @@ def initialize_timeslots():
 # Load default timeslots on app startup
 initialize_timeslots()
 
+def load_initial_data():
+    """Load default data on startup"""
+    print("Loading default data...")
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(base_dir)
+    
+    # Load courses
+    courses_path = os.path.join(base_dir, 'courses_full.csv')
+    if os.path.exists(courses_path):
+        try:
+            courses = DataLoader.load_courses_from_csv(courses_path)
+            data_store['courses'] = courses
+            print(f"Loaded {len(courses)} courses from {courses_path}")
+        except Exception as e:
+            print(f"Error loading courses: {e}")
+            
+    # Load professors
+    professors_path = os.path.join(root_dir, 'sample_data', 'professors.json')
+    if os.path.exists(professors_path):
+        try:
+            result = DataLoader.load_professors_from_json(professors_path)
+            if isinstance(result, dict):
+                data_store['professors'] = result['professors']
+                if result.get('timeslots'):
+                     # Merge or overwrite timeslots? Let's overwrite if we have them
+                     data_store['timeslots'] = result['timeslots']
+            else:
+                data_store['professors'] = result
+            print(f"Loaded {len(data_store['professors'])} professors from {professors_path}")
+        except Exception as e:
+            print(f"Error loading professors: {e}")
+
+    # Load timeslots if not loaded from professors file
+    if not data_store['timeslots']:
+        timeslots_path = os.path.join(root_dir, 'sample_data', 'timeslots.json')
+        if os.path.exists(timeslots_path):
+            try:
+                data_store['timeslots'] = DataLoader.load_timeslots_from_json(timeslots_path)
+                print(f"Loaded {len(data_store['timeslots'])} timeslots from {timeslots_path}")
+            except Exception as e:
+                print(f"Error loading timeslots: {e}")
+
+# Load data on startup
+load_initial_data()
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -306,6 +351,13 @@ def get_courses_by_cycle(cycle):
         courses = get_courses_for_cycle(cycle)
         data_store['courses'] = courses
         data_store['current_cycle'] = cycle
+        
+        # CRITICAL FIX: Sync the config period with the selected cycle
+        # This ensures generate_schedule uses the correct period for filtering
+        if cycle in PERIODOS:
+            data_store['config']['period'] = cycle
+            print(f"DEBUG: Switched period to {cycle}")
+            
         return jsonify({
             'data': [course.to_dict() for course in courses],
             'count': len(courses),
@@ -458,18 +510,48 @@ def generate_schedule():
             print(f"DEBUG: Loading course {course.nombre} ({course.id}) credits={credits} duration={duration} group={group_id}")
             scheduler.load_course(course.id, course.nombre, course.matricula, course.prerequisitos, group_id, duration)
         
-        for professor in data_store['professors']:
-            scheduler.load_professor(professor.id, professor.nombre, professor.bloques_disponibles)
-        
+        # Load timeslots FIRST (so professors can reference them)
         for timeslot in data_store['timeslots']:
             scheduler.load_timeslot(timeslot.id, timeslot.dia, 
                                    timeslot.hora_inicio, timeslot.minuto_inicio,
                                    timeslot.hora_fin, timeslot.minuto_fin)
+
+        for professor in data_store['professors']:
+            scheduler.load_professor(professor.id, professor.nombre, professor.bloques_disponibles)
         
         # Assign professors to courses
+        # If course has id_profesor, use it.
+        # If not, try to find a capable professor from available_courses.
+        assigned_count = 0
         for course in courses_to_schedule:
             if course.id_profesor is not None:
                 scheduler.assign_professor_to_course(course.id, course.id_profesor)
+                assigned_count += 1
+            else:
+                # Auto-assign
+                candidate = None
+                # Look for a professor who has this course code in available_courses
+                # We prioritize professors with fewer assignments to balance load?
+                # For now, just find first available.
+                for p in data_store['professors']:
+                    # p.materias_capaces is list of codes (e.g. ["ING1", "DHV"])
+                    # course.codigo is the code (e.g. "ING1")
+                    if hasattr(p, 'materias_capaces') and course.codigo in p.materias_capaces:
+                        candidate = p
+                        break
+                    # Fallback: check if available_courses is in attributes or dict
+                    # The object is of type Profesor.
+                
+                if candidate:
+                    scheduler.assign_professor_to_course(course.id, candidate.id)
+                    # Update the course object too so we know who was assigned
+                    course.id_profesor = candidate.id
+                    assigned_count += 1
+                    print(f"DEBUG: Auto-assigned {candidate.nombre} to {course.nombre}")
+                else:
+                    print(f"WARNING: No professor found for {course.nombre} ({course.codigo})")
+        
+        print(f"DEBUG: Total courses with professors assigned: {assigned_count}/{len(courses_to_schedule)}")
         
         # Generate schedule with time limit
         time_limit = data_store['config']['time_limit']

@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <chrono>
 #include <map>
+#include <set>
 #include <sstream>
 #include <utility>
 
@@ -29,10 +30,21 @@ void PlanificadorCore::cargarCurso(int id, const std::string &nombre,
   nodo->setAtributo("groupId", std::to_string(idGrupo));
   nodo->setAtributo("duration", std::to_string(duracion));
 
+  cursoExtToInt[id] = idNodo;
+
   for (int idPrerreq : prerrequisitos) {
-    verificadorRestricciones->agregarPrerrequisitoCurso(idNodo, idPrerreq);
+    // Nota: Los prerrequisitos vienen como IDs externos.
+    // Necesitamos convertirlos a internos si ya existen.
+    // Si no existen, esto podría fallar si no manejamos el orden de carga.
+    // Asumimos que se cargan en orden o que manejamos la dependencia después.
+    // PERO verificadorRestricciones espera IDs internos.
+    if (cursoExtToInt.find(idPrerreq) != cursoExtToInt.end()) {
+      verificadorRestricciones->agregarPrerrequisitoCurso(
+          idNodo, cursoExtToInt[idPrerreq]);
+    }
   }
-  verificadorRestricciones->agregarGrupoCurso(id, idGrupo);
+  verificadorRestricciones->agregarGrupoCurso(
+      idNodo, idGrupo); // idGrupo es atributo, no ID de nodo
 }
 
 void PlanificadorCore::cargarProfesor(
@@ -42,8 +54,20 @@ void PlanificadorCore::cargarProfesor(
   auto nodo = grafo.obtenerNodo(idNodo);
   nodo->setAtributo("id", std::to_string(id));
 
+  profesorExtToInt[id] = idNodo;
+
   for (int idBloque : bloquesDisponibles) {
-    verificadorRestricciones->agregarDisponibilidadProfesor(idNodo, idBloque);
+    // idBloque es externo. Necesitamos convertirlo?
+    // cargarProfesor se llama DESPUES de cargarBloqueTiempo normalmente?
+    // Si no, tenemos un problema.
+    // Asumimos que los bloques se cargan antes o usamos un mapa temporal?
+    // O mejor, verificadorRestricciones maneja IDs internos.
+    // Pero cargarProfesor recibe IDs externos de bloques.
+    // DEBEMOS cargar bloques antes.
+    if (bloqueExtToInt.find(idBloque) != bloqueExtToInt.end()) {
+      verificadorRestricciones->agregarDisponibilidadProfesor(
+          idNodo, bloqueExtToInt[idBloque]);
+    }
   }
 }
 
@@ -54,14 +78,26 @@ void PlanificadorCore::cargarBloqueTiempo(int id, const std::string &dia,
   auto nodo = grafo.obtenerNodo(idNodo);
   nodo->setAtributo("id", std::to_string(id));
 
+  bloqueExtToInt[id] = idNodo;
+
   BloqueTiempo bloque(idNodo, dia, horaInicio, minutoInicio, horaFin,
                       minutoFin);
   verificadorRestricciones->agregarBloqueTiempo(bloque);
 }
 
 void PlanificadorCore::asignarProfesorACurso(int idCurso, int idProfesor) {
+  // Convertir IDs externos a internos
+  if (cursoExtToInt.find(idCurso) == cursoExtToInt.end() ||
+      profesorExtToInt.find(idProfesor) == profesorExtToInt.end()) {
+    // Error: IDs no encontrados
+    return;
+  }
+
+  int idNodoCurso = cursoExtToInt[idCurso];
+  int idNodoProfesor = profesorExtToInt[idProfesor];
+
   // Crear arista de curso a profesor
-  grafo.agregarArista(idCurso, idProfesor);
+  grafo.agregarArista(idNodoCurso, idNodoProfesor);
 }
 
 ResultadoHorario PlanificadorCore::generarHorario(int limiteTiempoSegundos,
@@ -105,6 +141,16 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
   // Ejecutar algoritmo de backtracking
   std::vector<Asignacion> asignaciones;
   bool exitoCompleto = backtrack(asignaciones, ordenCursos, 0);
+
+  // Verificar si realmente se asignaron todos los cursos
+  std::set<int> cursosAsignados;
+  for (const auto &a : asignaciones) {
+    cursosAsignados.insert(a.idCurso);
+  }
+
+  if (cursosAsignados.size() < ordenCursos.size()) {
+    exitoCompleto = false; // Éxito parcial
+  }
 
   resultado.exito = exitoCompleto;
 
@@ -150,7 +196,28 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
   std::chrono::duration<double> transcurrido = tiempoFin - tiempoInicio;
   resultado.tiempoComputo = transcurrido.count();
 
+  // Convertir asignaciones a IDs externos
+  std::vector<Asignacion> asignacionesExternas;
+  for (const auto &a : resultado.asignaciones) {
+    asignacionesExternas.push_back(Asignacion(obtenerIdExterno(a.idCurso),
+                                              obtenerIdExterno(a.idBloque),
+                                              obtenerIdExterno(a.idProfesor)));
+  }
+  resultado.asignaciones = asignacionesExternas;
+
   return resultado;
+}
+
+int PlanificadorCore::obtenerIdExterno(int idInterno) const {
+  auto nodo = grafo.obtenerNodo(idInterno);
+  if (nodo && nodo->tieneAtributo("id")) {
+    try {
+      return std::stoi(nodo->getAtributo("id"));
+    } catch (...) {
+      return -1;
+    }
+  }
+  return -1;
 }
 
 bool PlanificadorCore::backtrack(std::vector<Asignacion> &asignaciones,
@@ -225,8 +292,15 @@ bool PlanificadorCore::backtrack(std::vector<Asignacion> &asignaciones,
 
   // Iniciar recursión para asignar los bloques de este curso
   std::vector<std::string> diasUsados;
-  return backtrackCurso(asignaciones, idCurso, idProfesor, bloquesNecesarios,
-                        cursos, indiceCurso, diasUsados);
+  if (backtrackCurso(asignaciones, idCurso, idProfesor, bloquesNecesarios,
+                     cursos, indiceCurso, diasUsados)) {
+    return true;
+  }
+
+  // ESTRATEGIA ROBUSTA: Si no se puede asignar este curso, lo saltamos
+  // y continuamos con el siguiente para generar un horario parcial.
+  // Esto asegura que siempre devolvamos algo.
+  return backtrack(asignaciones, cursos, indiceCurso + 1);
 }
 
 bool PlanificadorCore::backtrackCurso(

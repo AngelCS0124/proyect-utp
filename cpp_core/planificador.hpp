@@ -84,6 +84,15 @@ private:
   // Estado interno
   Grafo grafo;
   std::unique_ptr<VerificadorRestricciones> verificadorRestricciones;
+
+  // Mapas para convertir IDs externos a internos
+  std::unordered_map<int, int> cursoExtToInt;
+  std::unordered_map<int, int> profesorExtToInt;
+  std::unordered_map<int, int> bloqueExtToInt;
+
+  // Helper para convertir interno a externo
+  int obtenerIdExterno(int idInterno) const;
+
   CallbackProgreso callbackProgreso;
   int contadorBacktrack;
   bool debeDetenerse;
