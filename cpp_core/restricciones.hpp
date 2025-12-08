@@ -55,10 +55,19 @@ public:
   void agregarPrerrequisitoCurso(int idCurso, int idPrerrequisito);
   void agregarGrupoCurso(int idCurso, int idGrupo);
 
+  // Niveles de restricción
+  enum class NivelRestriccion {
+    STRICT = 1,   // Todas las restricciones (1-9)
+    RELAXED = 2,  // Solo Hard Constraints (1-5)
+    GREEDY = 3,   // Solo Hard Constraints Críticas (1-3)
+    EMERGENCY = 4 // Solo Hard Constraints Críticas + Simulación
+  };
+
   // Validación de restricciones
-  bool esAsignacionValida(
-      const Asignacion &asignacion,
-      const std::vector<Asignacion> &asignacionesExistentes) const;
+  bool
+  esAsignacionValida(const Asignacion &asignacion,
+                     const std::vector<Asignacion> &asignacionesExistentes,
+                     NivelRestriccion nivel = NivelRestriccion::STRICT) const;
 
   bool
   verificarConflictoTiempo(int idProfesor, int idBloque,

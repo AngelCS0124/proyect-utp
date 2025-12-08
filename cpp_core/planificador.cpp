@@ -102,16 +102,16 @@ void PlanificadorCore::asignarProfesorACurso(int idCurso, int idProfesor) {
 }
 
 ResultadoHorario PlanificadorCore::generarHorario(int limiteTiempoSegundos,
-                                                  bool modoCompleto) {
-  return generarHorarioConCallback(nullptr, limiteTiempoSegundos, modoCompleto);
+                                                  int nivel) {
+  return generarHorarioConCallback(nullptr, limiteTiempoSegundos, nivel);
 }
 
 ResultadoHorario PlanificadorCore::generarHorarioConCallback(
-    CallbackProgreso callback, int limiteTiempoSegundos, bool modoCompleto) {
+    CallbackProgreso callback, int limiteTiempoSegundos, int nivel) {
   ResultadoHorario resultado;
   tiempoInicio = std::chrono::high_resolution_clock::now();
   this->limiteTiempoSegundos = limiteTiempoSegundos;
-  this->modoCompleto = modoCompleto;
+  this->nivelActual = nivel;
   this->maxCursosAsignados = 0;
   this->mejorSolucion.clear();
   this->mejorPuntaje = -1e9; // Inicializar con puntaje muy bajo
@@ -137,11 +137,13 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
   }
 
   actualizarProgreso(0, ordenCursos.size(),
-                     "Iniciando generación de horario...");
+                     "Iniciando generación de horario (Nivel " +
+                         std::to_string(nivel) + ")...");
 
   // BUCLE DE OPTIMIZACIÓN
   // Ejecutamos al menos una vez de forma determinista.
-  // Si hay tiempo y modoCompleto, seguimos probando con aleatoriedad.
+  // Si hay tiempo y nivel es alto (STRICT/RELAXED), seguimos probando con
+  // aleatoriedad.
   bool primeraPasada = true;
   this->usarAleatoriedad = false;
 
@@ -167,13 +169,21 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
     // Verificar tiempo
     auto ahora = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> transcurrido = ahora - tiempoInicio;
-    if (transcurrido.count() >= limiteTiempoSegundos) {
+    if (limiteTiempoSegundos > 0 &&
+        transcurrido.count() >= limiteTiempoSegundos) {
       break;
     }
 
-    // Si no es modo completo, terminamos con la primera solución válida
-    if (!modoCompleto && exito) {
-      break;
+    // Si es modo GREEDY o EMERGENCY, terminamos con la primera solución válida
+    // O si encontramos una solución completa (exito)
+    if ((nivelActual >= 3 || exito) && !debeDetenerse) {
+      // Si queremos seguir optimizando en STRICT/RELAXED incluso con éxito,
+      // quitamos "|| exito" Pero por defecto, si encontramos una solución
+      // completa, paramos. A menos que sea "Sin límite" (limiteTiempoSegundos
+      // <= 0) y queramos la mejor de las mejores.
+      if (limiteTiempoSegundos > 0 || exito) {
+        break;
+      }
     }
 
     // Para siguientes pasadas, usar aleatoriedad
@@ -426,24 +436,25 @@ bool PlanificadorCore::backtrackCurso(
     }
 
     // Si ya tenemos 3 bloques en este día, PREFERIBLEMENTE no agregar más.
-    // Pero como es una restricción SOFT, permitimos hasta un límite razonable
-    // (ej. 6 u 8) para asegurar que se genere el horario.
-    if (bloquesEnEsteDia >= 8)
+    // Nivel STRICT: Máximo 3 horas (Soft Constraint 7 se vuelve Hard-ish)
+    // Otros niveles: Relajado a 8
+    int limiteDiario = 8;
+    if (nivelActual == 1) { // STRICT
+      limiteDiario = 3;
+    }
+
+    if (bloquesEnEsteDia >= limiteDiario)
       continue;
 
     // Intentar asignar chunks de 1, 2 o 3 bloques
-    // Pero respetando bloquesRestantes y límite diario (ahora relajado a 8)
-    int maxChunk = std::min(bloquesRestantes, 8 - bloquesEnEsteDia);
-    // Limitamos el chunk a 3 horas consecutivas como máximo ideal,
-    // pero si el curso requiere bloques grandes, el sistema de chunks lo
-    // manejará. Por ahora mantenemos chunks de max 3 para no hacer clases
-    // eternas.
+    // Pero respetando bloquesRestantes y límite diario
+    int maxChunk = std::min(bloquesRestantes, limiteDiario - bloquesEnEsteDia);
+
+    // Limitamos el chunk a 3 horas consecutivas como máximo ideal
     if (maxChunk > 3)
       maxChunk = 3;
 
     // Probamos chunks de mayor a menor para "Best Effort" (llenar días)
-    // O de menor a mayor?
-    // Si probamos 3 primero, llenamos el día.
     for (int tamChunk = maxChunk; tamChunk >= 1; --tamChunk) {
       std::vector<int> secuencia;
       secuencia.push_back(idBloqueInicio);
@@ -461,8 +472,9 @@ bool PlanificadorCore::backtrackCurso(
 
         // Verificar validez
         Asignacion check(idCurso, siguiente, idProfesor);
-        if (!verificadorRestricciones->esAsignacionValida(check,
-                                                          asignaciones)) {
+        if (!verificadorRestricciones->esAsignacionValida(
+                check, asignaciones,
+                (VerificadorRestricciones::NivelRestriccion)nivelActual)) {
           posible = false;
           break;
         }
@@ -471,10 +483,11 @@ bool PlanificadorCore::backtrackCurso(
       }
 
       if (posible) {
-        // Verificar validez del primero (los demás ya se verificaron en loop,
-        // menos el primero)
+        // Verificar validez del primero
         Asignacion a1(idCurso, idBloqueInicio, idProfesor);
-        if (!verificadorRestricciones->esAsignacionValida(a1, asignaciones)) {
+        if (!verificadorRestricciones->esAsignacionValida(
+                a1, asignaciones,
+                (VerificadorRestricciones::NivelRestriccion)nivelActual)) {
           posible = false;
         }
       }
@@ -535,13 +548,58 @@ void PlanificadorCore::actualizarMejorSolucion(
 std::vector<int> PlanificadorCore::obtenerOrdenCursos() const {
   auto cursos = grafo.obtenerNodosPorTipo(TipoNodo::CURSO);
 
-  // Intentar sort topológico si hay prerrequisitos
-  try {
-    return grafo.ordenamientoTopologico();
-  } catch (...) {
-    // Si falla (ciclos), retornar cursos en orden por defecto
-    return cursos;
+  // Si estamos en modo Inteligente (o siempre, según petición), usamos "Easiest
+  // First" Easiest First = Curso con más opciones disponibles primero.
+  // Heurística: (Bloques disponibles del profe) * (1 / Duración)
+  // O simplemente: Priorizar cursos con profesor asignado y mucha
+  // disponibilidad.
+
+  // Para simplificar y cumplir con "Easiest First":
+  // Ordenamos por:
+  // 1. Cursos con profesor ya asignado (más restringido? No, más fácil de
+  // validar)
+  // 2. Disponibilidad del profesor (Mayor es mejor)
+
+  // Sin embargo, la literatura dice "Most Constrained First" (Hardest First)
+  // para CSP. El usuario pidió explícitamente "Easiest First". Esto maximiza el
+  // número de cursos asignados en un horario parcial.
+
+  std::vector<std::pair<int, int>> cursoPuntaje;
+
+  for (int idCurso : cursos) {
+    int puntaje = 0;
+    auto vecinos = grafo.obtenerVecinos(idCurso);
+    if (!vecinos.empty()) {
+      int idProfesor = vecinos[0];
+      // Obtener disponibilidad del profesor
+      // No tenemos acceso directo fácil a disponibilidadProfesor desde aquí sin
+      // pasar por verificador Pero podemos estimar con grado del nodo profesor?
+      // No, el grafo no tiene nodos de bloque conectados al profe directamente
+      // en esta estructura Usamos verificadorRestricciones Pero
+      // obtenerBloquesDisponibles requiere asignaciones actuales (vacío)
+      std::vector<Asignacion> vacio;
+      auto bloques = verificadorRestricciones->obtenerBloquesDisponibles(
+          idCurso, idProfesor, vacio);
+      puntaje = bloques.size();
+    } else {
+      // Sin profesor: muchas opciones (cualquier bloque)
+      puntaje = 1000;
+    }
+    cursoPuntaje.push_back({idCurso, puntaje});
   }
+
+  // Ordenar descendente (Mayor puntaje = Más fácil = Primero)
+  std::sort(cursoPuntaje.begin(), cursoPuntaje.end(),
+            [](const std::pair<int, int> &a, const std::pair<int, int> &b) {
+              return a.second > b.second;
+            });
+
+  std::vector<int> orden;
+  for (const auto &p : cursoPuntaje) {
+    orden.push_back(p.first);
+  }
+
+  return orden;
 }
 
 void PlanificadorCore::actualizarProgreso(int actual, int total,
@@ -629,6 +687,26 @@ std::string PlanificadorCore::analizarFallo() const {
               "profesores mencionados o asigne menos cursos.";
 
   return analisis.str();
+}
+
+Metricas PlanificadorCore::obtenerMetricas() const {
+  Metricas m;
+  m.backtrackCount = contadorBacktrack;
+  m.mejorPuntaje = mejorPuntaje;
+  m.cursosAsignados = maxCursosAsignados;
+  // Total cursos es el número de nodos tipo CURSO
+  auto cursos = grafo.obtenerNodosPorTipo(TipoNodo::CURSO);
+  m.totalCursos = cursos.size();
+
+  if (limiteTiempoSegundos > 0 || debeDetenerse) {
+    auto ahora = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> transcurrido = ahora - tiempoInicio;
+    m.tiempoTranscurrido = transcurrido.count();
+  } else {
+    m.tiempoTranscurrido = 0;
+  }
+
+  return m;
 }
 
 } // namespace planificador

@@ -557,7 +557,6 @@ async function generateSchedule() {
         }
     } catch (e) {
         console.error("Pre-check failed", e);
-        // Continue anyway if check fails, or warn?
     }
 
     const btn = document.getElementById('generate-btn');
@@ -569,7 +568,9 @@ async function generateSchedule() {
 
     try {
         // Read config values
-        const timeLimit = parseInt(document.getElementById('time-limit').value);
+        let timeLimit = parseInt(document.getElementById('time-limit').value);
+        if (isNaN(timeLimit)) timeLimit = 0;
+
         const strategy = document.getElementById('strategy').value;
         const currentPeriod = state.currentCycle ? state.currentCycle.id : null;
 
@@ -592,62 +593,151 @@ async function generateSchedule() {
             })
         });
 
-        // Simulate steps for visual effect
-        await updateGenerationStep('Construyendo Grafo de Conflictos...', 10);
-        await new Promise(r => setTimeout(r, 800));
-
-        await updateGenerationStep('Verificando Restricciones Hard/Soft...', 40);
-        await new Promise(r => setTimeout(r, 800));
-
-        await updateGenerationStep('Ejecutando Backtracking con Poda...', 70);
-
+        // Start Generation
         const response = await fetch(`${API_BASE}/generate`, { method: 'POST' });
         const result = await response.json();
 
         if (response.ok && result.success) {
-            await updateGenerationStep('¡Horario Generado!', 100);
-            await new Promise(r => setTimeout(r, 500));
+            // Start Polling
+            let polling = true;
+            const startTime = Date.now();
 
-            state.schedule = result.schedule;
-            // Access metadata from the root result object, not inside schedule
-            const meta = result.metadata || {};
-            const compTime = meta.computation_time !== undefined ? meta.computation_time : 0;
-            const backtracks = meta.backtrack_count !== undefined ? meta.backtrack_count : 0;
-            const score = meta.score !== undefined ? meta.score : 0;
+            while (polling) {
+                const statusResponse = await fetch(`${API_BASE}/generate/status`);
+                const status = await statusResponse.json();
 
-            showNotification('¡Horario Generado!', `Score: ${score}. Tiempo: ${compTime.toFixed(2)}s`, 'success');
+                updateGenerationStatus(status, timeLimit, startTime);
 
-            hideGenerationOverlay();
-            // Switch to Horario view
-            document.querySelector('[data-view="horario"]').click();
+                if (!status.is_running) {
+                    polling = false;
+
+                    if (status.has_result) {
+                        // Fetch final result
+                        const scheduleResponse = await fetch(`${API_BASE}/schedule`);
+                        const scheduleResult = await scheduleResponse.json();
+
+                        state.schedule = scheduleResult;
+                        const meta = scheduleResult.metadata || {};
+                        const score = meta.score !== undefined ? meta.score : 0;
+
+                        showNotification('¡Horario Generado!', `Score: ${score}`, 'success');
+                        hideGenerationOverlay();
+                        document.querySelector('[data-view="horario"]').click();
+                    } else {
+                        hideGenerationOverlay();
+                        showErrorModal(status.error || 'No se pudo generar el horario');
+                    }
+                }
+
+                await new Promise(r => setTimeout(r, 500)); // Poll every 500ms
+            }
         } else {
             hideGenerationOverlay();
-            // Show Error Modal
-            showErrorModal(result.error || 'No se pudo generar el horario');
+            showErrorModal(result.error || 'No se pudo iniciar la generación');
         }
     } catch (error) {
         console.error('Generation error:', error);
-
-        let errorMsg = error.message;
-        let detailsHtml = '';
-
-        if (error.details && Array.isArray(error.details)) {
-            detailsHtml = '<ul style="text-align: left; margin-top: 10px;">' +
-                error.details.map(d => `<li>${d}</li>`).join('') +
-                '</ul>';
-        }
-
-        hideGenerationOverlay(); // Ensure overlay is hidden on error
-        showErrorModal('Error de Generación', `
-            <div class="error-message">
-                <p>${errorMsg}</p>
-                ${detailsHtml}
-            </div>
-        `);
+        hideGenerationOverlay();
+        showErrorModal('Error de Generación', error.message);
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalText;
     }
+}
+
+function stopGeneration() {
+    fetch(`${API_BASE}/generate/stop`, { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+            const btn = document.getElementById('stop-gen-btn');
+            if (btn) btn.textContent = "Deteniendo...";
+        });
+}
+
+function updateGenerationStatus(status, timeLimit, startTime) {
+    const elapsed = (Date.now() - startTime) / 1000;
+    const metrics = status.metrics || {};
+
+    // Update Text
+    document.getElementById('gen-step').textContent = `Nivel ${status.current_level}: Explorando...`;
+
+    // Update Progress Bar
+    if (timeLimit > 0) {
+        const percent = Math.min(100, (elapsed / timeLimit) * 100);
+        document.getElementById('gen-progress').style.width = `${percent}%`;
+        document.getElementById('gen-time').textContent = `${elapsed.toFixed(1)}s / ${timeLimit}s`;
+    } else {
+        document.getElementById('gen-progress').style.width = '100%';
+        document.getElementById('gen-progress').classList.add('indeterminate');
+        document.getElementById('gen-time').textContent = `${elapsed.toFixed(1)}s`;
+    }
+
+    // Update Metrics
+    document.getElementById('metric-backtracks').textContent = metrics.backtrack_count || 0;
+    document.getElementById('metric-score').textContent = (metrics.best_score || -1e9).toFixed(0);
+    document.getElementById('metric-assigned').textContent = `${metrics.assigned_courses || 0} / ${metrics.total_courses || '?'}`;
+
+    // Update Level Badge
+    const levels = { 1: "ESTRICTO", 2: "RELAJADO", 3: "GREEDY", 4: "EMERGENCIA" };
+    document.getElementById('metric-level').textContent = levels[status.current_level] || status.current_level;
+}
+
+function showGenerationOverlay() {
+    if (!document.getElementById('gen-overlay')) {
+        const overlay = document.createElement('div');
+        overlay.id = 'gen-overlay';
+        overlay.className = 'generation-overlay';
+        overlay.innerHTML = `
+            <div class="gen-content" style="width: 500px;">
+                <div class="gen-header">
+                    <div class="gen-spinner"></div>
+                    <h3 id="gen-step">Iniciando...</h3>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="gen-progress" class="progress-fill"></div>
+                    </div>
+                    <div id="gen-time" style="text-align: right; font-size: 0.9em; color: #666; margin-top: 5px;">0s</div>
+                </div>
+                
+                <div class="metrics-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; background: #f8fafc; padding: 15px; border-radius: 8px;">
+                    <div class="metric-item">
+                        <small>Nivel</small>
+                        <strong id="metric-level">-</strong>
+                    </div>
+                    <div class="metric-item">
+                        <small>Explorados</small>
+                        <strong id="metric-backtracks">0</strong>
+                    </div>
+                    <div class="metric-item">
+                        <small>Mejor Score</small>
+                        <strong id="metric-score">0</strong>
+                    </div>
+                    <div class="metric-item">
+                        <small>Asignados</small>
+                        <strong id="metric-assigned">0/0</strong>
+                    </div>
+                </div>
+
+                <div class="gen-checklist" style="text-align: left; font-size: 0.9em; color: #555; margin-bottom: 20px;">
+                    <div><i class="fas fa-check-circle" style="color: green;"></i> Profesores sin conflictos</div>
+                    <div><i class="fas fa-check-circle" style="color: green;"></i> Grupos sin choques</div>
+                    <div><i class="fas fa-check-circle" style="color: green;"></i> Horarios válidos</div>
+                </div>
+                
+                <button id="stop-gen-btn" class="btn-secondary" onclick="stopGeneration()" style="width: 100%; border-color: #ef4444; color: #ef4444;">
+                    <i class="fas fa-stop"></i> DETENER BÚSQUEDA
+                </button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    }
+    document.getElementById('gen-overlay').style.display = 'flex';
+
+    // Reset values
+    document.getElementById('gen-progress').style.width = '0%';
+    document.getElementById('stop-gen-btn').textContent = "DETENER BÚSQUEDA";
 }
 
 function showPrecheckModal(issues) {
@@ -717,39 +807,9 @@ function showErrorModal(message) {
     document.body.appendChild(modal);
 }
 
-function showGenerationOverlay() {
-    if (!document.getElementById('gen-overlay')) {
-        const overlay = document.createElement('div');
-        overlay.id = 'gen-overlay';
-        overlay.className = 'generation-overlay';
-        overlay.innerHTML = `
-            <div class="gen-content">
-                <div class="gen-spinner"></div>
-                <h3 id="gen-step">Iniciando...</h3>
-                <div class="progress-bar">
-                    <div id="gen-progress" class="progress-fill"></div>
-                </div>
-                <div class="gen-details">
-                    <p><i class="fas fa-project-diagram"></i> Algoritmo: Backtracking + Graph Coloring</p>
-                    <p><i class="fas fa-microchip"></i> Motor: C++ Core</p>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-    }
-    document.getElementById('gen-overlay').style.display = 'flex';
-}
-
 function hideGenerationOverlay() {
     const overlay = document.getElementById('gen-overlay');
     if (overlay) overlay.style.display = 'none';
-}
-
-async function updateGenerationStep(text, progress) {
-    const step = document.getElementById('gen-step');
-    const bar = document.getElementById('gen-progress');
-    if (step) step.textContent = text;
-    if (bar) bar.style.width = `${progress}%`;
 }
 
 function renderScheduleView() {
@@ -772,7 +832,7 @@ function renderScheduleView() {
     if (calendarContainer) calendarContainer.style.display = 'block';
 
     // Update filter options based on current cycle
-    updateSemesterFilter();
+    // updateSemesterFilter(); // Removed
 
     // Render Calendar View directly
     renderCalendarView();
@@ -782,13 +842,13 @@ function renderCalendarView() {
     const container = document.getElementById('schedule-calendar-container');
     container.innerHTML = '';
 
-    const semesterFilter = document.getElementById('semester-filter') ? document.getElementById('semester-filter').value : 'all';
+    // const semesterFilter = document.getElementById('semester-filter') ? document.getElementById('semester-filter').value : 'all';
 
     // Group assignments by semester/group
     const groups = {};
     state.schedule.assignments.forEach(a => {
         const sem = a.semester || 1;
-        if (semesterFilter !== 'all' && sem.toString() !== semesterFilter) return;
+        // if (semesterFilter !== 'all' && sem.toString() !== semesterFilter) return;
 
         const key = `Cuatrimestre ${sem}`;
         if (!groups[key]) groups[key] = [];
@@ -873,51 +933,7 @@ function renderCalendarView() {
     });
 }
 
-function updateSemesterFilter() {
-    const select = document.getElementById('semester-filter');
-    const currentCycle = state.currentCycle;
-
-    if (!select) return;
-
-    // Save current selection if any
-    const currentVal = select.value;
-
-    // Clear existing options (keep "All")
-    select.innerHTML = '<option value="all">Todos los Cuatrimestres</option>';
-
-    if (!currentCycle) return;
-
-    // Get semesters for this cycle
-    // Mapping: sept-dec -> [1, 4, 7, 10], jan-apr -> [2, 5, 8], may-aug -> [3, 6, 9]
-    const cycleMapping = {
-        'sept-dec': [1, 4, 7, 10],
-        'jan-apr': [2, 5, 8],
-        'may-aug': [3, 6, 9]
-    };
-
-    const allowedSemesters = cycleMapping[currentCycle] || [];
-
-    const ordinals = {
-        1: "Primer", 2: "Segundo", 3: "Tercer", 4: "Cuarto", 5: "Quinto",
-        6: "Sexto", 7: "Séptimo", 8: "Octavo", 9: "Noveno", 10: "Décimo"
-    };
-
-    allowedSemesters.forEach(sem => {
-        const option = document.createElement('option');
-        option.value = sem;
-        option.textContent = `${ordinals[sem]} Cuatrimestre`;
-        select.appendChild(option);
-    });
-
-    // Restore selection if valid, else default to all
-    if (allowedSemesters.includes(parseInt(currentVal))) {
-        select.value = currentVal;
-    }
-}
-
-function filterScheduleBySemester() {
-    renderScheduleView();
-}
+// Filter functions removed as requested
 
 // ===== System Status =====
 async function checkSystemStatus() {
@@ -1141,13 +1157,13 @@ function renderScheduleCalendarView() {
 
     if (!state.schedule) return;
 
-    const semesterFilter = document.getElementById('semester-filter') ? document.getElementById('semester-filter').value : 'all';
+    // const semesterFilter = document.getElementById('semester-filter') ? document.getElementById('semester-filter').value : 'all';
 
     // Group assignments by semester/group
     const groups = {};
     state.schedule.assignments.forEach(a => {
         const sem = a.semester || 0;
-        if (semesterFilter !== 'all' && sem.toString() !== semesterFilter) return;
+        // if (semesterFilter !== 'all' && sem.toString() !== semesterFilter) return;
 
         const groupKey = `Cuatrimestre ${sem}`; // Or use group_id if available
         if (!groups[groupKey]) groups[groupKey] = [];

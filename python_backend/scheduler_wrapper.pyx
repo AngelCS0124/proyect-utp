@@ -24,6 +24,13 @@ cdef extern from "planificador.hpp" namespace "planificador":
         
         ResultadoHorario() except +
     
+    cdef struct Metricas:
+        int backtrackCount
+        double mejorPuntaje
+        int cursosAsignados
+        int totalCursos
+        double tiempoTranscurrido
+
     cdef cppclass PlanificadorCore:
         PlanificadorCore() except +
         
@@ -36,12 +43,13 @@ cdef extern from "planificador.hpp" namespace "planificador":
         
         void asignarProfesorACurso(int idCurso, int idProfesor) except +
         
-        ResultadoHorario generarHorario(int limiteTiempoSegundos, bool modoCompleto) except +
+        ResultadoHorario generarHorario(int limiteTiempoSegundos, int nivel) except +
         void detenerGeneracion() except +
         void reiniciar() except +
         
         bool tieneDatos() const
         string validarDatos() const
+        Metricas obtenerMetricas() const
 
 
 # Clase Wrapper en Python
@@ -84,8 +92,8 @@ cdef class PyScheduler:
         self.scheduler.asignarProfesorACurso(course_id, professor_id)
     
     def generate_schedule(self):
-        """Generar horario usando algoritmo"""
-        cdef ResultadoHorario resultado = self.scheduler.generarHorario(0, False)
+        """Generar horario usando algoritmo (Default Level 1)"""
+        cdef ResultadoHorario resultado = self.scheduler.generarHorario(0, 1)
         
         # Convertir a dict Python
         py_result = {
@@ -106,10 +114,9 @@ cdef class PyScheduler:
         
         return py_result
 
-    def generate_schedule_with_config(self, int time_limit_seconds=0, str strategy="time_limit"):
+    def generate_schedule_with_config(self, int time_limit_seconds=0, int level=1):
         """Generar horario con configuración"""
-        cdef bool modo_completo = (strategy == "complete")
-        cdef ResultadoHorario resultado = self.scheduler.generarHorario(time_limit_seconds, modo_completo)
+        cdef ResultadoHorario resultado = self.scheduler.generarHorario(time_limit_seconds, level)
         
         # Convertir a dict Python
         py_result = {
@@ -145,3 +152,14 @@ cdef class PyScheduler:
     def validate_data(self):
         """Validar datos cargados"""
         return self.scheduler.validarDatos().decode('utf-8')
+
+    def get_metrics(self):
+        """Obtener métricas actuales"""
+        cdef Metricas m = self.scheduler.obtenerMetricas()
+        return {
+            'backtrack_count': m.backtrackCount,
+            'best_score': m.mejorPuntaje,
+            'assigned_courses': m.cursosAsignados,
+            'total_courses': m.totalCursos,
+            'elapsed_time': m.tiempoTranscurrido
+        }

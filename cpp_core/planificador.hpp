@@ -22,6 +22,14 @@ struct ResultadoHorario {
   ResultadoHorario();
 };
 
+struct Metricas {
+  int backtrackCount;
+  double mejorPuntaje;
+  int cursosAsignados;
+  int totalCursos;
+  double tiempoTranscurrido;
+};
+
 // Callback de progreso para UI
 using CallbackProgreso =
     std::function<void(int actual, int total, const std::string &mensaje)>;
@@ -45,11 +53,13 @@ public:
   void asignarProfesorACurso(int idCurso, int idProfesor);
 
   // Generación de Horario
-  ResultadoHorario generarHorario(int limiteTiempoSegundos = 0,
-                                  bool modoCompleto = false);
+  // Generación de Horario
+  ResultadoHorario
+  generarHorario(int limiteTiempoSegundos = 0,
+                 int nivel = 1); // 1=STRICT, 2=RELAXED, 3=GREEDY, 4=EMERGENCY
   ResultadoHorario generarHorarioConCallback(CallbackProgreso callback,
                                              int limiteTiempoSegundos = 0,
-                                             bool modoCompleto = false);
+                                             int nivel = 1);
 
   // Control
   void detenerGeneracion();
@@ -57,6 +67,7 @@ public:
 
   // Análisis
   std::string analizarFallo() const;
+  Metricas obtenerMetricas() const;
 
   // Getters
   const Grafo &obtenerGrafo() const;
@@ -100,7 +111,7 @@ private:
   // Control de tiempo y mejor esfuerzo
   std::chrono::time_point<std::chrono::high_resolution_clock> tiempoInicio;
   int limiteTiempoSegundos;
-  bool modoCompleto;
+  int nivelActual; // 1=STRICT, 2=RELAXED, 3=GREEDY, 4=EMERGENCY
   std::vector<Asignacion> mejorSolucion;
   int maxCursosAsignados;
   double mejorPuntaje;

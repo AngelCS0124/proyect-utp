@@ -459,148 +459,121 @@ def get_visualization_data():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/generate', methods=['POST'])
-def generate_schedule():
-    """Generate schedule using C++ backtracking algorithm"""
-    if not SCHEDULER_AVAILABLE:
-        return jsonify({'error': 'Scheduler not available. Please build the C++ extension.'}), 503
-    
-    # Check if a cycle is selected OR courses are loaded
-    if not data_store['current_cycle'] and not data_store['courses']:
-        return jsonify({'error': 'Please select a cycle or upload courses first'}), 400
-    
-    # Filter courses based on selected period
-    current_period = data_store['config']['period']
-    valid_course_ids = get_valid_groups(current_period)
-    
-    courses_to_schedule = []
-    if data_store['courses']:
-        for course in data_store['courses']:
-            # Filter by ID as defined in periods.py
-            if course.id in valid_course_ids:
-                courses_to_schedule.append(course)
-                
-        print(f"DEBUG: Filtered {len(courses_to_schedule)} courses for period {current_period} using ID list")
-    else:
-        courses_to_schedule = []
+import threading
+import time
 
-    if not courses_to_schedule:
-        return jsonify({'error': f'No courses found for period {current_period}'}), 400
+# Global generation state
+generation_state = {
+    'is_running': False,
+    'thread': None,
+    'stop_requested': False,
+    'result': None,
+    'error': None,
+    'current_level': 1,
+    'metrics': {}
+}
 
-    # Validate data first (using filtered courses)
-    validation = Validador.validar_todos_datos(
-        courses_to_schedule,
-        data_store['professors'],
-        data_store['timeslots']
-    )
-    
-    print(f"DEBUG: Validation result - valid: {validation['valid']}, errors: {validation['errors']}, warnings: {validation['warnings']}")
-    
-    if not validation['valid']:
-        return jsonify({
-            'error': 'Error de validación de datos',
-            'details': validation['errors']
-        }), 400
+def run_generation_task(courses, professors, timeslots, config):
+    """Background task for schedule generation with cascading fallback"""
+    global generation_state
     
     try:
-        print(f"DEBUG: Starting generation with:")
-        print(f"  - Courses: {len(courses_to_schedule)}")
-        print(f"  - Professors: {len(data_store['professors'])}")
-        print(f"  - Timeslots: {len(data_store['timeslots'])}")
-        print(f"  - Config: {data_store['config']}")
+        generation_state['is_running'] = True
+        generation_state['result'] = None
+        generation_state['error'] = None
+        generation_state['stop_requested'] = False
         
-        # Create scheduler instance
+        # Create scheduler instance (new instance per run to avoid state issues)
         scheduler = PyScheduler()
         
-        # Load data into C++ scheduler
-        for course in courses_to_schedule:
-            # Use cuatrimestre from course object if available, otherwise default to 1
-            # Avoid 0 as it shows as "Cuatrimestre 0" in frontend
-            group_id = getattr(course, 'cuatrimestre', 1)
-            if not group_id or group_id < 1:
-                group_id = 1
-            
-            # Calculate duration based on credits
-            # 15 weeks per period
-            # Weekly hours = credits / 15
-            # Duration in slots = ceil(Weekly hours) (assuming 1 slot ~ 1 hour)
+        # Load data
+        for course in courses:
+            group_id = getattr(course, 'cuatrimestre', 1) or 1
             credits = getattr(course, 'creditos', 0)
-            weekly_hours = credits / 15.0 if credits > 0 else 4.0 # Default to 4 if no credits
-            
+            weekly_hours = credits / 15.0 if credits > 0 else 4.0
             import math
             duration = math.ceil(weekly_hours)
             if duration < 1: duration = 1
             
-            print(f"DEBUG: Loading course {course.nombre} ({course.id}) credits={credits} duration={duration} group={group_id}")
-            scheduler.load_course(course.id, course.nombre, course.matricula, course.prerequisitos, group_id, duration)
-        
-        # Load timeslots FIRST (so professors can reference them)
-        for timeslot in data_store['timeslots']:
+            # Pass prerequisites if available
+            prereqs = getattr(course, 'prerequisitos', [])
+            
+            scheduler.load_course(course.id, course.nombre, course.matricula, prereqs, group_id, duration)
+            
+        for timeslot in timeslots:
             scheduler.load_timeslot(timeslot.id, timeslot.dia, 
                                    timeslot.hora_inicio, timeslot.minuto_inicio,
                                    timeslot.hora_fin, timeslot.minuto_fin)
 
-        for professor in data_store['professors']:
+        for professor in professors:
             scheduler.load_professor(professor.id, professor.nombre, professor.bloques_disponibles)
         
-        # Assign professors to courses
-        # If course has id_profesor, use it.
-        # If not, try to find a capable professor from available_courses.
-        assigned_count = 0
-        for course in courses_to_schedule:
+        # Assign professors
+        for course in courses:
             if course.id_profesor is not None:
                 scheduler.assign_professor_to_course(course.id, course.id_profesor)
-                assigned_count += 1
             else:
-                # Auto-assign
+                # Auto-assign logic (simplified)
                 candidate = None
-                # Look for a professor who has this course code in available_courses
-                # We prioritize professors with fewer assignments to balance load?
-                # For now, just find first available.
-                for p in data_store['professors']:
-                    # p.materias_capaces is list of codes (e.g. ["ING1", "DHV"])
-                    # course.codigo is the code (e.g. "ING1")
+                for p in professors:
                     if hasattr(p, 'materias_capaces') and course.codigo in p.materias_capaces:
                         candidate = p
                         break
-                    # Fallback: check if available_courses is in attributes or dict
-                    # The object is of type Profesor.
-                
                 if candidate:
                     scheduler.assign_professor_to_course(course.id, candidate.id)
-                    # Update the course object too so we know who was assigned
                     course.id_profesor = candidate.id
-                    assigned_count += 1
-                    print(f"DEBUG: Auto-assigned {candidate.nombre} to {course.nombre}")
-                else:
-                    print(f"WARNING: No professor found for {course.nombre} ({course.codigo})")
+
+        # Cascading Fallback Strategy
+        time_limit = config.get('time_limit', 30)
+        levels = [1, 2, 3, 4] # STRICT, RELAXED, GREEDY, EMERGENCY
         
-        print(f"DEBUG: Total courses with professors assigned: {assigned_count}/{len(courses_to_schedule)}")
+        final_result = None
         
-        # Generate schedule with time limit
-        time_limit = data_store['config']['time_limit']
-        strategy = data_store['config']['strategy']
-        
-        # We need to update the wrapper to accept these arguments
-        # For now, we'll assume the wrapper has been updated or we'll update it next
-        if hasattr(scheduler, 'generate_schedule_with_config'):
-             result = scheduler.generate_schedule_with_config(time_limit, strategy)
-        else:
-             # Fallback for now until wrapper is updated
-             result = scheduler.generate_schedule()
-        
-        # Process result (handle both success and partial success)
-        # Process result (handle both success and partial success)
-        # If we have assignments, we consider it a partial success even if the algorithm says 'false'
-        if result['success'] or len(result.get('assignments', [])) > 0:
-            # Enrich assignments with names
-            enriched_assignments = []
-            professor_workload = {} # Track assignments per professor
+        for level in levels:
+            if generation_state['stop_requested']:
+                break
+                
+            generation_state['current_level'] = level
+            print(f"DEBUG: Starting generation Level {level}")
             
-            for assignment in result['assignments']:
-                course = next((c for c in courses_to_schedule if c.id == assignment['course_id']), None)
-                professor = next((p for p in data_store['professors'] if p.id == assignment['professor_id']), None)
-                timeslot = next((t for t in data_store['timeslots'] if t.id == assignment['timeslot_id']), None)
+            # Run generation
+            # We need to poll for stop request? The C++ code checks stop flag, but we need to set it.
+            # We can't easily set C++ flag from here while it's running in blocking call.
+            # Wait, PyScheduler.generate_schedule_with_config is blocking.
+            # But we added `detenerGeneracion` in C++.
+            # If `stop_requested` is set via API, we call scheduler.stop_generation() from the API thread?
+            # Yes, we need to store the scheduler instance globally or pass it.
+            generation_state['scheduler_instance'] = scheduler
+            
+            result = scheduler.generate_schedule_with_config(time_limit, level)
+            
+            # Update metrics
+            metrics = scheduler.get_metrics()
+            generation_state['metrics'] = metrics
+            
+            if result['success']:
+                final_result = result
+                print(f"DEBUG: Success at Level {level}")
+                break
+            elif len(result['assignments']) > 0:
+                # Partial success - keep it but try next level if we want better?
+                # Actually, lower levels (higher number) are easier.
+                # If Level 1 fails, we try Level 2.
+                # If Level 1 gives partial, is that "failure"?
+                # Usually we want COMPLETE schedule.
+                # If result['success'] is False, it's partial.
+                # So we continue to next level to try to get full schedule (by relaxing constraints).
+                # But we should keep the best partial result so far.
+                if final_result is None or len(result['assignments']) > len(final_result['assignments']):
+                    final_result = result
+            
+        if final_result:
+            # Enrich assignments
+            enriched_assignments = []
+            for assignment in final_result['assignments']:
+                course = next((c for c in courses if c.id == assignment['course_id']), None)
+                professor = next((p for p in professors if p.id == assignment['professor_id']), None)
+                timeslot = next((t for t in timeslots if t.id == assignment['timeslot_id']), None)
                 
                 enriched_assignments.append({
                     **assignment,
@@ -611,59 +584,97 @@ def generate_schedule():
                     'semester': max(1, getattr(course, 'cuatrimestre', 1) or 1),
                     'group_id': max(1, getattr(course, 'group_id', 1) or 1)
                 })
-                
-                # Update workload count
-                if professor:
-                    professor_workload[professor.id] = professor_workload.get(professor.id, 0) + 1
             
-            # Calculate workload stats
-            workload_stats = []
-            for professor in data_store['professors']:
-                assigned = professor_workload.get(professor.id, 0)
-                available = len(professor.bloques_disponibles)
-                percentage = (assigned / available * 100) if available > 0 else 0
-                
-                workload_stats.append({
-                    'id': professor.id,
-                    'name': professor.nombre,
-                    'assigned_hours': assigned,
-                    'available_hours': available,
-                    'load_percentage': round(percentage, 1)
-                })
-            
-            data_store['schedule'] = {
+            generation_state['result'] = {
                 'assignments': enriched_assignments,
                 'metadata': {
-                    'backtrack_count': result['backtrack_count'],
-                    'computation_time': result['computation_time'],
-                    'status': 'success' if result['success'] else 'partial',
-                    'message': result.get('message', 'Schedule generated')
+                    'backtrack_count': final_result['backtrack_count'],
+                    'computation_time': final_result['computation_time'],
+                    'status': 'success' if final_result['success'] else 'partial',
+                    'level_reached': generation_state['current_level']
                 }
             }
-            
-            return jsonify({
-                'success': True,
-                'schedule': {
-                    'assignments': enriched_assignments
-                },
-                'metadata': {
-                    'computation_time': result.get('computation_time', 0),
-                    'backtrack_count': result.get('backtrack_count', 0),
-                    'score': result.get('score', 0)
-                }
-            })
+            data_store['schedule'] = generation_state['result']
         else:
-            print(f"DEBUG: Generation failed: {result['error_message']}")
-            return jsonify({
-                'success': False,
-                'error': result['error_message']
-            }), 400
-    
+            generation_state['error'] = "No se pudo generar ningún horario válido en ningún nivel."
+
     except Exception as e:
-        print(f"DEBUG: Generation error: {str(e)}")
+        print(f"Error in generation task: {e}")
+        generation_state['error'] = str(e)
         import traceback
         traceback.print_exc()
-        return jsonify({'error': str(e), 'details': traceback.format_exc().split('\n')}), 500
+    finally:
+        generation_state['is_running'] = False
+        generation_state['scheduler_instance'] = None
+
+@app.route('/api/generate', methods=['POST'])
+def generate_schedule():
+    """Start schedule generation in background"""
+    if not SCHEDULER_AVAILABLE:
+        return jsonify({'error': 'Scheduler not available'}), 503
+    
+    if generation_state['is_running']:
+        return jsonify({'error': 'Generation already in progress'}), 409
+        
+    # Check data... (same as before)
+    if not data_store['current_cycle'] and not data_store['courses']:
+        return jsonify({'error': 'Please select a cycle or upload courses first'}), 400
+    
+    current_period = data_store['config']['period']
+    valid_course_ids = get_valid_groups(current_period)
+    
+    courses_to_schedule = []
+    if data_store['courses']:
+        for course in data_store['courses']:
+            if course.id in valid_course_ids:
+                courses_to_schedule.append(course)
+    
+    if not courses_to_schedule:
+        return jsonify({'error': f'No courses found for period {current_period}'}), 400
+
+    # Start thread
+    thread = threading.Thread(target=run_generation_task, args=(
+        courses_to_schedule,
+        data_store['professors'],
+        data_store['timeslots'],
+        data_store['config']
+    ))
+    thread.start()
+    
+    return jsonify({'success': True, 'message': 'Generation started'})
+
+@app.route('/api/generate/stop', methods=['POST'])
+def stop_generation():
+    """Stop current generation"""
+    if not generation_state['is_running']:
+        return jsonify({'error': 'No generation running'}), 400
+        
+    generation_state['stop_requested'] = True
+    if generation_state.get('scheduler_instance'):
+        generation_state['scheduler_instance'].stop_generation()
+        
+    return jsonify({'success': True, 'message': 'Stop requested'})
+
+@app.route('/api/generate/status', methods=['GET'])
+def get_generation_status():
+    """Get status of background generation"""
+    status = {
+        'is_running': generation_state['is_running'],
+        'current_level': generation_state['current_level'],
+        'metrics': generation_state.get('metrics', {}),
+        'error': generation_state['error'],
+        'has_result': generation_state['result'] is not None
+    }
+    
+    # If running, try to get fresh metrics from instance
+    if generation_state['is_running'] and generation_state.get('scheduler_instance'):
+        try:
+            status['metrics'] = generation_state['scheduler_instance'].get_metrics()
+        except:
+            pass
+            
+    return jsonify(status)
+
 
 @app.route('/api/analyze-constraints', methods=['GET'])
 def analyze_constraints():

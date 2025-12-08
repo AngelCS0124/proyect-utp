@@ -65,22 +65,28 @@ void VerificadorRestricciones::agregarGrupoCurso(int idCurso, int idGrupo) {
 
 bool VerificadorRestricciones::esAsignacionValida(
     const Asignacion &asignacion,
-    const std::vector<Asignacion> &asignacionesExistentes) const {
+    const std::vector<Asignacion> &asignacionesExistentes,
+    NivelRestriccion nivel) const {
   // Verificar disponibilidad profesor (Solo si hay profesor asignado)
   if (asignacion.idProfesor >= 0) {
-    if (!verificarDisponibilidadProfesor(asignacion.idProfesor,
-                                         asignacion.idBloque)) {
-      return false;
+    // Disponibilidad solo se verifica en niveles STRICT y RELAXED
+    // En GREEDY y EMERGENCY se asume disponibilidad total (emergencia)
+    if (nivel == NivelRestriccion::STRICT ||
+        nivel == NivelRestriccion::RELAXED) {
+      if (!verificarDisponibilidadProfesor(asignacion.idProfesor,
+                                           asignacion.idBloque)) {
+        return false;
+      }
     }
 
-    // Verificar conflictos de tiempo (Profesor)
+    // Verificar conflictos de tiempo (Profesor) - SIEMPRE (Hard Constraint 1)
     if (verificarConflictoTiempo(asignacion.idProfesor, asignacion.idBloque,
                                  asignacionesExistentes)) {
       return false;
     }
   }
 
-  // Verificar conflictos de grupo (Estudiantes) - SIEMPRE
+  // Verificar conflictos de grupo (Estudiantes) - SIEMPRE (Hard Constraint 2)
   if (verificarConflictoGrupo(asignacion.idCurso, asignacion.idBloque,
                               asignacionesExistentes)) {
     return false;
