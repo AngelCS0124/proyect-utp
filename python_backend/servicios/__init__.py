@@ -22,6 +22,8 @@ from .visualizacion import generar_datos_visualizacion
 
 from .extractor_excel import extraer_datos_excel_a_memoria
 
+from .csp_scheduler import CSPScheduler
+
 __all__ = [
     # Español
     'obtener_bloques_consecutivos', 'puede_tener_bloques_consecutivos',
@@ -34,5 +36,7 @@ __all__ = [
     # Visualización
     'generar_datos_visualizacion',
     # Excel
-    'extraer_datos_excel_a_memoria'
+    'extraer_datos_excel_a_memoria',
+    # CSP Scheduler
+    'CSPScheduler'
 ]

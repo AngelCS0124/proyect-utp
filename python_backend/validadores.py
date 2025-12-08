@@ -116,6 +116,15 @@ class Validador:
             if bloque.dia not in dias_validos:
                 errores.append(f"Día inválido: {bloque.dia}. Solo se permiten días entre semana (Lunes-Viernes)")
             
+            # Defensive: check for None values first
+            if bloque.hora_inicio is None or bloque.hora_fin is None:
+                errores.append(f"Bloque {bloque.id} tiene valores de hora faltantes (None)")
+                continue
+            
+            if bloque.minuto_inicio is None or bloque.minuto_fin is None:
+                errores.append(f"Bloque {bloque.id} tiene valores de minuto faltantes (None)")
+                continue
+            
             # Validar horas
             if not (0 <= bloque.hora_inicio < 24 and 0 <= bloque.hora_fin < 24):
                 errores.append(f"Horas inválidas para bloque {bloque.id}")

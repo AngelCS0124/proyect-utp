@@ -45,23 +45,35 @@ class CargadorDatos:
                         v = fila[en]
                     return v if v is not None else default
 
+                # Extraer valores básicos
+                id_curso = CargadorDatos.safe_int(fila.get('id', fila.get('id')))
+                nombre = get_val('nombre', 'name', 'Sin Nombre')
                 
-                # Inferir cuatrimestre si no existe columna
+                # Prerrequisitos
+                prerrequisitos = []
+                prereq_raw = get_val('prerrequisitos', 'prerequisites')
+                if prereq_raw:
+                    parts = str(prereq_raw).replace('"', '').split(',')
+                    for p in parts:
+                        val = CargadorDatos.safe_int(p.strip())
+                        if val is not None:
+                            prerrequisitos.append(val)
+                
+                id_profesor = CargadorDatos.safe_int(get_val('id_profesor', 'professor_id'))
+                
                 # Inferir cuatrimestre si no existe columna
                 cuatri = CargadorDatos.safe_int(get_val('cuatrimestre', 'semester'))
                 if cuatri is None and id_curso:
                     # Heurística UTP: 101 -> 1, 901 -> 9, 1001 -> 10
-                    # Asumiendo IDs numérico
                     try:
                         numeric_id = int(float(id_curso)) # Manejar '101.0'
                         cuatri = numeric_id // 100
-                        if cuatri == 0: cuatri = 1 # Fallback por si acaso
-                        print(f"DEBUG: Inferido curso {id_curso} (ID_NUM: {numeric_id}) -> Cuatri {cuatri}", flush=True)
-                    except Exception as e:
-                        print(f"DEBUG Error inferencia curso {id_curso}: {e}", flush=True)
+                        if cuatri == 0: cuatri = 1 # Fallback
+                    except Exception:
                         cuatri = 1
-                else:
-                    print(f"DEBUG: Curso {id_curso} tiene cuatri explicito: {cuatri}", flush=True)
+                
+                # Sesiones por semana (nuevo campo opcional)
+                sesiones = CargadorDatos.safe_int(get_val('sesiones_por_semana', 'sessions_per_week'), 1)
                 
                 curso = Curso(
                     id=id_curso,
@@ -72,9 +84,11 @@ class CargadorDatos:
                     prerequisitos=prerrequisitos,
                     id_profesor=id_profesor,
                     cuatrimestre=cuatri if cuatri else 1,
-                    id_grupo=get_val('grupo', 'group_id', 'A')
+                    id_grupo=CargadorDatos.safe_int(get_val('id_grupo', 'group_id'), 0),
+                    sesiones_por_semana=sesiones
                 )
                 cursos.append(curso)
+
         return cursos
     
     @staticmethod
@@ -223,15 +237,15 @@ class CargadorDatos:
             reader = csv.DictReader(f)
             for fila in reader:
                 keys = fila.keys()
-                def get_val(es, en): return fila.get(es) if fila.get(es) else fila[en]
+                def get_val(es, en): return fila.get(es) if fila.get(es) else fila.get(en)
 
                 bloque = BloqueTiempo(
                     id=CargadorDatos.safe_int(fila.get('id', fila.get('id'))),
                     dia=get_val('dia', 'day'),
-                    hora_inicio=CargadorDatos.safe_int(get_val('hora_inicio', 'start_hour')),
-                    minuto_inicio=CargadorDatos.safe_int(get_val('minuto_inicio', 'start_minute')),
-                    hora_fin=CargadorDatos.safe_int(get_val('hora_fin', 'end_hour')),
-                    minuto_fin=CargadorDatos.safe_int(get_val('minuto_fin', 'end_minute'))
+                    hora_inicio=CargadorDatos.safe_int(get_val('hora_inicio', 'start_hour'), 0),
+                    minuto_inicio=CargadorDatos.safe_int(get_val('minuto_inicio', 'start_minute'), 0),
+                    hora_fin=CargadorDatos.safe_int(get_val('hora_fin', 'end_hour'), 0),
+                    minuto_fin=CargadorDatos.safe_int(get_val('minuto_fin', 'end_minute'), 0)
                 )
                 bloques.append(bloque)
         return bloques
@@ -247,10 +261,10 @@ class CargadorDatos:
             bloque = BloqueTiempo(
                 id=CargadorDatos.safe_int(item.get('id')),
                 dia=item.get('dia', item.get('day')),
-                hora_inicio=CargadorDatos.safe_int(item.get('hora_inicio', item.get('start_hour'))),
-                minuto_inicio=CargadorDatos.safe_int(item.get('minuto_inicio', item.get('start_minute'))),
-                hora_fin=CargadorDatos.safe_int(item.get('hora_fin', item.get('end_hour'))),
-                minuto_fin=CargadorDatos.safe_int(item.get('minuto_fin', item.get('end_minute')))
+                hora_inicio=CargadorDatos.safe_int(item.get('hora_inicio', item.get('start_hour')), 0),
+                minuto_inicio=CargadorDatos.safe_int(item.get('minuto_inicio', item.get('start_minute')), 0),
+                hora_fin=CargadorDatos.safe_int(item.get('hora_fin', item.get('end_hour')), 0),
+                minuto_fin=CargadorDatos.safe_int(item.get('minuto_fin', item.get('end_minute')), 0)
             )
             bloques.append(bloque)
         return bloques

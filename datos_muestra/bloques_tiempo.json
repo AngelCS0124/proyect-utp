@@ -70,5 +70,293 @@
         "minuto_inicio": 55,
         "hora_fin": 15,
         "minuto_fin": 49
+    },
+    {
+        "id": 101,
+        "dia": "Martes",
+        "hora_inicio": 7,
+        "minuto_inicio": 0,
+        "hora_fin": 7,
+        "minuto_fin": 54
+    },
+    {
+        "id": 102,
+        "dia": "Martes",
+        "hora_inicio": 7,
+        "minuto_inicio": 55,
+        "hora_fin": 8,
+        "minuto_fin": 49
+    },
+    {
+        "id": 103,
+        "dia": "Martes",
+        "hora_inicio": 8,
+        "minuto_inicio": 50,
+        "hora_fin": 9,
+        "minuto_fin": 44
+    },
+    {
+        "id": 104,
+        "dia": "Martes",
+        "hora_inicio": 9,
+        "minuto_inicio": 45,
+        "hora_fin": 10,
+        "minuto_fin": 39
+    },
+    {
+        "id": 105,
+        "dia": "Martes",
+        "hora_inicio": 11,
+        "minuto_inicio": 10,
+        "hora_fin": 12,
+        "minuto_fin": 4
+    },
+    {
+        "id": 106,
+        "dia": "Martes",
+        "hora_inicio": 12,
+        "minuto_inicio": 5,
+        "hora_fin": 12,
+        "minuto_fin": 59
+    },
+    {
+        "id": 107,
+        "dia": "Martes",
+        "hora_inicio": 13,
+        "minuto_inicio": 0,
+        "hora_fin": 13,
+        "minuto_fin": 54
+    },
+    {
+        "id": 108,
+        "dia": "Martes",
+        "hora_inicio": 14,
+        "minuto_inicio": 0,
+        "hora_fin": 14,
+        "minuto_fin": 54
+    },
+    {
+        "id": 109,
+        "dia": "Martes",
+        "hora_inicio": 14,
+        "minuto_inicio": 55,
+        "hora_fin": 15,
+        "minuto_fin": 49
+    },
+    {
+        "id": 201,
+        "dia": "Miércoles",
+        "hora_inicio": 7,
+        "minuto_inicio": 0,
+        "hora_fin": 7,
+        "minuto_fin": 54
+    },
+    {
+        "id": 202,
+        "dia": "Miércoles",
+        "hora_inicio": 7,
+        "minuto_inicio": 55,
+        "hora_fin": 8,
+        "minuto_fin": 49
+    },
+    {
+        "id": 203,
+        "dia": "Miércoles",
+        "hora_inicio": 8,
+        "minuto_inicio": 50,
+        "hora_fin": 9,
+        "minuto_fin": 44
+    },
+    {
+        "id": 204,
+        "dia": "Miércoles",
+        "hora_inicio": 9,
+        "minuto_inicio": 45,
+        "hora_fin": 10,
+        "minuto_fin": 39
+    },
+    {
+        "id": 205,
+        "dia": "Miércoles",
+        "hora_inicio": 11,
+        "minuto_inicio": 10,
+        "hora_fin": 12,
+        "minuto_fin": 4
+    },
+    {
+        "id": 206,
+        "dia": "Miércoles",
+        "hora_inicio": 12,
+        "minuto_inicio": 5,
+        "hora_fin": 12,
+        "minuto_fin": 59
+    },
+    {
+        "id": 207,
+        "dia": "Miércoles",
+        "hora_inicio": 13,
+        "minuto_inicio": 0,
+        "hora_fin": 13,
+        "minuto_fin": 54
+    },
+    {
+        "id": 208,
+        "dia": "Miércoles",
+        "hora_inicio": 14,
+        "minuto_inicio": 0,
+        "hora_fin": 14,
+        "minuto_fin": 54
+    },
+    {
+        "id": 209,
+        "dia": "Miércoles",
+        "hora_inicio": 14,
+        "minuto_inicio": 55,
+        "hora_fin": 15,
+        "minuto_fin": 49
+    },
+    {
+        "id": 301,
+        "dia": "Jueves",
+        "hora_inicio": 7,
+        "minuto_inicio": 0,
+        "hora_fin": 7,
+        "minuto_fin": 54
+    },
+    {
+        "id": 302,
+        "dia": "Jueves",
+        "hora_inicio": 7,
+        "minuto_inicio": 55,
+        "hora_fin": 8,
+        "minuto_fin": 49
+    },
+    {
+        "id": 303,
+        "dia": "Jueves",
+        "hora_inicio": 8,
+        "minuto_inicio": 50,
+        "hora_fin": 9,
+        "minuto_fin": 44
+    },
+    {
+        "id": 304,
+        "dia": "Jueves",
+        "hora_inicio": 9,
+        "minuto_inicio": 45,
+        "hora_fin": 10,
+        "minuto_fin": 39
+    },
+    {
+        "id": 305,
+        "dia": "Jueves",
+        "hora_inicio": 11,
+        "minuto_inicio": 10,
+        "hora_fin": 12,
+        "minuto_fin": 4
+    },
+    {
+        "id": 306,
+        "dia": "Jueves",
+        "hora_inicio": 12,
+        "minuto_inicio": 5,
+        "hora_fin": 12,
+        "minuto_fin": 59
+    },
+    {
+        "id": 307,
+        "dia": "Jueves",
+        "hora_inicio": 13,
+        "minuto_inicio": 0,
+        "hora_fin": 13,
+        "minuto_fin": 54
+    },
+    {
+        "id": 308,
+        "dia": "Jueves",
+        "hora_inicio": 14,
+        "minuto_inicio": 0,
+        "hora_fin": 14,
+        "minuto_fin": 54
+    },
+    {
+        "id": 309,
+        "dia": "Jueves",
+        "hora_inicio": 14,
+        "minuto_inicio": 55,
+        "hora_fin": 15,
+        "minuto_fin": 49
+    },
+    {
+        "id": 401,
+        "dia": "Viernes",
+        "hora_inicio": 7,
+        "minuto_inicio": 0,
+        "hora_fin": 7,
+        "minuto_fin": 54
+    },
+    {
+        "id": 402,
+        "dia": "Viernes",
+        "hora_inicio": 7,
+        "minuto_inicio": 55,
+        "hora_fin": 8,
+        "minuto_fin": 49
+    },
+    {
+        "id": 403,
+        "dia": "Viernes",
+        "hora_inicio": 8,
+        "minuto_inicio": 50,
+        "hora_fin": 9,
+        "minuto_fin": 44
+    },
+    {
+        "id": 404,
+        "dia": "Viernes",
+        "hora_inicio": 9,
+        "minuto_inicio": 45,
+        "hora_fin": 10,
+        "minuto_fin": 39
+    },
+    {
+        "id": 405,
+        "dia": "Viernes",
+        "hora_inicio": 11,
+        "minuto_inicio": 10,
+        "hora_fin": 12,
+        "minuto_fin": 4
+    },
+    {
+        "id": 406,
+        "dia": "Viernes",
+        "hora_inicio": 12,
+        "minuto_inicio": 5,
+        "hora_fin": 12,
+        "minuto_fin": 59
+    },
+    {
+        "id": 407,
+        "dia": "Viernes",
+        "hora_inicio": 13,
+        "minuto_inicio": 0,
+        "hora_fin": 13,
+        "minuto_fin": 54
+    },
+    {
+        "id": 408,
+        "dia": "Viernes",
+        "hora_inicio": 14,
+        "minuto_inicio": 0,
+        "hora_fin": 14,
+        "minuto_fin": 54
+    },
+    {
+        "id": 409,
+        "dia": "Viernes",
+        "hora_inicio": 14,
+        "minuto_inicio": 55,
+        "hora_fin": 15,
+        "minuto_fin": 49
     }
 ]

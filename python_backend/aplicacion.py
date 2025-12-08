@@ -53,7 +53,29 @@ almacen_datos = {
 
 # Inicializar bloques de tiempo predefinidos
 def inicializar_bloques_tiempo():
-    """Inicializar bloques de tiempo válidos predefinidos para el horario"""
+    """Inicializar bloques de tiempo válidos desde archivo JSON"""
+    import os
+    import json
+    
+    # Intentar cargar desde JSON primero (45 bloques)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    json_path = os.path.join(base_dir, 'datos_muestra', 'bloques_tiempo.json')
+    
+    # Fallback si se ejecuta desde raíz
+    if not os.path.exists(json_path):
+        json_path = os.path.join(os.getcwd(), 'datos_muestra', 'bloques_tiempo.json')
+    
+    if os.path.exists(json_path):
+        try:
+            print(f"Cargando bloques de tiempo desde: {json_path}", flush=True)
+            almacen_datos['bloques_tiempo'] = CargadorDatos.cargar_bloques_tiempo_json(json_path)
+            print(f"✓ Cargados {len(almacen_datos['bloques_tiempo'])} bloques de tiempo", flush=True)
+            return
+        except Exception as e:
+            print(f"Error cargando bloques JSON: {e}. Usando fallback...", flush=True)
+    
+    # Fallback: bloques predefinidos (solo 9)
+    print("Usando 9 bloques predefinidos (fallback)", flush=True)
     dicts_bloques = obtener_bloques_semanales(language='es')
     almacen_datos['bloques_tiempo'] = [
         BloqueTiempo(
@@ -567,18 +589,19 @@ def generar_horario_api():
                         bloque_obj = next((b for b in almacen_datos['bloques_tiempo'] if b.id == ext_t_id), None)
                         
                         if curso_obj and bloque_obj:
-                            p_obj = next((p for p in almacen_datos['profesores'] if p.id == c.id_profesor), None)
+                            p_obj = next((p for p in almacen_datos['profesores'] if p.id == curso_obj.id_profesor), None)
                             p_name = p_obj.nombre if p_obj else "Sin Profesor"
                             
                             nuevo_horario.agregar_asignacion(
                                 curso_obj.id, 
-                                pid, 
+                                curso_obj.id_profesor, 
                                 bloque_obj.id,
                                 course_name=curso_obj.nombre,
                                 professor_name=p_name,
                                 semester=getattr(curso_obj, 'cuatrimestre', 1), # Corregido: atributo es 'cuatrimestre'
                                 group=getattr(curso_obj, 'id_grupo', 'A') # Corregido: atributo es 'id_grupo'
                             )
+
                     
                     print(f"Horario generado con éxito: {len(nuevo_horario.asignaciones)} asignaciones", flush=True)
                 else:
@@ -599,30 +622,67 @@ def generar_horario_api():
                 exito = False
                 error_critico = str(e)
         else:
-            # Fallback Python (Simplificado para esta demo)
-            print("C++ Scheduler no disponible. Usando Mock.", flush=True)
-            exito = False 
-            meta = {'computation_time': 0, 'backtrack_count': 0}
+            # CSP Scheduler Python (fuzzy matching auto-assign integrad o)
+            try:
+                print("C++ Scheduler no disponible. Usando CSP Scheduler Python...", flush=True)
+                
+                from servicios.csp_scheduler import CSPScheduler
+                
+                solver = CSPScheduler(
+                    almacen_datos['cursos'],
+                    almacen_datos['profesores'],
+                    almacen_datos['bloques_tiempo']
+                )
+                
+                exito, nuevo_horario = solver.resolver(max_reintentos=3)
+                stats = solver.obtener_estadisticas()
+                
+                meta = {
+                    'computation_time': time.time() - tiempo_inicio,
+                    'method': 'CSP Python (Backtracking + Forward Checking + MRV/LCV)',
+                    'attempts': stats['intentos'],
+                    'backtrack_count': stats['backtracks'],
+                    'solutions_found': 1 if exito else 0
+                }
+                
+                print(f"CSP Python completado: {'Éxito' if exito else 'Fallo'}", flush=True)
+                print(f"Estadísticas: {stats['intentos']} intentos, {stats['backtracks']} backtracks", flush=True)
+                
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                print(f"Error en CSP Scheduler: {e}", flush=True)
+                exito = False
+                nuevo_horario = None
+                meta = {'computation_time': time.time() - tiempo_inicio, 'backtrack_count': 0}
+
         
         almacen_datos['horario'] = nuevo_horario if exito else None
         
-        mensaje_error = 'Generación fallida'
-        if 'resultado' in locals() and not exito:
-            # Si el C++ devolvió un mensaje específico
-            detail = resultado.get('error_message', '')
-            if detail and str(detail).strip():
-                mensaje_error = f"Error del Motor: {detail}"
-            else:
-                 mensaje_error = "No se pudo encontrar un horario válido (Límite de intentos excedido o restricciones imposibles)."
-        elif 'error_critico' in locals():
-            mensaje_error = f"Excepción interna: {error_critico}"
-        
-        return jsonify({
+        # Construir respuesta
+        response = {
             'success': exito,
             'schedule': nuevo_horario.a_diccionario() if exito else None,
-            'metadata': meta,
-            'error': mensaje_error
-        })
+            'metadata': meta
+        }
+        
+        # Solo agregar mensaje de error si realmente falló
+        if not exito:
+            mensaje_error = 'Generación fallida'
+            if 'resultado' in locals():
+                # Si el C++ devolvió un mensaje específico
+                detail = resultado.get('error_message', '')
+                if detail and str(detail).strip():
+                    mensaje_error = f"Error del Motor: {detail}"
+                else:
+                    mensaje_error = "No se pudo encontrar un horario válido (Límite de intentos excedido o restricciones imposibles)."
+            elif 'error_critico' in locals():
+                mensaje_error = f"Excepción interna: {error_critico}"
+            
+            response['error'] = mensaje_error
+        
+        return jsonify(response)
+
         
     except Exception as e:
         import traceback

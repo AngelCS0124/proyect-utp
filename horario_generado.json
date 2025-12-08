@@ -1,0 +1,385 @@
+{
+  "assignments": [
+    {
+      "course_id": 1,
+      "professor_id": 5,
+      "timeslot_id": 27,
+      "course_name": "Fundamentos de Programación",
+      "professor_name": "Lic. Pedro Sánchez",
+      "semester": 2,
+      "group": 1,
+      "timeslot_display": "Miércoles 14:55-15:49"
+    },
+    {
+      "course_id": 2,
+      "professor_id": 13,
+      "timeslot_id": 28,
+      "course_name": "Programación Orientada a Objetos",
+      "professor_name": "Ing. Jorge Castro",
+      "semester": 2,
+      "group": 2,
+      "timeslot_display": "Jueves 07:00-07:54"
+    },
+    {
+      "course_id": 7,
+      "professor_id": 13,
+      "timeslot_id": 37,
+      "course_name": "Algoritmos y Estructura de Datos",
+      "professor_name": "Ing. Jorge Castro",
+      "semester": 2,
+      "group": 7,
+      "timeslot_display": "Viernes 07:00-07:54"
+    },
+    {
+      "course_id": 33,
+      "professor_id": 13,
+      "timeslot_id": 1,
+      "course_name": "Estructura y Diseño de Internet Fijo",
+      "professor_name": "Ing. Jorge Castro",
+      "semester": 2,
+      "group": 33,
+      "timeslot_display": "Lunes 07:00-07:54"
+    },
+    {
+      "course_id": 3,
+      "professor_id": 4,
+      "timeslot_id": 10,
+      "course_name": "Bases de Datos",
+      "professor_name": "MSc. Ana Martínez",
+      "semester": 2,
+      "group": 3,
+      "timeslot_display": "Martes 07:00-07:54"
+    },
+    {
+      "course_id": 6,
+      "professor_id": 4,
+      "timeslot_id": 27,
+      "course_name": "Ciencia de Datos",
+      "professor_name": "MSc. Ana Martínez",
+      "semester": 2,
+      "group": 6,
+      "timeslot_display": "Miércoles 14:55-15:49"
+    },
+    {
+      "course_id": 36,
+      "professor_id": 4,
+      "timeslot_id": 28,
+      "course_name": "Minería de Datos",
+      "professor_name": "MSc. Ana Martínez",
+      "semester": 2,
+      "group": 36,
+      "timeslot_display": "Jueves 07:00-07:54"
+    },
+    {
+      "course_id": 37,
+      "professor_id": 4,
+      "timeslot_id": 37,
+      "course_name": "Ciencia de Datos Aplicada a Telecomunicaciones",
+      "professor_name": "MSc. Ana Martínez",
+      "semester": 2,
+      "group": 37,
+      "timeslot_display": "Viernes 07:00-07:54"
+    },
+    {
+      "course_id": 4,
+      "professor_id": 14,
+      "timeslot_id": 1,
+      "course_name": "Bases de Datos Avanzadas",
+      "professor_name": "MSc. Gabriela Ortiz",
+      "semester": 2,
+      "group": 4,
+      "timeslot_display": "Lunes 07:00-07:54"
+    },
+    {
+      "course_id": 28,
+      "professor_id": 14,
+      "timeslot_id": 10,
+      "course_name": "Inteligencia Artificial",
+      "professor_name": "MSc. Gabriela Ortiz",
+      "semester": 2,
+      "group": 28,
+      "timeslot_display": "Martes 07:00-07:54"
+    },
+    {
+      "course_id": 34,
+      "professor_id": 14,
+      "timeslot_id": 27,
+      "course_name": "Estructura y Diseño de Internet Inalámbrico",
+      "professor_name": "MSc. Gabriela Ortiz",
+      "semester": 2,
+      "group": 34,
+      "timeslot_display": "Miércoles 14:55-15:49"
+    },
+    {
+      "course_id": 38,
+      "professor_id": 14,
+      "timeslot_id": 28,
+      "course_name": "Análisis y Seguridad",
+      "professor_name": "MSc. Gabriela Ortiz",
+      "semester": 2,
+      "group": 38,
+      "timeslot_display": "Jueves 07:00-07:54"
+    },
+    {
+      "course_id": 5,
+      "professor_id": 7,
+      "timeslot_id": 37,
+      "course_name": "Sistemas Operativos",
+      "professor_name": "Dr. Roberto Vargas",
+      "semester": 2,
+      "group": 5,
+      "timeslot_display": "Viernes 07:00-07:54"
+    },
+    {
+      "course_id": 42,
+      "professor_id": 7,
+      "timeslot_id": 1,
+      "course_name": "Fundamentos de Redes",
+      "professor_name": "Dr. Roberto Vargas",
+      "semester": 2,
+      "group": 42,
+      "timeslot_display": "Lunes 07:00-07:54"
+    },
+    {
+      "course_id": 45,
+      "professor_id": 7,
+      "timeslot_id": 10,
+      "course_name": "Operación y Administración de Móviles y Datos de Nueva Generación",
+      "professor_name": "Dr. Roberto Vargas",
+      "semester": 2,
+      "group": 45,
+      "timeslot_display": "Martes 07:00-07:54"
+    },
+    {
+      "course_id": 8,
+      "professor_id": 6,
+      "timeslot_id": 27,
+      "course_name": "Aplicaciones Web",
+      "professor_name": "Ing. Laura Torres",
+      "semester": 2,
+      "group": 8,
+      "timeslot_display": "Miércoles 14:55-15:49"
+    },
+    {
+      "course_id": 11,
+      "professor_id": 6,
+      "timeslot_id": 28,
+      "course_name": "Proyecto Integrador II",
+      "professor_name": "Ing. Laura Torres",
+      "semester": 2,
+      "group": 11,
+      "timeslot_display": "Jueves 07:00-07:54"
+    },
+    {
+      "course_id": 35,
+      "professor_id": 6,
+      "timeslot_id": 37,
+      "course_name": "Desarrollo de Aplicaciones Móviles",
+      "professor_name": "Ing. Laura Torres",
+      "semester": 2,
+      "group": 35,
+      "timeslot_display": "Viernes 07:00-07:54"
+    },
+    {
+      "course_id": 9,
+      "professor_id": 10,
+      "timeslot_id": 1,
+      "course_name": "Aplicaciones Web con Open Source",
+      "professor_name": "Ing. Sofia Ramírez",
+      "semester": 2,
+      "group": 9,
+      "timeslot_display": "Lunes 07:00-07:54"
+    },
+    {
+      "course_id": 24,
+      "professor_id": 10,
+      "timeslot_id": 10,
+      "course_name": "Desarrollo de Habilidades y Valores",
+      "professor_name": "Ing. Sofia Ramírez",
+      "semester": 2,
+      "group": 24,
+      "timeslot_display": "Martes 07:00-07:54"
+    },
+    {
+      "course_id": 10,
+      "professor_id": 15,
+      "timeslot_id": 27,
+      "course_name": "Proyecto Integrador I",
+      "professor_name": "Dr. Alberto Ruiz",
+      "semester": 2,
+      "group": 10,
+      "timeslot_display": "Miércoles 14:55-15:49"
+    },
+    {
+      "course_id": 12,
+      "professor_id": 15,
+      "timeslot_id": 28,
+      "course_name": "Proyecto Integrador III",
+      "professor_name": "Dr. Alberto Ruiz",
+      "semester": 2,
+      "group": 12,
+      "timeslot_display": "Jueves 07:00-07:54"
+    },
+    {
+      "course_id": 13,
+      "professor_id": 3,
+      "timeslot_id": 37,
+      "course_name": "Cálculo Diferencial",
+      "professor_name": "Ing. Carlos Rodríguez",
+      "semester": 2,
+      "group": 13,
+      "timeslot_display": "Viernes 07:00-07:54"
+    },
+    {
+      "course_id": 17,
+      "professor_id": 3,
+      "timeslot_id": 1,
+      "course_name": "Probabilidad y Estadística",
+      "professor_name": "Ing. Carlos Rodríguez",
+      "semester": 2,
+      "group": 17,
+      "timeslot_display": "Lunes 07:00-07:54"
+    },
+    {
+      "course_id": 14,
+      "professor_id": 9,
+      "timeslot_id": 10,
+      "course_name": "Cálculo Integral",
+      "professor_name": "Dr. Luis Hernández",
+      "semester": 2,
+      "group": 14,
+      "timeslot_display": "Martes 07:00-07:54"
+    },
+    {
+      "course_id": 15,
+      "professor_id": 9,
+      "timeslot_id": 27,
+      "course_name": "Física",
+      "professor_name": "Dr. Luis Hernández",
+      "semester": 2,
+      "group": 15,
+      "timeslot_display": "Miércoles 14:55-15:49"
+    },
+    {
+      "course_id": 16,
+      "professor_id": 9,
+      "timeslot_id": 28,
+      "course_name": "Fundamentos de Matemáticas",
+      "professor_name": "Dr. Luis Hernández",
+      "semester": 2,
+      "group": 16,
+      "timeslot_display": "Jueves 07:00-07:54"
+    },
+    {
+      "course_id": 18,
+      "professor_id": 1,
+      "timeslot_id": 37,
+      "course_name": "Inglés I",
+      "professor_name": "Dr. Juan Pérez",
+      "semester": 2,
+      "group": 18,
+      "timeslot_display": "Viernes 07:00-07:54"
+    },
+    {
+      "course_id": 19,
+      "professor_id": 1,
+      "timeslot_id": 1,
+      "course_name": "Inglés II",
+      "professor_name": "Dr. Juan Pérez",
+      "semester": 2,
+      "group": 19,
+      "timeslot_display": "Lunes 07:00-07:54"
+    },
+    {
+      "course_id": 20,
+      "professor_id": 1,
+      "timeslot_id": 10,
+      "course_name": "Inglés III",
+      "professor_name": "Dr. Juan Pérez",
+      "semester": 2,
+      "group": 20,
+      "timeslot_display": "Martes 07:00-07:54"
+    },
+    {
+      "course_id": 21,
+      "professor_id": 1,
+      "timeslot_id": 27,
+      "course_name": "Inglés IV",
+      "professor_name": "Dr. Juan Pérez",
+      "semester": 2,
+      "group": 21,
+      "timeslot_display": "Miércoles 14:55-15:49"
+    },
+    {
+      "course_id": 22,
+      "professor_id": 1,
+      "timeslot_id": 28,
+      "course_name": "Inglés V",
+      "professor_name": "Dr. Juan Pérez",
+      "semester": 2,
+      "group": 22,
+      "timeslot_display": "Jueves 07:00-07:54"
+    },
+    {
+      "course_id": 23,
+      "professor_id": 12,
+      "timeslot_id": 37,
+      "course_name": "Liderazgo Socioemocional",
+      "professor_name": "Dra. Patricia Mendoza",
+      "semester": 2,
+      "group": 23,
+      "timeslot_display": "Viernes 07:00-07:54"
+    },
+    {
+      "course_id": 25,
+      "professor_id": 12,
+      "timeslot_id": 1,
+      "course_name": "Liderazgo y Trabajo en Equipo",
+      "professor_name": "Dra. Patricia Mendoza",
+      "semester": 2,
+      "group": 25,
+      "timeslot_display": "Lunes 07:00-07:54"
+    },
+    {
+      "course_id": 27,
+      "professor_id": 12,
+      "timeslot_id": 10,
+      "course_name": "Liderazgo",
+      "professor_name": "Dra. Patricia Mendoza",
+      "semester": 2,
+      "group": 27,
+      "timeslot_display": "Martes 07:00-07:54"
+    },
+    {
+      "course_id": 30,
+      "professor_id": 11,
+      "timeslot_id": 27,
+      "course_name": "Conmutación y Enrutamiento",
+      "professor_name": "Mtro. Ricardo Flores",
+      "semester": 2,
+      "group": 30,
+      "timeslot_display": "Miércoles 14:55-15:49"
+    },
+    {
+      "course_id": 44,
+      "professor_id": 11,
+      "timeslot_id": 28,
+      "course_name": "Enrutamiento de Proyectos Tecnológicos",
+      "professor_name": "Mtro. Ricardo Flores",
+      "semester": 2,
+      "group": 44,
+      "timeslot_display": "Jueves 07:00-07:54"
+    },
+    {
+      "course_id": 41,
+      "professor_id": 2,
+      "timeslot_id": 37,
+      "course_name": "Gestión de Proyectos Tecnológicos",
+      "professor_name": "Dra. María González",
+      "semester": 2,
+      "group": 41,
+      "timeslot_display": "Viernes 07:00-07:54"
+    }
+  ],
+  "metadata": {}
+}

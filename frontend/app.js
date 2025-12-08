@@ -597,43 +597,17 @@ async function generateSchedule() {
         const response = await fetch(`${API_BASE}/generate`, { method: 'POST' });
         const result = await response.json();
 
+        hideGenerationOverlay();
+
         if (response.ok && result.success) {
-            // Start Polling
-            let polling = true;
-            const startTime = Date.now();
+            // Backend returns schedule directly (synchronous generation)
+            state.schedule = result.schedule;
+            const meta = result.metadata || {};
 
-            while (polling) {
-                const statusResponse = await fetch(`${API_BASE}/generate/status`);
-                const status = await statusResponse.json();
-
-                updateGenerationStatus(status, timeLimit, startTime);
-
-                if (!status.is_running) {
-                    polling = false;
-
-                    if (status.has_result) {
-                        // Fetch final result
-                        const scheduleResponse = await fetch(`${API_BASE}/schedule`);
-                        const scheduleResult = await scheduleResponse.json();
-
-                        state.schedule = scheduleResult;
-                        const meta = scheduleResult.metadata || {};
-                        const score = meta.score !== undefined ? meta.score : 0;
-
-                        showNotification('¡Horario Generado!', `Score: ${score}`, 'success');
-                        hideGenerationOverlay();
-                        document.querySelector('[data-view="horario"]').click();
-                    } else {
-                        hideGenerationOverlay();
-                        showErrorModal(status.error || 'No se pudo generar el horario');
-                    }
-                }
-
-                await new Promise(r => setTimeout(r, 500)); // Poll every 500ms
-            }
+            showNotification('¡Horario Generado!', `Generado con éxito en ${(meta.computation_time || 0).toFixed(2)}s`, 'success');
+            document.querySelector('[data-view="horario"]').click();
         } else {
-            hideGenerationOverlay();
-            showErrorModal(result.error || 'No se pudo iniciar la generación');
+            showErrorModal(result.error || 'No se pudo generar el horario');
         }
     } catch (error) {
         console.error('Generation error:', error);
@@ -842,14 +816,10 @@ function renderCalendarView() {
     const container = document.getElementById('schedule-calendar-container');
     container.innerHTML = '';
 
-    // const semesterFilter = document.getElementById('semester-filter') ? document.getElementById('semester-filter').value : 'all';
-
     // Group assignments by semester/group
     const groups = {};
     state.schedule.assignments.forEach(a => {
         const sem = a.semester || 1;
-        // if (semesterFilter !== 'all' && sem.toString() !== semesterFilter) return;
-
         const key = `Cuatrimestre ${sem}`;
         if (!groups[key]) groups[key] = [];
         groups[key].push(a);
@@ -860,17 +830,17 @@ function renderCalendarView() {
         const groupAssignments = groups[groupName];
 
         const groupSection = document.createElement('div');
-        groupSection.className = 'calendar-group-section';
-        groupSection.innerHTML = `<h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--primary-color); border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">${groupName}</h3>`;
+        groupSection.className = 'calendar-group';
+        groupSection.innerHTML = `<h3>📅 ${groupName}</h3>`;
 
         const table = document.createElement('table');
-        table.className = 'schedule-calendar-table'; // You might need to add CSS for this
+        table.className = 'calendar-table';
 
-        // Header
+        // Header con diseño profesional
         table.innerHTML = `
             <thead>
                 <tr>
-                    <th>Horario</th>
+                    <th class="time-header">Horario</th>
                     <th>Lunes</th>
                     <th>Martes</th>
                     <th>Miércoles</th>
@@ -898,33 +868,37 @@ function renderCalendarView() {
 
         timeBlocks.forEach(block => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td class="time-col">${block.label}</td>`;
+            tr.innerHTML = `<td class="time-cell">${block.label}</td>`;
 
             ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].forEach(day => {
+                const td = document.createElement('td');
+                td.className = 'calendar-cell';
+
                 // Find assignment for this day and time
-                // Note: We need to match the time logic from backend/timeslots
-                // For simplicity, we filter by day and approximate time match or use timeslot string
                 const assignment = groupAssignments.find(a => {
-                    // This is a simplification. Ideally we match IDs or precise times.
-                    // Assuming timeslot_display contains day and time or we parse it.
-                    // Better: use timeslot ID if we have the mapping.
-                    // But we have 'timeslot_display'. Let's use that if it contains the day and time.
-                    // Or better, rely on the fact that we have the data.
-                    // Let's assume 'timeslot_display' is like "Lunes 7:00-7:54"
-                    return a.timeslot_display.includes(day) && a.timeslot_display.includes(block.label.split('-')[0]);
+                    if (!a.timeslot_display) return false;
+                    return a.timeslot_display.includes(day) &&
+                        a.timeslot_display.includes(block.label.split('-')[0]);
                 });
 
                 if (assignment) {
-                    tr.innerHTML += `
-                        <td class="class-cell">
-                            <div class="course-name">${assignment.course_name}</div>
-                            <div class="prof-name">${assignment.professor_name}</div>
-                        </td>
+                    // Crear tarjeta de curso con diseño profesional
+                    const courseCard = document.createElement('div');
+                    courseCard.className = 'cell-content';
+                    courseCard.innerHTML = `
+                        <div class="cell-course">${assignment.course_name}</div>
+                        <div class="cell-prof">${assignment.professor_name}</div>
                     `;
-                } else {
-                    tr.innerHTML += `<td></td>`;
+
+                    // Tooltip opcional
+                    courseCard.title = `${assignment.course_name}\n${assignment.professor_name}\n${assignment.timeslot_display}`;
+
+                    td.appendChild(courseCard);
                 }
+
+                tr.appendChild(td);
             });
+
             tbody.appendChild(tr);
         });
 

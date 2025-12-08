@@ -32,14 +32,20 @@ class BloqueTiempo:
         Returns:
             dict: Representación del bloque de tiempo como diccionario
         """
+        # Defensive: ensure no None values
+        hora_inicio = self.hora_inicio if self.hora_inicio is not None else 0
+        minuto_inicio = self.minuto_inicio if self.minuto_inicio is not None else 0
+        hora_fin = self.hora_fin if self.hora_fin is not None else 0
+        minuto_fin = self.minuto_fin if self.minuto_fin is not None else 0
+        
         return {
             'id': self.id,
             'day': self.dia,  # Mantener 'day' para compatibilidad con API
-            'start_hour': self.hora_inicio,
-            'start_minute': self.minuto_inicio,
-            'end_hour': self.hora_fin,
-            'end_minute': self.minuto_fin,
-            'display': f"{self.dia} {self.hora_inicio:02d}:{self.minuto_inicio:02d}-{self.hora_fin:02d}:{self.minuto_fin:02d}"
+            'start_hour': hora_inicio,
+            'start_minute': minuto_inicio,
+            'end_hour': hora_fin,
+            'end_minute': minuto_fin,
+            'display': f"{self.dia} {hora_inicio:02d}:{minuto_inicio:02d}-{hora_fin:02d}:{minuto_fin:02d}"
         }
     
     # Alias para compatibilidad con código existente
@@ -47,4 +53,11 @@ class BloqueTiempo:
     
     def __repr__(self):
         """Representación en string del bloque de tiempo"""
-        return f"BloqueTiempo(id={self.id}, dia='{self.dia}', {self.hora_inicio:02d}:{self.minuto_inicio:02d}-{self.hora_fin:02d}:{self.minuto_fin:02d})"
+        # Defensive: ensure no None values
+        hora_inicio = self.hora_inicio if self.hora_inicio is not None else 0
+        minuto_inicio = self.minuto_inicio if self.minuto_inicio is not None else 0
+        hora_fin = self.hora_fin if self.hora_fin is not None else 0
+        minuto_fin = self.minuto_fin if self.minuto_fin is not None else 0
+        
+        return f"BloqueTiempo(id={self.id}, dia='{self.dia}', {hora_inicio:02d}:{minuto_inicio:02d}-{hora_fin:02d}:{minuto_fin:02d})"
+

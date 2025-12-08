@@ -89,35 +89,47 @@ CURRICULUM = {
 
 # Cycle to cuatrimestre mapping
 CYCLE_MAPPING = {
-    "sept-dec": [1, 4, 7, 10],  # Septiembre a Diciembre
-    "jan-apr": [2, 5, 8],        # Enero a Abril
-    "may-aug": [3, 6, 9],        # Mayo a Agosto
+    "sept-dec": [1, 4, 7, 10],  # 28 cursos (4 cuatrimestres)
+    "jan-apr": [2, 5, 8],         # 21 cursos (3 cuatrimestres)
+    "may-aug": [3, 6, 9]          # 21 cursos (3 cuatrimestres)
 }
 
 CYCLE_NAMES = {
     "sept-dec": "Septiembre - Diciembre",
     "jan-apr": "Enero - Abril",
-    "may-aug": "Mayo - Agosto",
+    "may-aug": "Mayo - Agosto"
 }
 
 
 def get_all_courses():
     """
-    Get all courses from the curriculum as Curso objects
-    Returns: List of Curso objects
+    Get all courses from curriculum
+    Returns: List of Curso objects for all cuatrimestres
     """
     courses = []
-    for cuatrimestre, cuatrimestre_courses in CURRICULUM.items():
-        for course_data in cuatrimestre_courses:
+    for cuatrimestre, course_list in CURRICULUM.items():
+        for course_data in course_list:
+            # Calcular sesiones por semana basado en créditos
+            creditos = course_data["credits"]
+            if creditos >= 105:
+                sesiones = 3  # Cursos intensivos
+            elif creditos >= 90:
+                sesiones = 2  # Cursos medios
+            elif creditos >= 75:
+                sesiones = 2  # Cursos estándar
+            else:
+                sesiones = 1  # Cursos ligeros
+            
             course = Curso(
                 id=course_data["id"],
                 nombre=course_data["name"],
                 codigo=course_data["code"],
                 creditos=course_data["credits"],
                 matricula=course_data["enrollment"],
-                prerequisitos=[],  # Can be added later if needed
+                prerequisitos=[],
                 id_profesor=None,
-                cuatrimestre=cuatrimestre
+                cuatrimestre=cuatrimestre,
+                sesiones_por_semana=sesiones
             )
             courses.append(course)
     return courses
@@ -156,6 +168,17 @@ def get_courses_for_cycle(cycle):
     for cuatrimestre in cuatrimestres:
         if cuatrimestre in CURRICULUM:
             for course_data in CURRICULUM[cuatrimestre]:
+                # Calcular sesiones por semana basado en créditos
+                creditos = course_data["credits"]
+                if creditos >= 105:
+                    sesiones = 3  # Cursos intensivos
+                elif creditos >= 90:
+                    sesiones = 2  # Cursos medios
+                elif creditos >= 75:
+                    sesiones = 2  # Cursos estándar
+                else:
+                    sesiones = 1  # Cursos ligeros
+                
                 course = Curso(
                     id=course_data["id"],
                     nombre=course_data["name"],
@@ -164,7 +187,8 @@ def get_courses_for_cycle(cycle):
                     matricula=course_data["enrollment"],
                     prerequisitos=[],
                     id_profesor=None,
-                    cuatrimestre=cuatrimestre
+                    cuatrimestre=cuatrimestre,
+                    sesiones_por_semana=sesiones
                 )
                 courses.append(course)
     

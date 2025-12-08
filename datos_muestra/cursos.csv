@@ -1,6 +1,46 @@
-id,nombre,codigo,creditos,matricula,prerrequisitos,id_profesor
-1,Matemáticas Discretas,MAT101,3,30,,1
-2,Estructura de Datos,CS102,4,25,1,2
-3,Inglés I,LANG101,2,20,,3
-4,Programación Web,CS201,3,30,2,4
-5,Base de Datos,CS202,3,28,2,5
+id,nombre,codigo,creditos,matricula,prerrequisitos,id_profesor,cuatrimestre,id_grupo,sesiones_por_semana
+1,Fundamentos de Programación,FP,4,35,,,2,1,1
+2,Programación Orientada a Objetos,POO,4,33,,,2,2,1
+3,Bases de Datos,BD,3,32,,,2,3,1
+4,Bases de Datos Avanzadas,BDA,3,28,3,,2,4,1
+5,Sistemas Operativos,SO,3,30,,,2,5,1
+6,Ciencia de Datos,TCADS,4,26,,,2,6,1
+7,Algoritmos y Estructura de Datos,ADS,4,28,,,2,7,1
+8,Aplicaciones Web,AW,3,30,,,2,8,1
+9,Aplicaciones Web con Open Source,AWOS,3,25,8,,2,9,1
+10,Proyecto Integrador I,PI1,3,28,,,2,10,1
+11,Proyecto Integrador II,PI2,3,26,10,,2,11,1
+12,Proyecto Integrador III,PI3,3,24,11,,2,12,1
+13,Cálculo Diferencial,CD,4,35,,,2,13,1
+14,Cálculo Integral,CI,4,33,13,,2,14,1
+15,Física,FIS,4,32,,,2,15,1
+16,Fundamentos de Matemáticas,FM,3,35,,,2,16,1
+17,Probabilidad y Estadística,PEST,3,30,,,2,17,1
+18,Inglés I,ING1,2,35,,,2,18,1
+19,Inglés II,ING2,2,34,18,,2,19,1
+20,Inglés III,ING3,2,33,19,,2,20,1
+21,Inglés IV,ING4,2,32,20,,2,21,1
+22,Inglés V,ING5,2,30,21,,2,22,1
+23,Liderazgo Socioemocional,LSE,2,35,,,2,23,1
+24,Desarrollo de Habilidades y Valores,DHV,2,34,,,2,24,1
+25,Liderazgo y Trabajo en Equipo,LTD,2,32,,,2,25,1
+26,Ética Profesional,EP,2,34,,,2,26,1
+27,Liderazgo,LEAD,2,35,,,2,27,1
+28,Inteligencia Artificial,FIA,3,24,,,2,28,1
+29,Expresión Oral y Escrita,PE,2,35,,,2,29,1
+30,Conmutación y Enrutamiento,CER,3,26,,,2,30,1
+31,Circuitos y Dispositivos,CHD,3,28,,,2,31,1
+32,Convergencia de Voz y Video,CVV,3,24,,,2,32,1
+33,Estructura y Diseño de Internet Fijo,EDIF,3,22,,,2,33,1
+34,Estructura y Diseño de Internet Inalámbrico,EDIG,3,20,,,2,34,1
+35,Desarrollo de Aplicaciones Móviles,DAM,3,26,,,2,35,1
+36,Minería de Datos,IMDS,3,24,,,2,36,1
+37,Ciencia de Datos Aplicada a Telecomunicaciones,CDAT,3,22,,,2,37,1
+38,Análisis y Seguridad,AS,3,24,,,2,38,1
+39,Internet de las Cosas,IOT,3,20,,,2,39,1
+40,Herramientas de Google,HG,2,30,,,2,40,1
+41,Gestión de Proyectos Tecnológicos,GPT,3,26,,,2,41,1
+42,Fundamentos de Redes,FR,3,28,,,2,42,1
+43,Fundamentos de Proyectos Tecnológicos,FPT,3,26,,,2,43,1
+44,Enrutamiento de Proyectos Tecnológicos,EPT,3,24,,,2,44,1
+45,Operación y Administración de Móviles y Datos de Nueva Generación,OAMDN,3,20,,,2,45,1
