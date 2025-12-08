@@ -103,6 +103,10 @@ private:
   bool modoCompleto;
   std::vector<Asignacion> mejorSolucion;
   int maxCursosAsignados;
+  double mejorPuntaje;
+  bool usarAleatoriedad;
+
+  double calcularPuntaje(const std::vector<Asignacion> &asignaciones);
 };
 
 } // namespace planificador

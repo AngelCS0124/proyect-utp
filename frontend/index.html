@@ -12,6 +12,9 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
@@ -182,41 +185,61 @@
 
             <!-- Generate -->
             <section class="generate-section">
-                <div class="generate-header">
-                    <div style="flex: 1;">
-                        <h2>Generar Horario</h2>
-                        <p class="section-desc">Generar horario óptimo sin conflictos</p>
+                <div class="generate-header" style="flex-direction: column; align-items: flex-start; gap: 20px;">
+                    <div style="width: 100%;">
+                        <h2><i class="fas fa-magic"></i> Generar Horario</h2>
+                        <p class="section-desc">Configura y genera el horario óptimo para la institución.</p>
                     </div>
 
-                    <div class="config-controls"
-                        style="display: flex; gap: 15px; align-items: center; margin-right: 20px;">
-                        <div class="config-item">
-                            <label for="time-limit"
-                                style="display: block; font-size: 0.85rem; margin-bottom: 4px; color: var(--text-gray);"><i
-                                    class="fas fa-stopwatch"></i> Límite:</label>
-                            <select id="time-limit" class="form-select"
-                                style="padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                <option value="0">Sin límite</option>
-                                <option value="30">30 Segundos</option>
-                                <option value="60">1 Minuto</option>
-                                <option value="300">5 Minutos</option>
-                            </select>
+                    <div class="config-panel"
+                        style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; width: 100%; display: flex; flex-direction: column; gap: 20px;">
+
+                        <div class="config-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="config-item">
+                                <label for="time-limit"
+                                    style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-dark);">
+                                    <i class="fas fa-stopwatch" style="color: var(--primary-color);"></i> Límite de
+                                    Tiempo
+                                </label>
+                                <select id="time-limit" class="form-select"
+                                    style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                                    <option value="0">Sin límite (Mejor Calidad)</option>
+                                    <option value="5">5 Segundos (Rápido)</option>
+                                    <option value="30">30 Segundos (Equilibrado)</option>
+                                    <option value="60">1 Minuto (Detallado)</option>
+                                    <option value="300">5 Minutos (Exhaustivo)</option>
+                                </select>
+                                <small
+                                    style="color: var(--text-gray); font-size: 0.8em; margin-top: 4px; display: block;">
+                                    Más tiempo permite encontrar mejores horarios.
+                                </small>
+                            </div>
+
+                            <div class="config-item">
+                                <label for="strategy"
+                                    style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-dark);">
+                                    <i class="fas fa-chess-board" style="color: var(--primary-color);"></i> Estrategia
+                                </label>
+                                <select id="strategy" class="form-select"
+                                    style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                                    <option value="complete">Optimización Completa (Recomendado)</option>
+                                    <option value="best_effort">Mejor Esfuerzo (Rápido)</option>
+                                </select>
+                                <small
+                                    style="color: var(--text-gray); font-size: 0.8em; margin-top: 4px; display: block;">
+                                    "Optimización Completa" busca activamente la mejor solución.
+                                </small>
+                            </div>
                         </div>
-                        <div class="config-item">
-                            <label for="strategy"
-                                style="display: block; font-size: 0.85rem; margin-bottom: 4px; color: var(--text-gray);"><i
-                                    class="fas fa-chess"></i> Estrategia:</label>
-                            <select id="strategy" class="form-select"
-                                style="padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                <option value="complete">Completa</option>
-                                <option value="best_effort">Mejor Esfuerzo</option>
-                            </select>
+
+                        <div class="action-row"
+                            style="display: flex; justify-content: flex-end; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                            <button id="generate-btn" class="btn-primary" onclick="generateSchedule()"
+                                style="padding: 12px 24px; font-size: 1.1em; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                                <i class="fas fa-bolt"></i> Generar Horario Ahora
+                            </button>
                         </div>
                     </div>
-
-                    <button id="generate-btn" class="btn-primary" onclick="generateSchedule()">
-                        <i class="fas fa-bolt"></i> Generar Horario
-                    </button>
                 </div>
             </section>
         </div>
@@ -334,15 +357,8 @@
                 </div>
 
                 <!-- Controles de visualización -->
-                <div class="visualization-controls" id="viz-controls" style="display: none;">
-                    <div class="view-toggles">
-                        <button class="btn-secondary active" id="btn-view-list" onclick="switchScheduleView('list')">
-                            <i class="fas fa-list"></i> Lista
-                        </button>
-                        <button class="btn-secondary" id="btn-view-calendar" onclick="switchScheduleView('calendar')">
-                            <i class="fas fa-calendar-alt"></i> Calendario
-                        </button>
-                    </div>
+                <div class="visualization-controls" id="viz-controls"
+                    style="display: none; justify-content: flex-end; gap: 10px;">
                     <button onclick="mostrarVisualizacion()" class="btn-secondary">
                         <i class="fas fa-project-diagram"></i>
                         Ver Estructura del Algoritmo
@@ -353,20 +369,8 @@
                     </button>
                 </div>
 
-                <div id="schedule-list-container">
-                    <table class="schedule-table" id="schedule-table" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th>Curso</th>
-                                <th>Profesor</th>
-                                <th>Horario</th>
-                                <th>Grupo</th>
-                            </tr>
-                        </thead>
-                        <tbody id="schedule-body">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
+                <div id="schedule-calendar-container" style="display: none;">
+                    <!-- Calendar grids will be injected here -->
                 </div>
 
                 <div id="schedule-calendar-container" style="display: none;">

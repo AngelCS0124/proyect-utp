@@ -72,8 +72,9 @@ def reproduce():
             if not assigned:
                 print(f"Warning: No professor found for course {c.nombre} ({c.id})")
 
-    print("Generating Schedule...")
-    result = scheduler.generate_schedule_with_config(time_limit_seconds=10, strategy="complete")
+    print("Generating Schedule (Optimization Mode)...")
+    # Use 'complete' strategy to trigger the optimization loop
+    result = scheduler.generate_schedule_with_config(time_limit_seconds=5, strategy="complete")
     
     print(f"Success: {result['success']}")
     print(f"Error: {result['error_message']}")

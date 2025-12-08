@@ -546,6 +546,20 @@ async function saveAllProfessors(showSuccess = true) {
 
 // ===== Schedule Generation =====
 async function generateSchedule() {
+    // 1. Pre-check constraints
+    try {
+        const checkResponse = await fetch(`${API_BASE}/analyze-constraints`);
+        const checkResult = await checkResponse.json();
+
+        if (checkResult.issues && checkResult.issues.length > 0) {
+            const proceed = await showPrecheckModal(checkResult.issues);
+            if (!proceed) return;
+        }
+    } catch (e) {
+        console.error("Pre-check failed", e);
+        // Continue anyway if check fails, or warn?
+    }
+
     const btn = document.getElementById('generate-btn');
     const originalText = btn.innerHTML;
     btn.disabled = true;
@@ -599,8 +613,9 @@ async function generateSchedule() {
             const meta = result.metadata || {};
             const compTime = meta.computation_time !== undefined ? meta.computation_time : 0;
             const backtracks = meta.backtrack_count !== undefined ? meta.backtrack_count : 0;
+            const score = meta.score !== undefined ? meta.score : 0;
 
-            showNotification('¡Horario Generado!', `Completado en ${compTime.toFixed(4)}s con ${backtracks} backtracks.`, 'success');
+            showNotification('¡Horario Generado!', `Score: ${score}. Tiempo: ${compTime.toFixed(2)}s`, 'success');
 
             hideGenerationOverlay();
             // Switch to Horario view
@@ -633,6 +648,52 @@ async function generateSchedule() {
         btn.disabled = false;
         btn.innerHTML = originalText;
     }
+}
+
+function showPrecheckModal(issues) {
+    return new Promise((resolve) => {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.style.display = 'flex';
+
+        let issuesHtml = issues.map(issue => `
+            <div class="issue-item" style="margin-bottom: 15px; border-left: 4px solid #f59e0b; padding-left: 10px;">
+                <h4 style="color: #d97706; margin: 0 0 5px 0;">${issue.title}</h4>
+                <p style="margin: 0 0 5px 0;">${issue.message}</p>
+                ${issue.details ? `<ul style="font-size: 0.9em; color: #666; max-height: 100px; overflow-y: auto;">${issue.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
+            </div>
+        `).join('');
+
+        modal.innerHTML = `
+            <div class="modal-content" style="max-width: 600px;">
+                <div class="modal-header" style="background-color: #fffbeb; border-bottom: 1px solid #fcd34d;">
+                    <h3 style="color: #b45309;"><i class="fas fa-exclamation-triangle"></i> Advertencia de Datos</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Se detectaron problemas en los datos que afectarán el horario:</p>
+                    <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb; max-height: 300px; overflow-y: auto;">
+                        ${issuesHtml}
+                    </div>
+                    <p style="margin-top: 15px; font-weight: bold;">¿Deseas continuar de todos modos?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="btn-cancel-gen">Cancelar</button>
+                    <button class="btn-primary" id="btn-confirm-gen">Continuar</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        document.getElementById('btn-cancel-gen').onclick = () => {
+            modal.remove();
+            resolve(false);
+        };
+        document.getElementById('btn-confirm-gen').onclick = () => {
+            modal.remove();
+            resolve(true);
+        };
+    });
 }
 
 function showErrorModal(message) {
@@ -693,49 +754,122 @@ async function updateGenerationStep(text, progress) {
 
 function renderScheduleView() {
     const emptyState = document.getElementById('no-schedule-msg');
-    const table = document.getElementById('schedule-table');
-    const tbody = document.getElementById('schedule-body');
     const vizControls = document.getElementById('viz-controls');
     const filterContainer = document.getElementById('schedule-filters');
+    const calendarContainer = document.getElementById('schedule-calendar-container');
 
     if (!state.schedule) {
         emptyState.style.display = 'block';
-        table.style.display = 'none';
         if (vizControls) vizControls.style.display = 'none';
         if (filterContainer) filterContainer.style.display = 'none';
+        if (calendarContainer) calendarContainer.style.display = 'none';
         return;
     }
 
     emptyState.style.display = 'none';
-    table.style.display = 'table';
     if (vizControls) vizControls.style.display = 'flex';
     if (filterContainer) filterContainer.style.display = 'block';
+    if (calendarContainer) calendarContainer.style.display = 'block';
 
     // Update filter options based on current cycle
     updateSemesterFilter();
 
-    tbody.innerHTML = '';
+    // Render Calendar View directly
+    renderCalendarView();
+}
+
+function renderCalendarView() {
+    const container = document.getElementById('schedule-calendar-container');
+    container.innerHTML = '';
 
     const semesterFilter = document.getElementById('semester-filter') ? document.getElementById('semester-filter').value : 'all';
 
-    state.schedule.assignments.forEach(assignment => {
-        // Filter logic
-        if (semesterFilter !== 'all') {
-            const sem = assignment.semester || 0;
-            if (sem.toString() !== semesterFilter) return;
-        }
+    // Group assignments by semester/group
+    const groups = {};
+    state.schedule.assignments.forEach(a => {
+        const sem = a.semester || 1;
+        if (semesterFilter !== 'all' && sem.toString() !== semesterFilter) return;
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>
-                <div style="font-weight: 600;">${assignment.course_name}</div>
-                <div style="font-size: 0.85rem; color: var(--text-gray);">${assignment.course_code}</div>
-            </td>
-            <td>${assignment.professor_name}</td>
-            <td><span class="badge badge-ready">${assignment.timeslot_display}</span></td>
-            <td>${assignment.group_id || 'N/A'}</td>
+        const key = `Cuatrimestre ${sem}`;
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(a);
+    });
+
+    // Render a calendar for each group
+    Object.keys(groups).sort().forEach(groupName => {
+        const groupAssignments = groups[groupName];
+
+        const groupSection = document.createElement('div');
+        groupSection.className = 'calendar-group-section';
+        groupSection.innerHTML = `<h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--primary-color); border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">${groupName}</h3>`;
+
+        const table = document.createElement('table');
+        table.className = 'schedule-calendar-table'; // You might need to add CSS for this
+
+        // Header
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Horario</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
         `;
-        tbody.appendChild(tr);
+
+        const tbody = table.querySelector('tbody');
+
+        // Time blocks
+        const timeBlocks = [
+            { label: '7:00-7:54', start: 7, min: 0 },
+            { label: '7:55-8:49', start: 7, min: 55 },
+            { label: '8:50-9:44', start: 8, min: 50 },
+            { label: '9:45-10:39', start: 9, min: 45 },
+            { label: '11:10-12:04', start: 11, min: 10 },
+            { label: '12:05-12:59', start: 12, min: 5 },
+            { label: '13:00-13:54', start: 13, min: 0 },
+            { label: '14:00-14:54', start: 14, min: 0 },
+            { label: '14:55-15:49', start: 14, min: 55 }
+        ];
+
+        timeBlocks.forEach(block => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td class="time-col">${block.label}</td>`;
+
+            ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].forEach(day => {
+                // Find assignment for this day and time
+                // Note: We need to match the time logic from backend/timeslots
+                // For simplicity, we filter by day and approximate time match or use timeslot string
+                const assignment = groupAssignments.find(a => {
+                    // This is a simplification. Ideally we match IDs or precise times.
+                    // Assuming timeslot_display contains day and time or we parse it.
+                    // Better: use timeslot ID if we have the mapping.
+                    // But we have 'timeslot_display'. Let's use that if it contains the day and time.
+                    // Or better, rely on the fact that we have the data.
+                    // Let's assume 'timeslot_display' is like "Lunes 7:00-7:54"
+                    return a.timeslot_display.includes(day) && a.timeslot_display.includes(block.label.split('-')[0]);
+                });
+
+                if (assignment) {
+                    tr.innerHTML += `
+                        <td class="class-cell">
+                            <div class="course-name">${assignment.course_name}</div>
+                            <div class="prof-name">${assignment.professor_name}</div>
+                        </td>
+                    `;
+                } else {
+                    tr.innerHTML += `<td></td>`;
+                }
+            });
+            tbody.appendChild(tr);
+        });
+
+        groupSection.appendChild(table);
+        container.appendChild(groupSection);
     });
 }
 
@@ -823,13 +957,103 @@ async function checkSystemStatus() {
                 });
             }
         }
-
-        setTimeout(updateUI, 500);
     } catch (error) {
-        console.error("Connection error", error);
+        console.error('Error checking system status:', error);
+        showNotification('Error', 'No se pudo conectar con el servidor para obtener el estado.', 'error');
     }
 }
 
+function exportarHorario() {
+    if (!state.schedule || !state.schedule.assignments) {
+        showNotification('Error', 'No hay horario para exportar', 'error');
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('Horario Generado - Universidad', 14, 20);
+    doc.setFontSize(11);
+    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 28);
+
+    let yPos = 35;
+
+    // Group by semester
+    const groups = {};
+    state.schedule.assignments.forEach(a => {
+        const sem = a.semester || 1;
+        const key = `Cuatrimestre ${sem}`;
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(a);
+    });
+
+    Object.keys(groups).sort().forEach((groupName, index) => {
+        if (index > 0) {
+            doc.addPage();
+            yPos = 20;
+        }
+
+        doc.setFontSize(14);
+        doc.text(groupName, 14, yPos);
+        yPos += 10;
+
+        const groupAssignments = groups[groupName];
+
+        // Prepare table data
+        const timeBlocks = [
+            { label: '7:00-7:54', start: 7, min: 0 },
+            { label: '7:55-8:49', start: 7, min: 55 },
+            { label: '8:50-9:44', start: 8, min: 50 },
+            { label: '9:45-10:39', start: 9, min: 45 },
+            { label: '11:10-12:04', start: 11, min: 10 },
+            { label: '12:05-12:59', start: 12, min: 5 },
+            { label: '13:00-13:54', start: 13, min: 0 },
+            { label: '14:00-14:54', start: 14, min: 0 },
+            { label: '14:55-15:49', start: 14, min: 55 }
+        ];
+
+        const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+        const body = [];
+
+        timeBlocks.forEach(block => {
+            const row = [block.label];
+            days.forEach(day => {
+                const assignment = groupAssignments.find(a =>
+                    a.timeslot_display.includes(day) && a.timeslot_display.includes(block.label.split('-')[0])
+                );
+                if (assignment) {
+                    row.push(`${assignment.course_name}\n${assignment.professor_name}`);
+                } else {
+                    row.push('');
+                }
+            });
+            body.push(row);
+        });
+
+        doc.autoTable({
+            startY: yPos,
+            head: [['Horario', ...days]],
+            body: body,
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2 },
+            headStyles: { fillColor: [66, 133, 244] },
+            columnStyles: {
+                0: { cellWidth: 25 }, // Time column
+                1: { cellWidth: 32 },
+                2: { cellWidth: 32 },
+                3: { cellWidth: 32 },
+                4: { cellWidth: 32 },
+                5: { cellWidth: 32 }
+            }
+        });
+
+        yPos = doc.lastAutoTable.finalY + 20;
+    });
+
+    doc.save('horario_universidad.pdf');
+    showNotification('Éxito', 'Horario exportado a PDF', 'success');
+}
 function updateUI() {
     // Update cycle name
     const cycleName = document.getElementById('cycle-name');

@@ -155,8 +155,9 @@ def update_config():
     if 'time_limit' in data:
         try:
             limit = int(data['time_limit'])
-            if limit < 1:
-                return jsonify({'error': 'Time limit must be positive'}), 400
+            # If limit is 0 or negative, treat as "No Limit" (set to 1 hour)
+            if limit <= 0:
+                limit = 3600
             data_store['config']['time_limit'] = limit
         except ValueError:
             return jsonify({'error': 'Invalid time limit'}), 400
@@ -513,7 +514,11 @@ def generate_schedule():
         
         # Load data into C++ scheduler
         for course in courses_to_schedule:
-            group_id = getattr(course, 'group_id', 0)
+            # Use cuatrimestre from course object if available, otherwise default to 1
+            # Avoid 0 as it shows as "Cuatrimestre 0" in frontend
+            group_id = getattr(course, 'cuatrimestre', 1)
+            if not group_id or group_id < 1:
+                group_id = 1
             
             # Calculate duration based on credits
             # 15 weeks per period
@@ -603,8 +608,8 @@ def generate_schedule():
                     'course_code': course.codigo if course else '',
                     'professor_name': professor.nombre if professor else 'Unknown',
                     'timeslot_display': timeslot.to_dict()['display'] if timeslot else 'Unknown',
-                    'semester': getattr(course, 'cuatrimestre', None),
-                    'group_id': getattr(course, 'group_id', 0)
+                    'semester': max(1, getattr(course, 'cuatrimestre', 1) or 1),
+                    'group_id': max(1, getattr(course, 'group_id', 1) or 1)
                 })
                 
                 # Update workload count
@@ -633,14 +638,19 @@ def generate_schedule():
                     'computation_time': result['computation_time'],
                     'status': 'success' if result['success'] else 'partial',
                     'message': result.get('message', 'Schedule generated')
-                },
-                'workload_stats': workload_stats
+                }
             }
             
             return jsonify({
                 'success': True,
-                'schedule': data_store['schedule'],
-                'partial': not result['success']
+                'schedule': {
+                    'assignments': enriched_assignments
+                },
+                'metadata': {
+                    'computation_time': result.get('computation_time', 0),
+                    'backtrack_count': result.get('backtrack_count', 0),
+                    'score': result.get('score', 0)
+                }
             })
         else:
             print(f"DEBUG: Generation failed: {result['error_message']}")
@@ -653,11 +663,59 @@ def generate_schedule():
         print(f"DEBUG: Generation error: {str(e)}")
         import traceback
         traceback.print_exc()
+        return jsonify({'error': str(e), 'details': traceback.format_exc().split('\n')}), 500
+
+@app.route('/api/analyze-constraints', methods=['GET'])
+def analyze_constraints():
+    """Analyze data to find potential issues before generation."""
+    try:
+        issues = []
+        
+        # Check for courses without professors
+        courses_without_professors = []
+        for course in data_store['courses']:
+            # Check if any professor can teach this course
+            has_professor = False
+            for prof in data_store['professors']:
+                # Check by ID or Name if needed, but usually we rely on ID linkage
+                # If course.professor_id is set (CSV)
+                if hasattr(course, 'professor_id') and course.professor_id == prof.id:
+                    has_professor = True
+                    break
+                # Or if professor has available_courses list (JSON)
+                if hasattr(prof, 'available_courses') and course.id in prof.available_courses:
+                    has_professor = True
+                    break
+            
+            if not has_professor:
+                courses_without_professors.append(f"{course.nombre} (ID: {course.id})")
+        
+        if courses_without_professors:
+            issues.append({
+                'type': 'warning',
+                'title': 'Cursos sin Profesor',
+                'message': f"Hay {len(courses_without_professors)} cursos que no tienen ningún profesor asignado o disponible. Estos cursos NO se programarán.",
+                'details': courses_without_professors[:10] + (['...'] if len(courses_without_professors) > 10 else [])
+            })
+
+        # Check for professors with no availability
+        profs_no_availability = []
+        for prof in data_store['professors']:
+            if not prof.available_timeslots:
+                profs_no_availability.append(prof.nombre)
+        
+        if profs_no_availability:
+            issues.append({
+                'type': 'warning',
+                'title': 'Profesores sin Disponibilidad',
+                'message': f"Hay {len(profs_no_availability)} profesores sin horas disponibles definidas.",
+                'details': profs_no_availability[:10]
+            })
+
+        return jsonify({'issues': issues})
+
+    except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-
-
-
 
 @app.route('/api/schedule', methods=['GET'])
 def get_schedule():

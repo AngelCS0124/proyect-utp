@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <chrono>
 #include <map>
+#include <random>
 #include <set>
 #include <sstream>
 #include <utility>
@@ -113,6 +114,7 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
   this->modoCompleto = modoCompleto;
   this->maxCursosAsignados = 0;
   this->mejorSolucion.clear();
+  this->mejorPuntaje = -1e9; // Inicializar con puntaje muy bajo
 
   callbackProgreso = callback;
   contadorBacktrack = 0;
@@ -126,9 +128,8 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
     return resultado;
   }
 
-  // Obtener orden de cursos (sort topológico si hay prerrequisitos)
+  // Obtener orden de cursos
   std::vector<int> ordenCursos = obtenerOrdenCursos();
-
   if (ordenCursos.empty()) {
     resultado.exito = false;
     resultado.mensajeError = "No hay cursos para programar";
@@ -138,69 +139,70 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
   actualizarProgreso(0, ordenCursos.size(),
                      "Iniciando generación de horario...");
 
-  // Ejecutar algoritmo de backtracking
-  std::vector<Asignacion> asignaciones;
-  bool exitoCompleto = backtrack(asignaciones, ordenCursos, 0);
+  // BUCLE DE OPTIMIZACIÓN
+  // Ejecutamos al menos una vez de forma determinista.
+  // Si hay tiempo y modoCompleto, seguimos probando con aleatoriedad.
+  bool primeraPasada = true;
+  this->usarAleatoriedad = false;
 
-  // Verificar si realmente se asignaron todos los cursos
-  std::set<int> cursosAsignados;
-  for (const auto &a : asignaciones) {
-    cursosAsignados.insert(a.idCurso);
-  }
+  while (!debeDetenerse) {
+    std::vector<Asignacion> asignaciones;
+    // Resetear estado para nueva iteración si es necesario?
+    // backtrack limpia? No, backtrack construye sobre 'asignaciones' vacía.
 
-  if (cursosAsignados.size() < ordenCursos.size()) {
-    exitoCompleto = false; // Éxito parcial
-  }
+    bool exito = backtrack(asignaciones, ordenCursos, 0);
 
-  resultado.exito = exitoCompleto;
+    // Calcular puntaje de esta solución
+    double puntajeActual = calcularPuntaje(asignaciones);
 
-  if (debeDetenerse) {
-    // Si se detuvo por tiempo o usuario, devolvemos lo mejor que tenemos
-    if (!mejorSolucion.empty()) {
-      resultado.asignaciones = mejorSolucion;
-      // Si no es éxito completo, es parcial pero útil
-      resultado.exito = false; // Marcar como no perfecto
-      resultado.mensajeError = "Tiempo agotado o detenido. Se muestra la mejor "
-                               "solución parcial encontrada (" +
-                               std::to_string(maxCursosAsignados) + "/" +
-                               std::to_string(ordenCursos.size()) + " cursos).";
-    } else {
-      resultado.exito = false;
-      resultado.mensajeError =
-          "Generación detenida sin encontrar solución válida.";
+    // Si es mejor, guardarla
+    if (asignaciones.size() > maxCursosAsignados ||
+        (asignaciones.size() == maxCursosAsignados &&
+         puntajeActual > mejorPuntaje)) {
+      mejorSolucion = asignaciones;
+      maxCursosAsignados = asignaciones.size();
+      mejorPuntaje = puntajeActual;
     }
-  } else if (exitoCompleto) {
-    resultado.asignaciones = asignaciones;
-    actualizarProgreso(ordenCursos.size(), ordenCursos.size(),
-                       "Horario generado exitosamente!");
+
+    // Verificar tiempo
+    auto ahora = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> transcurrido = ahora - tiempoInicio;
+    if (transcurrido.count() >= limiteTiempoSegundos) {
+      break;
+    }
+
+    // Si no es modo completo, terminamos con la primera solución válida
+    if (!modoCompleto && exito) {
+      break;
+    }
+
+    // Para siguientes pasadas, usar aleatoriedad
+    this->usarAleatoriedad = true;
+    primeraPasada = false;
+
+    // Si falló la primera pasada determinista y no tenemos nada, seguimos
+    // intentando
+  }
+
+  // Preparar resultado final con la MEJOR solución encontrada
+  resultado.asignaciones = mejorSolucion;
+  resultado.exito = (maxCursosAsignados == ordenCursos.size());
+
+  if (resultado.exito) {
+    resultado.mensajeError = "Horario generado exitosamente. Puntaje: " +
+                             std::to_string((int)mejorPuntaje);
+  } else if (!mejorSolucion.empty()) {
+    resultado.exito = false;
+    resultado.mensajeError = "Horario parcial generado (" +
+                             std::to_string(maxCursosAsignados) + "/" +
+                             std::to_string(ordenCursos.size()) +
+                             "). Puntaje: " + std::to_string((int)mejorPuntaje);
   } else {
-    // Terminó la búsqueda sin éxito completo
-    // Si tenemos asignaciones válidas (aunque sean parciales), las usamos
-    if (!asignaciones.empty()) {
-      resultado.asignaciones = asignaciones;
-      resultado.exito = false; // Parcial
-      resultado.mensajeError =
-          "Se generó un horario parcial (" +
-          std::to_string(cursosAsignados.size()) + "/" +
-          std::to_string(ordenCursos.size()) + " cursos). " +
-          "Algunos cursos no pudieron ser asignados por restricciones.";
-    } else if (!mejorSolucion.empty()) {
-      // En modo "Best Effort" devolvemos lo que encontramos
-      resultado.asignaciones = mejorSolucion;
-      resultado.exito = false; // Parcial
-      resultado.mensajeError = "No se encontró solución perfecta. Se muestra "
-                               "la mejor solución parcial (" +
-                               std::to_string(maxCursosAsignados) + "/" +
-                               std::to_string(ordenCursos.size()) + " cursos).";
-    } else {
-      resultado.mensajeError = "No se pudo encontrar un horario válido con las "
-                               "restricciones dadas.\n\n" +
-                               analizarFallo();
-    }
+    resultado.exito = false;
+    resultado.mensajeError = "No se pudo generar ningún horario válido.";
   }
 
   resultado.conteoBacktrack = contadorBacktrack;
-
   auto tiempoFin = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> transcurrido = tiempoFin - tiempoInicio;
   resultado.tiempoComputo = transcurrido.count();
@@ -215,6 +217,67 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
   resultado.asignaciones = asignacionesExternas;
 
   return resultado;
+}
+
+double
+PlanificadorCore::calcularPuntaje(const std::vector<Asignacion> &asignaciones) {
+  double puntaje = 0;
+
+  // 1. Maximizar cursos asignados (prioridad máxima)
+  puntaje +=
+      asignaciones.size() * 100000; // Aumentado peso para asegurar completitud
+
+  // Organizar por grupo y día para analizar huecos y horario
+  std::map<std::string, std::map<std::string, std::vector<int>>> horarioGrupo;
+
+  for (const auto &a : asignaciones) {
+    auto nodoCurso = grafo.obtenerNodo(a.idCurso);
+    std::string groupId = nodoCurso->getAtributo("groupId");
+    std::string dia = verificadorRestricciones->obtenerDiaBloque(a.idBloque);
+
+    horarioGrupo[groupId][dia].push_back(a.idBloque);
+
+    // 2. Preferir horas tempranas (penalizar horas tardías)
+    // IDs de bloque: 1 (7:00), 2 (7:55), ... 9 (14:55)
+    // Penalizar cuadráticamente para odiar mucho las últimas horas
+    puntaje -= (a.idBloque * a.idBloque) * 5.0;
+  }
+
+  // 3. Penalizar huecos (horas libres entre clases)
+  for (auto &[grupo, dias] : horarioGrupo) {
+    for (auto &[dia, bloques] : dias) {
+      std::sort(bloques.begin(), bloques.end());
+
+      if (bloques.empty())
+        continue;
+
+      // Verificar inicio del día (Preferir empezar a la primera hora
+      // disponible, usualmente bloque 1) Si el primer bloque no es el 1 (o el
+      // mínimo posible), penalizar levemente para fomentar "entrar temprano y
+      // salir temprano" Pero cuidado con profes que no pueden temprano. puntaje
+      // -= (bloques.front() - 1) * 50;
+
+      for (size_t i = 0; i < bloques.size() - 1; ++i) {
+        int actual = bloques[i];
+        int siguiente = bloques[i + 1];
+
+        // Verificar si son consecutivos
+        int esperado =
+            verificadorRestricciones->obtenerSiguienteBloqueConsecutivo(actual);
+
+        if (esperado != -1 && siguiente != esperado) {
+          // Hay un hueco
+          // Penalización MUY fuerte por hueco intermedio
+          puntaje -= 2000;
+        } else {
+          // Son consecutivos, bonificación
+          puntaje += 100;
+        }
+      }
+    }
+  }
+
+  return puntaje;
 }
 
 int PlanificadorCore::obtenerIdExterno(int idInterno) const {
@@ -273,8 +336,12 @@ bool PlanificadorCore::backtrack(std::vector<Asignacion> &asignaciones,
   if (!aristasProfesor.empty()) {
     idProfesor = aristasProfesor[0]; // Asumiendo un profesor por curso
   }
-  // Si no hay profesor, idProfesor sigue siendo -1, lo cual ahora es soportado
-  // por restricciones.cpp
+
+  // Si no hay profesor asignado, NO programar el curso.
+  // Esto evita que aparezcan como "Unknown" en el horario.
+  if (idProfesor == -1) {
+    return backtrack(asignaciones, cursos, indiceCurso + 1);
+  }
 
   // Determinar bloques necesarios
   int duracion = 1;
@@ -333,6 +400,12 @@ bool PlanificadorCore::backtrackCurso(
 
   auto bloquesDisponibles = verificadorRestricciones->obtenerBloquesDisponibles(
       idCurso, idProfesor, asignaciones);
+
+  if (this->usarAleatoriedad) {
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(bloquesDisponibles.begin(), bloquesDisponibles.end(), g);
+  }
 
   for (int idBloqueInicio : bloquesDisponibles) {
     // Verificar que este bloque no sea en un día ya usado si queremos forzar
