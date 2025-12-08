@@ -23,14 +23,18 @@ class DataLoader:
                 if row.get('prerequisites'):
                     prerequisites = [int(x.strip()) for x in row['prerequisites'].split(',') if x.strip()]
                 
+                course_id = int(float(row['id']))
+                semester = int(course_id / 100)
+                
                 course = Curso(
-                    id=int(float(row['id'])),
+                    id=course_id,
                     nombre=row['name'],
                     codigo=row.get('code', ''),
                     creditos=int(float(row.get('credits', 3))),
                     matricula=int(float(row['enrollment'])) if row.get('enrollment') and row.get('enrollment').strip() else 30,
                     prerequisitos=prerequisites,
-                    id_profesor=int(float(row['professor_id'])) if row.get('professor_id') and row.get('professor_id').strip() else None
+                    id_profesor=int(float(row['professor_id'])) if row.get('professor_id') and row.get('professor_id').strip() else None,
+                    cuatrimestre=semester
                 )
                 courses.append(course)
         return courses

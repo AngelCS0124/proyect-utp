@@ -202,14 +202,13 @@
                                 <option value="300">5 Minutos</option>
                             </select>
                         </div>
-                        <div class="config-item">
+                        <div class="config-item" style="display: none;">
                             <label for="strategy"
                                 style="display: block; font-size: 0.85rem; margin-bottom: 4px; color: var(--text-gray);"><i
                                     class="fas fa-chess"></i> Estrategia:</label>
                             <select id="strategy" class="form-select"
                                 style="padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                <option value="complete">Completa</option>
-                                <option value="best_effort">Mejor Esfuerzo</option>
+                                <option value="complete" selected>Completa</option>
                             </select>
                         </div>
                     </div>
@@ -335,10 +334,7 @@
 
                 <!-- Controles de visualización -->
                 <div class="visualization-controls" id="viz-controls" style="display: none;">
-                    <div class="view-toggles">
-                        <button class="btn-secondary active" id="btn-view-list" onclick="switchScheduleView('list')">
-                            <i class="fas fa-list"></i> Lista
-                        </button>
+                    <div class="view-toggles" style="display: none;">
                         <button class="btn-secondary" id="btn-view-calendar" onclick="switchScheduleView('calendar')">
                             <i class="fas fa-calendar-alt"></i> Calendario
                         </button>
@@ -353,21 +349,7 @@
                     </button>
                 </div>
 
-                <div id="schedule-list-container">
-                    <table class="schedule-table" id="schedule-table" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th>Curso</th>
-                                <th>Profesor</th>
-                                <th>Horario</th>
-                                <th>Grupo</th>
-                            </tr>
-                        </thead>
-                        <tbody id="schedule-body">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
-                </div>
+                <!-- List view container removed -->
 
                 <div id="schedule-calendar-container" style="display: none;">
                     <!-- Calendar grids will be injected here -->

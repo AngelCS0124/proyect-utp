@@ -83,9 +83,20 @@ public:
   std::string obtenerDiaBloque(int idBloque) const;
 
   // Mensajes de validación
+  // Mensajes de validación
   std::string
   obtenerMensajeViolacion(const Asignacion &asignacion,
                           const std::vector<Asignacion> &asignaciones) const;
+
+  // Nuevas restricciones estrictas
+  int contarHorasLibres(int idGrupo,
+                        const std::vector<Asignacion> &asignaciones) const;
+  int contarHorasConsecutivasCurso(
+      int idCurso, const std::string &dia,
+      const std::vector<Asignacion> &asignaciones) const;
+  bool tieneHuecosCurso(int idCurso, const std::string &dia,
+                        const std::vector<Asignacion> &asignaciones) const;
+  int obtenerHoraInicio(int idBloque) const;
 };
 
 } // namespace planificador

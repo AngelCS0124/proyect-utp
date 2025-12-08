@@ -80,6 +80,7 @@ private:
                           std::vector<Asignacion> &asignaciones);
   void actualizarProgreso(int actual, int total, const std::string &mensaje);
   void actualizarMejorSolucion(const std::vector<Asignacion> &asignaciones);
+  int calcularPuntaje(const std::vector<Asignacion> &asignaciones) const;
 
   // Estado interno
   Grafo grafo;
@@ -103,6 +104,7 @@ private:
   bool modoCompleto;
   std::vector<Asignacion> mejorSolucion;
   int maxCursosAsignados;
+  int maxPuntaje;
 };
 
 } // namespace planificador

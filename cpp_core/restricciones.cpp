@@ -1,6 +1,7 @@
 #include "restricciones.hpp"
 #include <algorithm>
 #include <iomanip>
+#include <map>
 #include <sstream>
 
 namespace planificador {
@@ -251,6 +252,140 @@ std::string VerificadorRestricciones::obtenerDiaBloque(int idBloque) const {
     return it->second.dia;
   }
   return "";
+}
+
+} // namespace planificador
+
+// Implementación de nuevos métodos
+namespace planificador {
+
+int VerificadorRestricciones::obtenerHoraInicio(int idBloque) const {
+  auto it = bloquesTiempo.find(idBloque);
+  if (it != bloquesTiempo.end()) {
+    return it->second.horaInicio * 60 + it->second.minutoInicio;
+  }
+  return 0;
+}
+
+int VerificadorRestricciones::contarHorasLibres(
+    int idGrupo, const std::vector<Asignacion> &asignaciones) const {
+  std::map<std::string, std::vector<std::pair<int, int>>> horarioPorDia;
+
+  // 1. Agrupar por día
+  for (const auto &asignacion : asignaciones) {
+    // Verificar si el curso pertenece al grupo
+    auto grupoIt = gruposCurso.find(asignacion.idCurso);
+    if (grupoIt != gruposCurso.end() && grupoIt->second == idGrupo) {
+      auto bloqueIt = bloquesTiempo.find(asignacion.idBloque);
+      if (bloqueIt != bloquesTiempo.end()) {
+        const auto &bloque = bloqueIt->second;
+        int inicio = bloque.horaInicio * 60 + bloque.minutoInicio;
+        int fin = bloque.horaFin * 60 + bloque.minutoFin;
+        horarioPorDia[bloque.dia].push_back({inicio, fin});
+      }
+    }
+  }
+
+  int horasLibres = 0;
+
+  // 2. Analizar cada día
+  for (auto &par : horarioPorDia) {
+    auto &bloques = par.second;
+    if (bloques.empty())
+      continue;
+
+    // Ordenar por hora de inicio
+    std::sort(bloques.begin(), bloques.end());
+
+    // Contar huecos
+    for (size_t i = 0; i < bloques.size() - 1; ++i) {
+      int finActual = bloques[i].second;
+      int inicioSiguiente = bloques[i + 1].first;
+
+      if (inicioSiguiente > finActual) {
+        // Hay un hueco. Contamos cuántos bloques de "hora" caben?
+        // La regla dice "Hora libre" = timeslot sin clase.
+        // Asumimos que 1 hueco = 1 hora libre, independientemente de la
+        // duración exacta (normalmente 50-60 min) O contamos bloques perdidos.
+        // Simplificación: Contamos cada intervalo disjunto como 1 "hora libre"
+        // si es significativo (> 10 min)
+        if (inicioSiguiente - finActual > 10) {
+          horasLibres++;
+        }
+      }
+    }
+  }
+
+  return horasLibres;
+}
+
+int VerificadorRestricciones::contarHorasConsecutivasCurso(
+    int idCurso, const std::string &dia,
+    const std::vector<Asignacion> &asignaciones) const {
+  std::vector<std::pair<int, int>> bloques;
+
+  for (const auto &asignacion : asignaciones) {
+    if (asignacion.idCurso == idCurso) {
+      auto bloqueIt = bloquesTiempo.find(asignacion.idBloque);
+      if (bloqueIt != bloquesTiempo.end() && bloqueIt->second.dia == dia) {
+        const auto &bloque = bloqueIt->second;
+        int inicio = bloque.horaInicio * 60 + bloque.minutoInicio;
+        int fin = bloque.horaFin * 60 + bloque.minutoFin;
+        bloques.push_back({inicio, fin});
+      }
+    }
+  }
+
+  if (bloques.empty())
+    return 0;
+  std::sort(bloques.begin(), bloques.end());
+
+  int maxConsecutivas = 0;
+  int actuales = 0;
+  int ultimoFin = -1;
+
+  for (const auto &b : bloques) {
+    if (ultimoFin == -1 || b.first == ultimoFin) {
+      actuales++;
+    } else {
+      maxConsecutivas = std::max(maxConsecutivas, actuales);
+      actuales = 1;
+    }
+    ultimoFin = b.second;
+  }
+  maxConsecutivas = std::max(maxConsecutivas, actuales);
+
+  return maxConsecutivas;
+}
+
+bool VerificadorRestricciones::tieneHuecosCurso(
+    int idCurso, const std::string &dia,
+    const std::vector<Asignacion> &asignaciones) const {
+  std::vector<std::pair<int, int>> bloques;
+
+  for (const auto &asignacion : asignaciones) {
+    if (asignacion.idCurso == idCurso) {
+      auto bloqueIt = bloquesTiempo.find(asignacion.idBloque);
+      if (bloqueIt != bloquesTiempo.end() && bloqueIt->second.dia == dia) {
+        const auto &bloque = bloqueIt->second;
+        int inicio = bloque.horaInicio * 60 + bloque.minutoInicio;
+        int fin = bloque.horaFin * 60 + bloque.minutoFin;
+        bloques.push_back({inicio, fin});
+      }
+    }
+  }
+
+  if (bloques.size() < 2)
+    return false;
+  std::sort(bloques.begin(), bloques.end());
+
+  for (size_t i = 0; i < bloques.size() - 1; ++i) {
+    if (bloques[i + 1].first > bloques[i].second) {
+      return true; // Hay hueco
+    }
+  }
+
+  return false;
 }
 
 } // namespace planificador

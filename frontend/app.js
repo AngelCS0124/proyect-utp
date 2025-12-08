@@ -556,7 +556,7 @@ async function generateSchedule() {
     try {
         // Read config values
         const timeLimit = parseInt(document.getElementById('time-limit').value);
-        const strategy = document.getElementById('strategy').value;
+        const strategy = 'complete';
         const currentPeriod = state.currentCycle ? state.currentCycle.id : null;
 
         if (!currentPeriod) {
@@ -605,6 +605,8 @@ async function generateSchedule() {
             hideGenerationOverlay();
             // Switch to Horario view
             document.querySelector('[data-view="horario"]').click();
+            // Force calendar view
+            switchScheduleView('calendar');
         } else {
             hideGenerationOverlay();
             // Show Error Modal
@@ -724,6 +726,9 @@ function renderScheduleView() {
             const sem = assignment.semester || 0;
             if (sem.toString() !== semesterFilter) return;
         }
+
+        // Explicitly exclude semester 0
+        if (assignment.semester === 0 || assignment.semester === null) return;
 
         const tr = document.createElement('tr');
         tr.innerHTML = `

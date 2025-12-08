@@ -112,6 +112,7 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
   this->limiteTiempoSegundos = limiteTiempoSegundos;
   this->modoCompleto = modoCompleto;
   this->maxCursosAsignados = 0;
+  this->maxPuntaje = -99999999;
   this->mejorSolucion.clear();
 
   callbackProgreso = callback;
@@ -183,7 +184,8 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
           "Se generó un horario parcial (" +
           std::to_string(cursosAsignados.size()) + "/" +
           std::to_string(ordenCursos.size()) + " cursos). " +
-          "Algunos cursos no pudieron ser asignados por restricciones.";
+          "Algunos cursos no pudieron ser asignados por restricciones.\n\n" +
+          analizarFallo();
     } else if (!mejorSolucion.empty()) {
       // En modo "Best Effort" devolvemos lo que encontramos
       resultado.asignaciones = mejorSolucion;
@@ -191,7 +193,8 @@ ResultadoHorario PlanificadorCore::generarHorarioConCallback(
       resultado.mensajeError = "No se encontró solución perfecta. Se muestra "
                                "la mejor solución parcial (" +
                                std::to_string(maxCursosAsignados) + "/" +
-                               std::to_string(ordenCursos.size()) + " cursos).";
+                               std::to_string(ordenCursos.size()) +
+                               " cursos).\n\n" + analizarFallo();
     } else {
       resultado.mensajeError = "No se pudo encontrar un horario válido con las "
                                "restricciones dadas.\n\n" +
@@ -301,10 +304,12 @@ bool PlanificadorCore::backtrack(std::vector<Asignacion> &asignaciones,
 
   // ESTRATEGIA ROBUSTA: Si no se puede asignar este curso, lo saltamos
   // y continuamos con el siguiente para generar un horario parcial.
-  // Esto asegura que siempre devolvamos algo.
-  // NOTA: Esto significa que el resultado final puede no tener todos los
-  // cursos. El wrapper de Python debe detectar esto y advertir al usuario.
-  return backtrack(asignaciones, cursos, indiceCurso + 1);
+  // Solo si NO estamos en modo completo (o si queremos best effort explícito)
+  if (!modoCompleto) {
+    return backtrack(asignaciones, cursos, indiceCurso + 1);
+  }
+
+  return false;
 }
 
 bool PlanificadorCore::backtrackCurso(
@@ -333,6 +338,14 @@ bool PlanificadorCore::backtrackCurso(
 
   auto bloquesDisponibles = verificadorRestricciones->obtenerBloquesDisponibles(
       idCurso, idProfesor, asignaciones);
+
+  // ORDENAR: Prioridad a las 7:00 AM
+  std::sort(bloquesDisponibles.begin(), bloquesDisponibles.end(),
+            [this](int a, int b) {
+              int horaA = verificadorRestricciones->obtenerHoraInicio(a);
+              int horaB = verificadorRestricciones->obtenerHoraInicio(b);
+              return horaA < horaB;
+            });
 
   for (int idBloqueInicio : bloquesDisponibles) {
     // Verificar que este bloque no sea en un día ya usado si queremos forzar
@@ -424,6 +437,44 @@ bool PlanificadorCore::backtrackCurso(
         if (diaNuevo)
           nuevosDias.push_back(diaBloque);
 
+        // Verificar restricciones estrictas ANTES de recursión profunda
+        // 1. Máximo 3 horas seguidas
+        if (verificadorRestricciones->contarHorasConsecutivasCurso(
+                idCurso, diaBloque, asignaciones) > 3) {
+          // Deshacer y probar siguiente
+          for (size_t i = 0; i < nuevas.size(); ++i)
+            asignaciones.pop_back();
+          continue;
+        }
+
+        // 2. Máximo 1 hora libre por semana (por grupo)
+        // Obtener grupo
+        int idGrupo = 0;
+        auto nodo = grafo.obtenerNodo(idCurso);
+        if (nodo && nodo->tieneAtributo("groupId")) {
+          try {
+            idGrupo = std::stoi(nodo->getAtributo("groupId"));
+          } catch (...) {
+          }
+        }
+        if (idGrupo > 0 && verificadorRestricciones->contarHorasLibres(
+                               idGrupo, asignaciones) > 1) {
+          // Deshacer y probar siguiente
+          for (size_t i = 0; i < nuevas.size(); ++i)
+            asignaciones.pop_back();
+          continue;
+        }
+
+        // 3. Huecos en la misma materia (Nivel 2, pero tratado como estricto
+        // aquí para "sin huecos excesivos")
+        if (verificadorRestricciones->tieneHuecosCurso(idCurso, diaBloque,
+                                                       asignaciones)) {
+          // Deshacer y probar siguiente
+          for (size_t i = 0; i < nuevas.size(); ++i)
+            asignaciones.pop_back();
+          continue;
+        }
+
         if (backtrackCurso(asignaciones, idCurso, idProfesor,
                            bloquesRestantes - tamChunk, cursos, indiceCurso,
                            nuevosDias)) {
@@ -442,7 +493,12 @@ bool PlanificadorCore::backtrackCurso(
 
 void PlanificadorCore::actualizarMejorSolucion(
     const std::vector<Asignacion> &asignaciones) {
-  if (asignaciones.size() > mejorSolucion.size()) {
+  int puntaje = calcularPuntaje(asignaciones);
+
+  // Criterio: Más cursos asignados es prioridad absoluta (para completitud)
+  // Si tienen mismos cursos, gana el mejor puntaje
+  if (asignaciones.size() > mejorSolucion.size() ||
+      (asignaciones.size() == mejorSolucion.size() && puntaje > maxPuntaje)) {
     mejorSolucion = asignaciones;
     maxCursosAsignados = 0;
     // Contar cursos únicos asignados
@@ -456,7 +512,79 @@ void PlanificadorCore::actualizarMejorSolucion(
         cursosUnicos.push_back(a.idCurso);
     }
     maxCursosAsignados = cursosUnicos.size();
+    maxPuntaje = puntaje;
   }
+}
+
+int PlanificadorCore::calcularPuntaje(
+    const std::vector<Asignacion> &asignaciones) const {
+  int puntaje = 0;
+  std::set<int> cursosAsignados;
+  std::set<int> gruposAfectados;
+
+  for (const auto &a : asignaciones) {
+    cursosAsignados.insert(a.idCurso);
+
+    // +100 por materia asignada
+    puntaje += 100;
+
+    // -50 por cada hora que no comience a las 7:00 AM
+    int horaInicio =
+        verificadorRestricciones->obtenerHoraInicio(a.idBloque); // Minutos
+    if (horaInicio > 420) { // 7:00 AM = 420 min
+      int horasTarde = (horaInicio - 420) / 60;
+      puntaje -= (horasTarde * 50);
+    }
+
+    // Identificar grupo
+    auto nodoCurso = grafo.obtenerNodo(a.idCurso);
+    if (nodoCurso && nodoCurso->tieneAtributo("groupId")) {
+      try {
+        gruposAfectados.insert(std::stoi(nodoCurso->getAtributo("groupId")));
+      } catch (...) {
+      }
+    }
+  }
+
+  // Verificar restricciones por grupo
+  for (int idGrupo : gruposAfectados) {
+    // -200 por más de 1 hora libre
+    int horasLibres =
+        verificadorRestricciones->contarHorasLibres(idGrupo, asignaciones);
+    if (horasLibres > 1) {
+      puntaje -= 200 * (horasLibres - 1);
+    }
+  }
+
+  // Verificar restricciones por curso
+  for (int idCurso : cursosAsignados) {
+    // -500 por más de 3 horas seguidas
+    // Necesitamos iterar días
+    // Simplificación: iterar todos los días posibles (L-V)
+    std::vector<std::string> dias = {"Lunes", "Martes", "Miércoles", "Jueves",
+                                     "Viernes"};
+    for (const auto &dia : dias) {
+      int consecutivas = verificadorRestricciones->contarHorasConsecutivasCurso(
+          idCurso, dia, asignaciones);
+      if (consecutivas > 3) {
+        puntaje -= 500 * (consecutivas - 3);
+      }
+
+      // -30 por hueco entre clases de misma materia
+      if (verificadorRestricciones->tieneHuecosCurso(idCurso, dia,
+                                                     asignaciones)) {
+        puntaje -= 30;
+      }
+    }
+  }
+
+  // -1000 por cuatrimestre incompleto
+  // Esto es difícil de calcular exactamente sin saber qué cursos faltan de qué
+  // cuatrimestre Pero podemos penalizar por cursos faltantes en general si
+  // sabemos el total esperado Por ahora, asumimos que la maximización de cursos
+  // asignados maneja esto.
+
+  return puntaje;
 }
 
 std::vector<int> PlanificadorCore::obtenerOrdenCursos() const {
@@ -521,39 +649,119 @@ std::string PlanificadorCore::analizarFallo() const {
   std::ostringstream analisis;
   analisis << "Análisis de Fallo:\n\n";
 
-  auto cursos = grafo.obtenerNodosPorTipo(TipoNodo::CURSO);
-  auto profesores = grafo.obtenerNodosPorTipo(TipoNodo::PROFESOR);
+  // Usar la mejor solución encontrada para el análisis
+  const auto &asignaciones =
+      mejorSolucion.empty() ? obtenerAsignacionesActuales() : mejorSolucion;
 
-  // 1. Verificar Capacidad de Profesores
-  for (int idProfesor : profesores) {
-    auto nodoProf = grafo.obtenerNodo(idProfesor);
+  if (asignaciones.empty()) {
+    analisis << "No se pudo generar ninguna asignación válida.\n";
+    analisis << "Posibles causas: Restricciones demasiado estrictas o falta de "
+                "disponibilidad de profesores.\n";
+    return analisis.str();
+  }
 
-    // Contar cursos asignados a este profesor
-    int cursosAsignados = 0;
-    int totalHorasNecesarias = 0;
-
-    // Encontrar todos los cursos que apuntan a este profesor
-    for (int idCurso : cursos) {
-      auto vecinos = grafo.obtenerVecinos(idCurso);
-      if (!vecinos.empty() && vecinos[0] == idProfesor) {
-        cursosAsignados++;
-        // Asumiendo 1 curso = 1 bloque por ahora (simplificación)
-        totalHorasNecesarias++;
-      }
-    }
-
-    if (cursosAsignados > 0) {
-      // Verificar si tiene suficientes bloques
-      // Esto es aproximado, ya que no sabemos cuántos bloques tiene realmente
-      // disponibles sin consultar restricciones Pero podemos contar las aristas
-      // de disponibilidad si las tuviéramos en el grafo explícitamente O
-      // consultar verificadorRestricciones. Por ahora dejamos el mensaje
-      // genérico si parece sobrecargado.
+  // 1. Verificar Cuatrimestre 0
+  for (const auto &a : asignaciones) {
+    auto nodo = grafo.obtenerNodo(a.idCurso);
+    // Si tuviéramos el atributo cuatrimestre en el nodo, lo verificaríamos.
+    // Por ahora, asumimos que si el ID < 100 es sospechoso si usamos la
+    // convención 101, 201... Pero el ID interno es diferente. Necesitamos el
+    // externo.
+    int idExterno = obtenerIdExterno(a.idCurso);
+    if (idExterno > 0 && idExterno < 100) {
+      analisis << "ERROR: Se detectó curso con ID " << idExterno
+               << " que podría pertenecer a Cuatrimestre 0.\n";
     }
   }
 
-  analisis << "\nSugerencia: Intente agregar más horarios disponibles a los "
-              "profesores mencionados o asigne menos cursos.";
+  // 2. Verificar Horas Seguidas (> 3)
+  std::set<int> cursos;
+  for (const auto &a : asignaciones)
+    cursos.insert(a.idCurso);
+
+  for (int idCurso : cursos) {
+    std::vector<std::string> dias = {"Lunes", "Martes", "Miércoles", "Jueves",
+                                     "Viernes"};
+    for (const auto &dia : dias) {
+      int cons = verificadorRestricciones->contarHorasConsecutivasCurso(
+          idCurso, dia, asignaciones);
+      if (cons > 3) {
+        auto nodo = grafo.obtenerNodo(idCurso);
+        analisis << "ERROR: " << nodo->nombre << " tiene " << cons
+                 << " horas seguidas (máximo 3) en " << dia << ".\n";
+      }
+
+      if (verificadorRestricciones->tieneHuecosCurso(idCurso, dia,
+                                                     asignaciones)) {
+        auto nodo = grafo.obtenerNodo(idCurso);
+        analisis << "ADVERTENCIA: Clases de " << nodo->nombre
+                 << " no son consecutivas en " << dia << ".\n";
+      }
+    }
+  }
+
+  // 3. Verificar Horas Libres (> 1)
+  std::set<int> grupos;
+  for (int idCurso : cursos) {
+    auto nodo = grafo.obtenerNodo(idCurso);
+    if (nodo && nodo->tieneAtributo("groupId")) {
+      try {
+        grupos.insert(std::stoi(nodo->getAtributo("groupId")));
+      } catch (...) {
+      }
+    }
+  }
+
+  for (int idGrupo : grupos) {
+    int libres =
+        verificadorRestricciones->contarHorasLibres(idGrupo, asignaciones);
+    if (libres > 1) {
+      analisis << "ERROR: El grupo " << idGrupo << " tiene " << libres
+               << " horas libres en la semana (máximo 1).\n";
+    }
+  }
+
+  // 4. Verificar Completitud
+  // Esto requiere saber cuántos cursos DEBERÍA haber.
+  // Podemos comparar con el grafo completo.
+  auto todosCursos = grafo.obtenerNodosPorTipo(TipoNodo::CURSO);
+  std::map<int, int> cursosPorGrupoTotal;
+  std::map<int, int> cursosPorGrupoAsignados;
+
+  for (int idCurso : todosCursos) {
+    auto nodo = grafo.obtenerNodo(idCurso);
+    if (nodo && nodo->tieneAtributo("groupId")) {
+      try {
+        int g = std::stoi(nodo->getAtributo("groupId"));
+        cursosPorGrupoTotal[g]++;
+        if (cursos.count(idCurso))
+          cursosPorGrupoAsignados[g]++;
+      } catch (...) {
+      }
+    }
+  }
+
+  for (auto const &[grupo, total] : cursosPorGrupoTotal) {
+    int asignados = cursosPorGrupoAsignados[grupo];
+    if (asignados < total) {
+      analisis << "ERROR: Cuatrimestre/Grupo " << grupo
+               << " incompleto (faltan " << (total - asignados)
+               << " materias).\n";
+    }
+  }
+
+  // 5. Advertencias de Horario
+  for (const auto &a : asignaciones) {
+    int horaInicio = verificadorRestricciones->obtenerHoraInicio(a.idBloque);
+    if (horaInicio > 420) { // 7:00 AM
+      // Solo reportar si es la PRIMERA clase del día para ese curso?
+      // O reportar general. Demasiado ruido si reportamos todas.
+      // Reportamos si es > 8:50 (530 min) para ser menos ruidoso, o si el
+      // usuario lo pidió estricto. "ADVERTENCIA: Historia comienza a las 8:50
+      // (ideal 7:00)" Solo si es la primera clase del curso en ese día.
+      // Complicado de filtrar aquí rápido. Lo dejamos simple.
+    }
+  }
 
   return analisis.str();
 }
